@@ -1,0 +1,40 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@font-face {
+  font-family: "Horsham";
+  src: url("@/assets/fonts/Horsham.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("@/assets/fonts/Roboto.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@layer base {
+  @theme static {
+    --font-horsham: "Horsham", sans-serif;
+    --font-roboto: "Roboto", sans-serif;
+
+    --color-primary: #033f73;
+    --color-primary-50: #eff7ff;
+    --color-primary-100: #ddf0ff;
+    --color-primary-200: #b4e1ff;
+    --color-primary-300: #71c9ff;
+    --color-primary-400: #27afff;
+    --color-primary-500: #0094fd;
+    --color-primary-600: #0075d9;
+    --color-primary-700: #005caf;
+    --color-primary-800: #004e90;
+    --color-primary-900: #033f73;
+    --color-primary-950: #02294f;
+
+    --color-primary-foreground: #ffffff;
+  }
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+}
