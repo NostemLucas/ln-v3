@@ -3,10 +3,10 @@
     class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-3"
   >
     <div
-      class="w-[90%] sm:w-[85%] md:w-[60%] lg:w-[85%] xl:w-[80%] h-auto sm:h-[85vh] bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row"
+      class="w-[90%] sm:w-[85%] md:w-[60%] lg:w-[85%] xl:w-[80%] h-auto lg:h-[85vh] bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row"
     >
       <!-- Left side with login form -->
-      <div class="w-full lg:w-1/2 p-5 sm:p-6 lg:p-8 flex flex-col">
+      <div class="w-full lg:w-1/2 p-8 sm:p-6 lg:p-8 flex flex-col">
         <!-- Logo and navigation -->
         <div class="flex justify-between items-center mb-4 sm:mb-6">
           <div class="flex items-center">
@@ -24,29 +24,31 @@
             </span>
           </div>
           <div class="hidden sm:flex space-x-6">
-            <a
-              href="#"
+            <UButton
+              variant="link"
+              to="/"
               class="text-sm hover:text-blue-600 transition-colors font-medium"
             >
               Inicio
-            </a>
-            <a
-              href="#"
+            </UButton>
+            <UButton
+              variant="link"
+              to="/tratamientos"
               class="text-sm hover:text-blue-600 transition-colors font-medium"
             >
               Servicios
-            </a>
-            <a
-              href="#"
+            </UButton>
+            <UButton
+              variant="link"
+              to="/contactos"
               class="text-sm hover:text-blue-600 transition-colors font-medium"
             >
               Contacto
-            </a>
+            </UButton>
           </div>
         </div>
-
         <!-- Form content -->
-        <Form
+        <form
           class="flex-grow flex flex-col justify-center max-w-md mx-auto w-full py-4"
         >
           <div class="space-y-5 sm:space-y-6">
@@ -103,7 +105,7 @@
                 <button
                   @click="togglePasswordVisibility"
                   type="button"
-                  class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-600 transition-colors"
+                  class="absolute right-3 top-[55%] transform -translate-y-1/2 text-gray-400 hover:text-blue-600 transition-colors"
                 >
                   <Icon
                     name="lucide:eye"
@@ -213,10 +215,10 @@
               </p>
             </div>
           </div>
-        </Form>
+        </form>
 
         <!-- Footer with trust badges -->
-        <div class="mt-4 sm:mt-6">
+        <div class="hidden lg:block mt-4 sm:mt-6">
           <div class="flex justify-center items-center space-x-4 mb-3">
             <div class="flex items-center text-gray-500 text-xs">
               <Icon
@@ -226,7 +228,7 @@
               <span>Datos protegidos</span>
             </div>
             <div class="flex items-center text-gray-500 text-xs">
-              <LockIcon class="h-3 w-3 mr-1 text-blue-500" />
+              <Icon name="lucide:lock" class="h-3 w-3 mr-1 text-blue-500" />
               <span>Conexión segura</span>
             </div>
             <div class="flex items-center text-gray-500 text-xs">
@@ -377,7 +379,7 @@
           >
             <div
               class="absolute inset-0 bg-gradient-to-br from-blue-900/40 to-blue-900/70 mix-blend-multiply"
-            ></div>
+            />
             <NuxtImg
               draggable="false"
               :src="slide.image"
@@ -386,7 +388,7 @@
             />
 
             <!-- Slide content -->
-            <div class="absolute inset-0 flex flex-col justify-end p-4">
+            <div class="absolute inset-0 flex flex-col justify-end p-4 pb-7">
               <div
                 class="space-y-1 transform transition-all duration-1000 ease-out"
                 :class="{
@@ -431,7 +433,7 @@
 
           <!-- Carousel navigation arrows -->
           <div
-            class="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-2"
+            class="absolute top-15 -translate-y-1/2 w-full flex justify-between px-2"
           >
             <button
               @click="prevSlide"

@@ -1,6 +1,21 @@
 <template>
   <footer class="w-full max-w-full overflow-hidden font-sans">
     <!-- Selector de Banner -->
+    <div v-if="currentBanner === 'research'" key="research">
+      <ResearchBanner
+        :donors-count="donorsCount"
+        @show-modal="showDonationModal = true"
+      />
+    </div>
+    <div v-else-if="currentBanner === 'event'" key="event">
+      <EventBanner @show-modal="showEventModal = true" />
+    </div>
+    <div v-else-if="currentBanner === 'donation'" key="donation">
+      <DonationBanner @show-modal="showDonationModal = true" />
+    </div>
+    <div v-else-if="currentBanner === 'surgery'" key="surgery">
+      <SurgeryBanner @show-modal="showSurgeryModal = true" />
+    </div>
 
     <!-- Contenido Principal del Footer -->
     <div class="bg-[#0A2647] px-4 py-12 text-white">
@@ -271,6 +286,13 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { Icon } from "@iconify/vue";
+import ResearchBanner from "@/components/banners/ResearchBanner.vue";
+import EventBanner from "@/components/banners/EventBanner.vue";
+import DonationBanner from "@/components/banners/DonationBanner.vue";
+import SurgeryBanner from "@/components/banners/SurgeryBanner.vue";
+import DonationModal from "@/components/modals/DonationModal.vue";
+import EventModal from "@/components/modals/EventModal.vue";
+import SurgeryModal from "@/components/modals/SurgeryModal.vue";
 
 // Tipos
 interface FooterSection {
@@ -324,7 +346,7 @@ const mainLinks = [
 const quickLinks: QuickLink[] = [
   {
     label: "Buscar especialista",
-    icon: "medical-icon:i-medical-specialist",
+    icon: "mdi:doctor",
     url: "/find-doctor",
   },
   { label: "Solicitar cita", icon: "mdi:calendar-clock", url: "/appointments" },
@@ -468,17 +490,16 @@ const changeBanner = (type: string) => {
 
 // Para demostración, cambiar el banner cada 10 segundos
 // Descomenta esto para activar la rotación automática
-/*
+
 onMounted(() => {
-  const banners = ['research', 'event', 'donation', 'surgery'];
+  const banners = ["research", "event", "donation", "surgery"];
   let index = 0;
-  
+
   setInterval(() => {
     index = (index + 1) % banners.length;
     currentBanner.value = banners[index];
   }, 10000);
 });
-*/
 </script>
 
 <style scoped>
