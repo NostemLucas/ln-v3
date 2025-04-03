@@ -217,7 +217,7 @@
           </div>
         </form>
 
-        <!-- Footer with trust badges -->
+        <!-- Footer con badges -->
         <div class="hidden lg:block mt-4 sm:mt-6">
           <div class="flex justify-center items-center space-x-4 mb-3">
             <div class="flex items-center text-gray-500 text-xs">
