@@ -1,8 +1,6 @@
 <template>
   <div class="w-screen min-h-screen overflow-x-hidden">
-    <TopBar />
     <slot />
-    <Footer />
   </div>
 </template>
 <script lang="ts" setup>

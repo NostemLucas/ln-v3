@@ -1,11 +1,15 @@
 export default defineAppConfig({
   ui: {
+    colors: {
+      primary: "primary",
+    },
     button: {
       slots: {
         base: "cursor-pointer px-4 py-3",
       },
       variants: {
         variant: {
+          solid: " text-white bg-amber-400",
           outline: "ring-4 ",
         },
       },
