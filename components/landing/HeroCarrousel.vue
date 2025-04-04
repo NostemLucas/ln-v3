@@ -217,7 +217,7 @@ onBeforeUnmount(() => {
           }"
           @click="prevSlide"
         >
-          <ChevronLeft class="h-5 w-5" />
+          <Icon name="lucide:chevron-left" class="h-5 w-5" />
         </button>
         <button
           aria-label="Next slide"
@@ -232,7 +232,7 @@ onBeforeUnmount(() => {
           }"
           @click="nextSlide"
         >
-          <ChevronRight class="h-5 w-5" />
+          <Icon name="lucide:chevron-right" class="h-5 w-5" />
         </button>
       </div>
     </div>
