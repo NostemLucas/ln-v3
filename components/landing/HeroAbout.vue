@@ -26,18 +26,18 @@
           />
 
           <NuxtImg
-            src="landing/premio1.png"
+            src="landing/principal.jpg"
             draggable="false"
             alt="Award trophy"
             :class="[
               'absolute rounded-2xl shadow-2xl shadow-currentbg-cover bg-center bg-no-repeat z-20  aspect-square',
               'top-[30%]',
-              'w-[50%] md:w-[48%] h-[35%]',
+              'w-[65%] md:w-[48%] h-[35%]',
             ]"
           />
 
           <NuxtImg
-            src="landing/principal.jpg"
+            src="landing/premio1.png"
             draggable="false"
             alt="Clinic building"
             :class="[

@@ -14,7 +14,7 @@
           class="absolute inset-0 w-full h-full"
         >
           <!-- Imagen de fondo -->
-          <img
+          <NuxtImg
             :src="image.src"
             :alt="image.alt"
             class="w-full h-full object-cover object-center"
@@ -23,7 +23,7 @@
 
           <!-- Overlay con gradiente para mejorar legibilidad -->
           <div
-            class="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80"
+            class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black/80"
           ></div>
 
           <!-- Efecto de cuadrícula para transición -->
@@ -181,6 +181,7 @@
 </template>
 
 <script setup lang="ts">
+import { NuxtImg } from "#components";
 import { ref, onMounted, onUnmounted, nextTick } from "vue";
 
 // Tamaño de la cuadrícula para el efecto de transición

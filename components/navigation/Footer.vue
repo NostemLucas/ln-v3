@@ -111,9 +111,9 @@
                 />
                 <div>
                   <p class="text-sm text-gray-200">
-                    Avenida de la Investigación, 123
+                    Avenida Costanería entre calles 5 y 6
                   </p>
-                  <p class="text-sm text-gray-200">28001 Madrid, España</p>
+                  <p class="text-sm text-gray-200">Nro 71 La Paz, Bolivia</p>
                 </div>
               </div>
               <div class="flex items-center gap-3">
@@ -122,7 +122,7 @@
               </div>
               <div class="flex items-center gap-3">
                 <Icon icon="mdi:email-outline" class="h-5 w-5 text-[#2C74B3]" />
-                <p class="text-sm text-gray-200">info@oncoclinic.es</p>
+                <p class="text-sm text-gray-200">info@oncoclinic.com</p>
               </div>
             </div>
           </div>
