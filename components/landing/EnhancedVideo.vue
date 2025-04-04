@@ -1,12 +1,12 @@
 <template>
   <div class="relative w-full overflow-hidden">
-    <!-- Background Video -->
+    <!-- Video de Fondo con Imagen De Respaldo -->
     <div
-      class="relative aspect-[3/4] max-h-[600px] w-full bg-gray-900 md:aspect-auto md:max-h-[650px]"
+      class="relative aspect-[3/4] max-h-[600px] w-full bg-gray-900 md:aspect-video md:max-h-[650px]"
     >
       <video
         ref="backgroundVideoRef"
-        class="aspect-[3/4] max-h-[600px] w-full bg-black object-cover md:aspect-auto md:max-h-[650px] md:w-full"
+        class="h-full w-full object-cover"
         loop
         muted
         autoplay
@@ -14,237 +14,317 @@
         poster="~/assets/media/banner.png"
       >
         <source src="~/assets/media/video.webm" type="video/webm" />
-        Tu navegador no soporta el formato de video.
+        <span class="sr-only"
+          >Tu navegador no soporta el formato de video.</span
+        >
       </video>
+
+      <!-- Overlays con Gradiente -->
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80 animate-pulse-subtle"
+      />
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent"
+      />
     </div>
 
-    <!-- Enhanced Gradient overlays with more dynamic animation -->
+    <!-- Content Container -->
     <div
-      class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90 animate-gradient-pulse"
-    />
-    <div
-      class="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent animate-gradient-slide"
-    />
-
-    <!-- Content Container with improved spacing -->
-    <div
-      class="px-6 lg:container w-full m-auto absolute inset-x-0 bottom-20 md:bottom-24"
+      class="absolute inset-x-0 bottom-0 w-full px-6 pb-16 md:bottom-16 md:pb-0 lg:container lg:mx-auto"
     >
-      <div class="h-auto max-w-4xl">
-        <!-- Main Heading with enhanced animations -->
+      <div class="mx-auto max-w-4xl">
+        <!-- Main Heading with animation -->
         <h1
-          class="font-horsham mb-8 text-4xl leading-tight tracking-wide text-white md:mb-10 md:text-5xl lg:mb-12 lg:text-7xl text-glow-premium animate-title-reveal"
+          class="animate-fade-in-up font-horsham text-4xl font-bold leading-tight tracking-wide text-white md:text-5xl lg:text-6xl"
         >
           Transformando el cuidado de tu salud
         </h1>
 
-        <!-- Action Buttons with premium effects -->
+        <!-- Action Buttons -->
         <div
-          class="flex flex-col space-y-6 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-8 animate-buttons-reveal"
+          class="mt-8 flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0 md:mt-10"
         >
-          <!-- Appointment Button with premium hover effect -->
+          <!-- Appointment Button - Fixed with better integration -->
           <NuxtLink
             to="#"
-            class="group flex items-center text-lg text-white transition-all duration-300 ease-out md:text-xl lg:text-2xl hover:text-glow-premium relative overflow-hidden appointment-button"
+            class="appointment-btn group inline-flex items-center text-lg font-medium text-white transition-all duration-300 md:text-xl overflow-hidden rounded-full"
           >
-            <span class="z-10 relative">
-              Pedir una cita
-              <span class="appointment-underline"></span>
-            </span>
+            <span>Pedir una cita</span>
             <Icon
-              name="lucide:chevron-right"
-              class="ml-3 h-6 w-6 transition-all duration-300 ease-out transform group-hover:translate-x-2 group-hover:scale-110 z-10"
+              name="lucide:arrow-right"
+              size="1.25rem"
+              class="ml-2 transform transition-transform duration-300 group-hover:translate-x-1"
             />
-            <div class="appointment-button-glow"></div>
           </NuxtLink>
 
-          <!-- Enhanced Play Video Button with premium effects -->
+          <!-- Play Video Button - Restored semi-transparent design with glow -->
           <button
-            class="play-button-premium group flex items-center space-x-3 px-8 py-4 text-white text-xl rounded-full transition-all duration-300 relative overflow-hidden"
+            class="video-btn group relative flex w-fit items-center space-x-3 overflow-hidden rounded-full bg-white/10 px-6 py-3 text-white backdrop-blur-sm transition-all duration-300"
             @click="openVideoModal"
           >
             <div
-              class="play-button-background absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300"
-            ></div>
-            <div
-              class="play-icon-wrapper relative z-10 flex items-center justify-center w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm group-hover:scale-110 transition-transform duration-300"
+              class="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/20 transition-transform duration-300 group-hover:scale-105"
             >
-              <Icon
-                name="lucide:play"
-                class="h-6 w-6 text-white fill-white group-hover:scale-110 transition-transform duration-300"
-              />
+              <Icon name="lucide:play" class="h-5 w-5 text-white" />
             </div>
             <span class="relative z-10 font-medium tracking-wide"
               >Ver Presentación</span
             >
-            <div class="play-button-shine"></div>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Enhanced Video Modal with premium loading animation -->
-    <Transition name="modal-fade">
+    <!-- Video Modal -->
+    <Transition name="fade">
       <div
         v-if="isVideoModalOpen"
         class="fixed inset-0 z-50 flex items-center justify-center"
         @click="closeVideoModal"
       >
-        <!-- Premium Backdrop with enhanced blur -->
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <!-- Backdrop with blur -->
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm"></div>
 
-        <!-- Modal Content with enhanced animations -->
+        <!-- Modal Content -->
         <div
           ref="modalContainer"
-          class="relative z-10 w-full max-w-5xl overflow-hidden rounded-xl bg-black shadow-2xl transition-all duration-500"
-          :class="{
-            'scale-100 opacity-100': videoReady,
-            'scale-95 opacity-0': !videoReady,
-          }"
+          class="relative z-10 w-full max-w-5xl overflow-hidden rounded-lg bg-black shadow-2xl"
           @click.stop
         >
-          <!-- Enhanced Close Button -->
+          <!-- Close Button -->
           <button
-            class="absolute top-4 right-4 z-20 rounded-full bg-black/50 p-2.5 text-white transition-all duration-300 hover:bg-white hover:text-black close-button-premium"
+            class="absolute right-3 top-3 z-50 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white transition-all duration-300 hover:bg-white/60 hover:text-black sm:right-4 sm:top-4 sm:h-10 sm:w-10"
             aria-label="Cerrar video"
             @click.stop="closeVideoModal"
           >
-            <Icon name="lucide:x" class="h-5 w-5" />
+            <Icon name="lucide:x" size="1.25rem" />
           </button>
 
-          <!-- Video Container with premium loading state -->
+          <!-- Video Container -->
           <div class="relative aspect-video w-full bg-black">
-            <!-- Premium loading indicator for the modal video -->
-            <div
-              v-if="!videoReady"
-              class="absolute inset-0 flex flex-col items-center justify-center space-y-4 bg-gray-900/90 z-10"
-            >
-              <!-- Premium loading animation -->
-              <div class="premium-video-loader">
-                <svg class="circular-loader" viewBox="25 25 50 50">
-                  <circle
-                    class="loader-path"
-                    cx="50"
-                    cy="50"
-                    r="20"
-                    fill="none"
-                    stroke-width="3"
-                  />
-                </svg>
-                <div class="loader-pulse"></div>
-              </div>
-
-              <div
-                class="text-white text-lg font-medium mt-6 tracking-wider loading-text"
-              >
-                Cargando presentación
-                <span class="loading-dots">
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                </span>
-              </div>
-
-              <!-- Enhanced visual preview -->
-              <div
-                class="absolute inset-0 flex items-center justify-center opacity-30"
-              >
-                <div
-                  class="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900"
-                >
-                  <div
-                    class="absolute inset-0 flex items-center justify-center"
-                  >
-                    <div
-                      class="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-sm pulse-animation"
-                    >
-                      <Play class="h-12 w-12 text-white/80" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Enhanced progress bar -->
-              <div
-                class="absolute bottom-10 left-0 right-0 mx-auto w-3/4 h-1.5 bg-gray-800/80 rounded-full overflow-hidden"
-              >
-                <div
-                  class="h-full rounded-full premium-progress-bar"
-                  :style="{ width: `${loadingProgress}%` }"
-                ></div>
-              </div>
-            </div>
-
-            <!-- Video Element with optimized loading -->
+            <!-- Video Element -->
             <video
               ref="modalVideoRef"
-              class="h-full w-full"
+              class="h-full w-full cursor-pointer"
               @canplay="handleVideoReady"
               @click="togglePlayPause"
               @loadeddata="updateLoadingProgress(50)"
               @canplaythrough="updateLoadingProgress(100)"
               @progress="updateLoadingProgress"
-              @play="isPlaying = true"
-              @pause="isPlaying = false"
-              @ended="isPlaying = false"
+              @play="handleVideoPlay"
+              @pause="handleVideoPause"
+              @ended="handleVideoEnded"
+              @waiting="handleVideoWaiting"
               preload="metadata"
             >
               <source src="~/assets/media/presentation.mp4" type="video/mp4" />
-              Tu navegador no soporta el formato de video.
+              <span class="sr-only"
+                >Tu navegador no soporta el formato de video.</span
+              >
             </video>
 
-            <!-- Enhanced custom video controls (shown when video is ready) -->
-            <div
-              v-if="videoReady"
-              class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 custom-controls"
-              @click.stop
-            >
-              <div class="flex items-center space-x-4">
-                <button
-                  class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200"
-                  @click.stop="togglePlayPause"
-                >
-                  <Icon
-                    v-if="isPlaying"
-                    name="lucide:pause"
-                    class="h-14 w-14"
-                  />
-
-                  <Icon v-else name="lucide:play" class="h-14 w-14" />
-                </button>
+            <!-- Estado de carga inicial (antes de que el video esté listo) -->
+            <Transition name="fade" mode="out-in">
+              <div
+                v-if="!videoReady"
+                class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gray-900/95"
+              >
+                <!-- Loading Animation -->
+                <div class="video-loader mb-4">
+                  <svg class="h-14 w-14 sm:h-16 sm:w-16" viewBox="0 0 100 100">
+                    <circle
+                      class="loader-circle"
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="none"
+                      stroke-width="4"
+                    />
+                  </svg>
+                </div>
 
                 <div
-                  class="relative flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden cursor-pointer"
+                  class="text-base font-medium tracking-wider text-white sm:text-lg"
+                >
+                  Preparando presentación
+                  <span class="loading-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                  </span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div
+                  class="absolute bottom-8 left-0 right-0 mx-auto w-3/4 overflow-hidden rounded-full sm:bottom-10"
+                >
+                  <div class="h-1 w-full bg-gray-800/80">
+                    <div
+                      class="h-full rounded-full bg-gradient-to-r from-teal-500 to-emerald-500 transition-all duration-300"
+                      :style="{ width: `${loadingProgress}%` }"
+                    />
+                  </div>
+                </div>
+              </div>
+            </Transition>
+
+            <!-- Estado "Listo para reproducir" (video listo pero no reproduciendo) -->
+            <Transition name="fade">
+              <div
+                v-if="videoReady && !isPlaying && !isBuffering"
+                class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gray-900/80"
+              >
+                <div class="text-lg font-medium tracking-wider text-white mb-6">
+                  Listo para reproducir
+                </div>
+
+                <button
+                  class="flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-white/10 transition-colors duration-300 hover:bg-white/20 sm:h-16 sm:w-16"
+                  @click.stop="startPlayback"
+                >
+                  <Icon
+                    name="lucide:play"
+                    class="h-7 w-7 text-white sm:h-8 sm:w-8"
+                  />
+                </button>
+              </div>
+            </Transition>
+
+            <!-- Estado de buffering (solo cuando está reproduciendo y cargando) -->
+            <Transition name="fade">
+              <div
+                v-if="isBuffering && isPlaying && !showPlayPauseIndicator"
+                class="absolute inset-0 z-30 flex items-center justify-center bg-black/50"
+              >
+                <div class="buffering-spinner">
+                  <div class="buffering-circle"></div>
+                  <div class="buffering-circle"></div>
+                  <div class="buffering-circle"></div>
+                </div>
+              </div>
+            </Transition>
+
+            <!-- Indicador de Play/Pause (aparece brevemente al cambiar estado) -->
+            <Transition name="scale">
+              <div
+                v-if="showPlayPauseIndicator"
+                class="pointer-events-none absolute inset-0 z-40 flex items-center justify-center"
+              >
+                <div class="rounded-full bg-black/40 p-5 sm:p-6">
+                  <Icon
+                    :name="isPlaying ? 'lucide:pause' : 'lucide:play'"
+                    class="h-6 w-6 text-white sm:h-8 sm:w-8"
+                  />
+                </div>
+              </div>
+            </Transition>
+
+            <!-- Video Controls -->
+            <Transition name="fade">
+              <div
+                v-if="videoReady && isPlaying"
+                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 opacity-0 transition-opacity duration-300 hover:opacity-100 sm:p-4"
+                @click.stop
+              >
+                <!-- Progress Bar -->
+                <div
+                  class="relative mb-2 h-1.5 w-full cursor-pointer overflow-hidden rounded-full bg-white/20 sm:mb-3"
                   @click.stop="seekVideo"
                 >
                   <div
-                    class="absolute top-0 left-0 h-full bg-white rounded-full"
+                    class="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-teal-500 to-emerald-500"
                     :style="{ width: `${videoProgress}%` }"
                   ></div>
                 </div>
 
-                <div class="text-white/90 text-sm">
-                  {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
-                </div>
-              </div>
-            </div>
+                <!-- Controls Row - Fixed alignment -->
+                <div class="flex items-center justify-between gap-1 sm:gap-2">
+                  <div class="flex items-center gap-2">
+                    <!-- Play/Pause Button -->
+                    <button
+                      class="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/10 transition-colors duration-200 hover:bg-white/20 sm:h-8 sm:w-8"
+                      @click.stop="togglePlayPause"
+                    >
+                      <Icon
+                        :name="isPlaying ? 'lucide:pause' : 'lucide:play'"
+                        class="h-3.5 w-3.5 text-white sm:h-4 sm:w-4"
+                      />
+                    </button>
 
-            <!-- Enhanced Play/Pause indicator -->
-            <Transition name="scale-premium">
-              <div
-                v-if="showPlayPauseIndicator"
-                class="pointer-events-none absolute inset-0 flex items-center justify-center"
-              >
-                <div
-                  class="rounded-full bg-black/40 p-8 backdrop-blur-sm transform transition-transform duration-300 play-indicator-premium"
-                >
-                  <Icon
-                    v-if="isPlaying"
-                    name="lucide:pause"
-                    class="h-14 w-14"
-                  />
+                    <!-- Time Display -->
+                    <div class="text-xs text-white/90 sm:text-sm">
+                      {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
+                    </div>
+                  </div>
 
-                  <Icon v-else name="lucide:play" class="h-14 w-14" />
+                  <div class="flex items-center gap-1 sm:gap-2">
+                    <!-- Volume Control -->
+                    <div class="relative flex items-center">
+                      <button
+                        class="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/10 transition-colors duration-200 hover:bg-white/20 sm:h-8 sm:w-8"
+                        @click.stop="toggleMute"
+                      >
+                        <Icon
+                          :name="
+                            !isMuted && volume > 0.5
+                              ? 'lucide:volume-2'
+                              : !isMuted && volume > 0
+                              ? 'lucide:volume-1'
+                              : 'lucide:volume-x'
+                          "
+                          class="h-3.5 w-3.5 text-white sm:h-4 sm:w-4"
+                        />
+                      </button>
+
+                      <div class="ml-1 hidden w-16 sm:ml-2 sm:block sm:w-20">
+                        <input
+                          type="range"
+                          min="0"
+                          max="1"
+                          step="0.01"
+                          v-model="volume"
+                          class="volume-slider h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/20"
+                          @input="updateVolume"
+                        />
+                      </div>
+                    </div>
+
+                    <!-- Playback Speed -->
+                    <div class="relative">
+                      <button
+                        class="flex cursor-pointer items-center rounded-full bg-white/10 px-1.5 py-0.5 text-xs text-white transition-colors duration-200 hover:bg-white/20 sm:px-2 sm:py-1 sm:text-sm"
+                        @click.stop="toggleSpeedMenu"
+                      >
+                        {{ playbackSpeed }}x
+                      </button>
+
+                      <div
+                        v-if="showSpeedMenu"
+                        class="absolute bottom-full right-0 mb-2 w-20 rounded bg-gray-800 py-1 shadow-lg sm:w-24"
+                      >
+                        <button
+                          v-for="speed in [0.5, 0.75, 1, 1.25, 1.5, 2]"
+                          :key="speed"
+                          class="block w-full cursor-pointer px-2 py-1 text-left text-xs text-white hover:bg-white/10 sm:px-3 sm:text-sm"
+                          :class="{ 'bg-white/20': playbackSpeed === speed }"
+                          @click.stop="setPlaybackSpeed(speed)"
+                        >
+                          {{ speed }}x
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Fullscreen Button -->
+                    <button
+                      class="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/10 transition-colors duration-200 hover:bg-white/20 sm:h-8 sm:w-8"
+                      @click.stop="toggleFullscreen"
+                    >
+                      <Icon
+                        name="lucide:maximize"
+                        class="h-3.5 w-3.5 text-white sm:h-4 sm:w-4"
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             </Transition>
@@ -256,14 +336,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 
 // Video references
 const backgroundVideoRef = ref<HTMLVideoElement | null>(null);
 const modalVideoRef = ref<HTMLVideoElement | null>(null);
 const modalContainer = ref<HTMLElement | null>(null);
 
-// Modal state
+// State
 const isVideoModalOpen = ref<boolean>(false);
 const videoReady = ref<boolean>(false);
 const isPlaying = ref<boolean>(false);
@@ -271,8 +351,14 @@ const showPlayPauseIndicator = ref<boolean>(false);
 const loadingProgress = ref<number>(0);
 const currentTime = ref<number>(0);
 const duration = ref<number>(0);
+const isBuffering = ref<boolean>(false);
+const lastPlayPos = ref<number>(0);
+const volume = ref<number>(1);
+const isMuted = ref<boolean>(false);
+const playbackSpeed = ref<number>(1);
+const showSpeedMenu = ref<boolean>(false);
 
-// Computed video progress
+// Computed
 const videoProgress = computed(() => {
   if (duration.value === 0) return 0;
   return (currentTime.value / duration.value) * 100;
@@ -284,7 +370,12 @@ let originalBodyStyle = {
   paddingRight: "",
 };
 
-// Format time for video player (mm:ss)
+// Timers
+let bufferingTimer: number | null = null;
+let progressInterval: number | null = null;
+let playPauseIndicatorTimer: number | null = null;
+
+// Format time (mm:ss)
 const formatTime = (seconds: number): string => {
   if (isNaN(seconds)) return "00:00";
 
@@ -298,11 +389,24 @@ const formatTime = (seconds: number): string => {
 // Update video progress
 const updateVideoProgress = () => {
   if (!modalVideoRef.value) return;
+
   currentTime.value = modalVideoRef.value.currentTime;
   duration.value = modalVideoRef.value.duration;
+
+  // Buffering detection
+  if (isPlaying.value && !isBuffering.value) {
+    if (
+      lastPlayPos.value === currentTime.value &&
+      !modalVideoRef.value.paused
+    ) {
+      isBuffering.value = true;
+    }
+  }
+
+  lastPlayPos.value = currentTime.value;
 };
 
-// Seek video to clicked position
+// Seek video
 const seekVideo = (event: MouseEvent) => {
   if (!modalVideoRef.value) return;
 
@@ -314,29 +418,100 @@ const seekVideo = (event: MouseEvent) => {
   updateVideoProgress();
 };
 
-// Enhanced video ready handler with animation
+// Video ready handler
 const handleVideoReady = () => {
-  // Add a slight delay for smoother transition
-  setTimeout(() => {
-    videoReady.value = true;
+  videoReady.value = true;
 
-    // Start progress tracking
-    if (modalVideoRef.value) {
-      duration.value = modalVideoRef.value.duration;
+  if (modalVideoRef.value) {
+    duration.value = modalVideoRef.value.duration;
 
-      // Set up progress tracking interval
-      const progressInterval = setInterval(() => {
-        if (!modalVideoRef.value || !isVideoModalOpen.value) {
-          clearInterval(progressInterval);
-          return;
-        }
-        updateVideoProgress();
-      }, 250);
+    // Set up progress tracking
+    if (progressInterval) clearInterval(progressInterval);
+
+    progressInterval = window.setInterval(() => {
+      if (!modalVideoRef.value || !isVideoModalOpen.value) {
+        if (progressInterval) clearInterval(progressInterval);
+        return;
+      }
+      updateVideoProgress();
+    }, 250);
+  }
+};
+
+// Handle video play
+const handleVideoPlay = () => {
+  isPlaying.value = true;
+  isBuffering.value = false;
+
+  // Reset buffering detection
+  if (bufferingTimer) clearInterval(bufferingTimer);
+
+  // Set up buffering detection
+  bufferingTimer = window.setInterval(() => {
+    if (modalVideoRef.value && isPlaying.value) {
+      if (modalVideoRef.value.readyState < 3) {
+        isBuffering.value = true;
+      } else {
+        isBuffering.value = false;
+      }
     }
   }, 500);
 };
 
-// Update loading progress with enhanced animation
+// Handle video pause
+const handleVideoPause = () => {
+  isPlaying.value = false;
+};
+
+// Handle video waiting
+const handleVideoWaiting = () => {
+  isBuffering.value = true;
+};
+
+// Handle video ended
+const handleVideoEnded = () => {
+  isPlaying.value = false;
+
+  if (bufferingTimer) {
+    clearInterval(bufferingTimer);
+    bufferingTimer = null;
+  }
+};
+
+// Show play/pause indicator
+const showIndicator = (duration = 200) => {
+  // Clear any existing timer
+  if (playPauseIndicatorTimer) {
+    clearTimeout(playPauseIndicatorTimer);
+    playPauseIndicatorTimer = null;
+  }
+
+  // Show indicator
+  showPlayPauseIndicator.value = true;
+
+  // Set timer to hide indicator
+  playPauseIndicatorTimer = window.setTimeout(() => {
+    showPlayPauseIndicator.value = false;
+    playPauseIndicatorTimer = null;
+  }, duration);
+};
+
+// Start playback
+const startPlayback = () => {
+  if (!modalVideoRef.value || !videoReady.value) return;
+
+  modalVideoRef.value
+    .play()
+    .then(() => {
+      isPlaying.value = true;
+      showIndicator();
+    })
+    .catch((error) => {
+      console.error("Error playing video:", error);
+    });
+};
+
+// Update loading progress
 const updateLoadingProgress = (event: any) => {
   if (typeof event === "number") {
     loadingProgress.value = event;
@@ -345,7 +520,6 @@ const updateLoadingProgress = (event: any) => {
 
   if (modalVideoRef.value) {
     try {
-      // Calculate progress based on buffered ranges
       if (modalVideoRef.value.buffered.length > 0) {
         const bufferedEnd = modalVideoRef.value.buffered.end(0);
         const duration = modalVideoRef.value.duration;
@@ -354,17 +528,12 @@ const updateLoadingProgress = (event: any) => {
         }
       }
     } catch (e) {
-      console.error("Error al calcular progreso:", e);
+      console.error("Error calculating progress:", e);
     }
-  }
-
-  // Simulate progress with smoother animation
-  if (loadingProgress.value < 20) {
-    loadingProgress.value += 2 + Math.random() * 3;
   }
 };
 
-// Enhanced toggle play/pause with premium animation
+// Toggle play/pause
 const togglePlayPause = (): void => {
   if (!modalVideoRef.value) return;
 
@@ -373,6 +542,7 @@ const togglePlayPause = (): void => {
       .play()
       .then(() => {
         isPlaying.value = true;
+        showIndicator();
       })
       .catch((error) => {
         console.error("Error playing video:", error);
@@ -380,74 +550,126 @@ const togglePlayPause = (): void => {
   } else {
     modalVideoRef.value.pause();
     isPlaying.value = false;
+    showIndicator();
   }
-
-  // Show enhanced play/pause indicator
-  showPlayPauseIndicator.value = true;
-  setTimeout(() => {
-    showPlayPauseIndicator.value = false;
-  }, 1000);
 };
 
-// Enhanced video modal opening with premium loading animation
+// Toggle mute
+const toggleMute = (): void => {
+  if (!modalVideoRef.value) return;
+
+  isMuted.value = !isMuted.value;
+  modalVideoRef.value.muted = isMuted.value;
+};
+
+// Update volume
+const updateVolume = (): void => {
+  if (!modalVideoRef.value) return;
+
+  modalVideoRef.value.volume = volume.value;
+  isMuted.value = volume.value === 0;
+};
+
+// Toggle speed menu
+const toggleSpeedMenu = (): void => {
+  showSpeedMenu.value = !showSpeedMenu.value;
+
+  // Auto-close menu after selection
+  if (showSpeedMenu.value) {
+    document.addEventListener("click", closeSpeedMenu);
+  } else {
+    document.removeEventListener("click", closeSpeedMenu);
+  }
+};
+
+// Close speed menu
+const closeSpeedMenu = (): void => {
+  showSpeedMenu.value = false;
+  document.removeEventListener("click", closeSpeedMenu);
+};
+
+// Set playback speed
+const setPlaybackSpeed = (speed: number): void => {
+  if (!modalVideoRef.value) return;
+
+  playbackSpeed.value = speed;
+  modalVideoRef.value.playbackRate = speed;
+  showSpeedMenu.value = false;
+};
+
+// Toggle fullscreen
+const toggleFullscreen = (): void => {
+  if (!modalContainer.value) return;
+
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else {
+    modalContainer.value.requestFullscreen();
+  }
+};
+
+// Open video modal
 const openVideoModal = (): void => {
   isVideoModalOpen.value = true;
   videoReady.value = false;
   isPlaying.value = false;
+  isBuffering.value = false;
   loadingProgress.value = 0;
   currentTime.value = 0;
   duration.value = 0;
+  showPlayPauseIndicator.value = false;
   lockScroll(true);
 
-  // Start enhanced loading progress simulation
-  const progressInterval = setInterval(() => {
+  // Simulate loading progress
+  const loadingInterval = setInterval(() => {
     if (loadingProgress.value < 85 && !videoReady.value) {
-      // Non-linear progress for more realistic loading simulation
-      const increment = 5 * Math.pow(0.95, loadingProgress.value / 10);
-      loadingProgress.value += Math.random() * increment;
+      loadingProgress.value += Math.random() * 3;
     } else {
-      clearInterval(progressInterval);
+      clearInterval(loadingInterval);
     }
   }, 300);
 
-  // Load and play the modal video with slight delay for better UX
+  // Load the modal video
   setTimeout(() => {
     if (modalVideoRef.value) {
-      if (modalVideoRef.value.canPlayType("video/mp4")) {
-        // Preload video
-        modalVideoRef.value.load();
-
-        // Play after a short delay to allow for loading animation
-        setTimeout(() => {
-          if (modalVideoRef.value) {
-            modalVideoRef.value
-              .play()
-              .then(() => {
-                isPlaying.value = true;
-              })
-              .catch((error) => {
-                console.error("Error playing video:", error);
-              });
-          }
-        }, 800);
-      }
+      modalVideoRef.value.load();
     }
   }, 300);
 };
 
-// Enhanced modal closing with animation
+// Close video modal
 const closeVideoModal = (): void => {
   if (modalVideoRef.value) {
     modalVideoRef.value.pause();
-    // Reset video position for next viewing
     modalVideoRef.value.currentTime = 0;
   }
 
+  // Clear timers
+  if (bufferingTimer) {
+    clearInterval(bufferingTimer);
+    bufferingTimer = null;
+  }
+
+  if (progressInterval) {
+    clearInterval(progressInterval);
+    progressInterval = null;
+  }
+
+  if (playPauseIndicatorTimer) {
+    clearTimeout(playPauseIndicatorTimer);
+    playPauseIndicatorTimer = null;
+  }
+
   isVideoModalOpen.value = false;
+  isPlaying.value = false;
+  showPlayPauseIndicator.value = false;
   lockScroll(false);
+
+  // Remove any event listeners
+  document.removeEventListener("click", closeSpeedMenu);
 };
 
-// Lock/unlock body scroll with enhanced handling
+// Lock/unlock body scroll
 const lockScroll = (lock: boolean): void => {
   if (lock) {
     // Save current body styles
@@ -472,14 +694,13 @@ const lockScroll = (lock: boolean): void => {
   }
 };
 
-// Handle escape key to close modal
+// Handle escape key
 const handleKeyDown = (event: KeyboardEvent): void => {
   if (!isVideoModalOpen.value) return;
 
   if (event.key === "Escape") {
     closeVideoModal();
   } else if (event.key === " " && videoReady.value) {
-    // Space bar toggles play/pause
     togglePlayPause();
     event.preventDefault();
   }
@@ -492,115 +713,83 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener("keydown", handleKeyDown);
+  document.removeEventListener("click", closeSpeedMenu);
 
-  // Ensure scroll is restored
+  // Clear timers
+  if (bufferingTimer) clearInterval(bufferingTimer);
+  if (progressInterval) clearInterval(progressInterval);
+  if (playPauseIndicatorTimer) clearTimeout(playPauseIndicatorTimer);
+
+  // Restore scroll
   document.body.style.overflow = "";
   document.body.style.paddingRight = "";
 });
 </script>
 
 <style>
-/* Enhanced transitions */
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-  transition: opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.modal-fade-enter-from,
-.modal-fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
-.scale-premium-enter-active,
-.scale-premium-leave-active {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.scale-enter-active,
+.scale-leave-active {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.scale-premium-enter-from,
-.scale-premium-leave-to {
+.scale-enter-from,
+.scale-leave-to {
   opacity: 0;
   transform: scale(0.7);
 }
 
-/* Premium text and button effects */
-.text-glow-premium {
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.6),
-    0 0 30px rgba(255, 255, 255, 0.3);
-}
-
-/* Enhanced animations for the banner */
-.animate-title-reveal {
-  animation: premiumTitleReveal 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-  opacity: 0;
-}
-
-.animate-buttons-reveal {
-  animation: premiumButtonsReveal 1.2s cubic-bezier(0.19, 1, 0.22, 1) 0.4s
-    forwards;
-  opacity: 0;
-}
-
-.animate-gradient-pulse {
-  animation: premiumGradientPulse 8s ease-in-out infinite;
-}
-
-.animate-gradient-slide {
-  animation: premiumGradientSlide 15s ease-in-out infinite alternate;
-}
-
-@keyframes premiumTitleReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(40px);
-    filter: blur(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-@keyframes premiumButtonsReveal {
+/* Animations */
+@keyframes fade-in-up {
   0% {
     opacity: 0;
     transform: translateY(30px);
-    filter: blur(5px);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
-    filter: blur(0);
   }
 }
 
-@keyframes premiumGradientPulse {
+@keyframes pulse-subtle {
   0%,
   100% {
-    opacity: 0.95;
+    opacity: 1;
   }
   50% {
-    opacity: 0.75;
+    opacity: 0.9;
   }
 }
 
-@keyframes premiumGradientSlide {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
-  }
+.animate-fade-in-up {
+  animation: fade-in-up 1s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
-/* Enhanced appointment button */
-.appointment-button {
-  padding: 0.5rem 0;
+.animate-pulse-subtle {
+  animation: pulse-subtle 4s ease-in-out infinite;
 }
 
-.appointment-underline {
+.appointment-btn {
+  position: relative;
+  padding: 0.2rem 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.appointment-btn::after {
+  content: "";
   position: absolute;
-  bottom: -2px;
+  bottom: 0;
   left: 0;
   width: 100%;
   height: 2px;
@@ -610,11 +799,49 @@ onUnmounted(() => {
   transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.appointment-button:hover .appointment-underline {
+.appointment-btn:hover::after {
   transform: scaleX(1);
 }
 
-.appointment-button-glow {
+.appointment-btn span {
+  position: relative;
+  z-index: 10;
+}
+
+.appointment-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.appointment-btn:hover::before {
+  left: 100%;
+}
+
+/* Video Button - Restored semi-transparent design with glow */
+.video-btn {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.video-btn:hover {
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.video-btn::before {
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
@@ -628,153 +855,52 @@ onUnmounted(() => {
   );
   transform: skewX(-25deg);
   transition: 0.5s;
-  opacity: 0;
 }
 
-.appointment-button:hover .appointment-button-glow {
-  animation: appointmentGlow 1.5s infinite;
-  opacity: 1;
+.video-btn:hover::before {
+  left: 150%;
 }
 
-@keyframes appointmentGlow {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 200%;
-  }
-}
-
-/* Enhanced play button */
-.play-button-premium {
-  overflow: hidden;
-}
-
-.play-button-background {
-  background: linear-gradient(135deg, #3a7bd5, #00d2ff);
-  transition: all 0.5s ease;
-}
-
-.play-button-premium:hover .play-icon-wrapper {
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-}
-
-.play-button-shine {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  transform: skewX(-25deg);
-  opacity: 0;
-}
-
-.play-button-premium:hover .play-button-shine {
-  animation: buttonShine 1.5s infinite;
-  opacity: 1;
-}
-
-@keyframes buttonShine {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 200%;
-  }
-}
-
-/* Enhanced video loading animation */
-.premium-video-loader {
+/* Video Loader */
+.video-loader {
   position: relative;
   width: 80px;
   height: 80px;
 }
 
-.circular-loader {
-  animation: rotate 2s linear infinite;
-  height: 100%;
-  transform-origin: center center;
-  width: 100%;
-}
-
-.loader-path {
+.loader-circle {
   stroke: white;
-  stroke-dasharray: 150, 200;
-  stroke-dashoffset: -10;
-  stroke-linecap: round;
-  animation: dash 1.5s ease-in-out infinite;
+  stroke-dasharray: 242;
+  stroke-dashoffset: 242;
+  animation: loader-dash 2s ease-in-out infinite;
 }
 
-.loader-pulse {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 40%;
-  height: 40%;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes dash {
+@keyframes loader-dash {
   0% {
-    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 242;
+  }
+  50% {
     stroke-dashoffset: 0;
   }
-  50% {
-    stroke-dasharray: 89, 200;
-    stroke-dashoffset: -35;
-  }
   100% {
-    stroke-dasharray: 89, 200;
-    stroke-dashoffset: -124;
+    stroke-dashoffset: -242;
   }
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 0.5;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.2);
-    opacity: 0.8;
-  }
-}
-
-/* Loading dots animation */
-.loading-text {
-  display: flex;
-  align-items: center;
-}
-
+/* Loading dots */
 .loading-dots {
   display: inline-flex;
   margin-left: 5px;
 }
 
 .dot {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   margin: 0 2px;
   background-color: white;
   border-radius: 50%;
   display: inline-block;
-  animation: dotPulse 1.5s infinite ease-in-out;
+  animation: dot-pulse 1.5s infinite ease-in-out;
 }
 
 .dot:nth-child(2) {
@@ -785,7 +911,7 @@ onUnmounted(() => {
   animation-delay: 0.4s;
 }
 
-@keyframes dotPulse {
+@keyframes dot-pulse {
   0%,
   100% {
     transform: scale(0.8);
@@ -797,110 +923,96 @@ onUnmounted(() => {
   }
 }
 
-/* Enhanced progress bar */
-.premium-progress-bar {
-  background: linear-gradient(90deg, #3a7bd5, #00d2ff);
-  transition: width 0.3s ease;
-  position: relative;
-  overflow: hidden;
+/* Buffering spinner */
+.buffering-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.premium-progress-bar::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
-  animation: progressShine 2s infinite linear;
+.buffering-circle {
+  width: 10px;
+  height: 10px;
+  margin: 0 4px;
+  background-color: white;
+  border-radius: 50%;
+  animation: buffering-animation 1.4s infinite ease-in-out both;
 }
 
-@keyframes progressShine {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+.buffering-circle:nth-child(1) {
+  animation-delay: -0.32s;
 }
 
-/* Enhanced play indicator */
-.play-indicator-premium {
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-  animation: indicatorPulse 1s ease-out;
+.buffering-circle:nth-child(2) {
+  animation-delay: -0.16s;
 }
 
-@keyframes indicatorPulse {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-}
-
-/* Pulse animation for loading preview */
-.pulse-animation {
-  animation: pulsate 2s ease-in-out infinite;
-}
-
-@keyframes pulsate {
+@keyframes buffering-animation {
   0%,
+  80%,
   100% {
-    transform: scale(1);
-    opacity: 0.7;
+    transform: scale(0);
+    opacity: 0.5;
   }
-  50% {
-    transform: scale(1.1);
+  40% {
+    transform: scale(1);
     opacity: 1;
   }
 }
 
-/* Custom video controls */
-.custom-controls {
-  transform: translateY(0);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+/* Volume slider styling */
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  outline: none;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
 }
 
-.custom-controls:hover {
-  transform: translateY(-5px);
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
 }
 
-/* Close button premium effect */
-.close-button-premium {
-  overflow: hidden;
+.volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  border: none;
 }
 
-.close-button-premium::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.2) 0%,
-    transparent 70%
-  );
-  transform: scale(0);
-  opacity: 0;
-  transition: transform 0.5s ease, opacity 0.5s ease;
+/* Responsive adjustments for mobile */
+@media (max-width: 640px) {
+  .video-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .buffering-spinner {
+    transform: scale(0.8);
+  }
+
+  .volume-slider {
+    width: 60px;
+  }
 }
 
-.close-button-premium:hover::before {
-  transform: scale(2);
-  opacity: 1;
+@media (max-width: 480px) {
+  .video-loader {
+    transform: scale(0.8);
+  }
+
+  .appointment-btn,
+  .video-btn {
+    font-size: 0.95rem;
+  }
 }
 </style>

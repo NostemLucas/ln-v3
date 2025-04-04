@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
   colorMode: {
     classPrefix: "theme",
@@ -18,5 +18,6 @@ export default defineNuxtConfig({
   ],
   icon: {
     collections: ["lucide", "svg-spinners", "mdi"],
+    size: "1.253em",
   },
 });
