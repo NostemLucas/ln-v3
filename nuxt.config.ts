@@ -9,7 +9,6 @@ export default defineNuxtConfig({
     preference: "light",
   },
   modules: [
-    "@nuxt/content",
     "@nuxt/eslint",
     "@nuxt/icon",
     "@nuxt/image",
@@ -18,6 +17,6 @@ export default defineNuxtConfig({
     "@nuxt/ui",
   ],
   icon: {
-    collections: ["lucide", "svg-spinners"],
+    collections: ["lucide", "svg-spinners", "mdi"],
   },
 });
