@@ -75,7 +75,7 @@
           class="absolute inset-0 z-10 rounded-lg bg-gradient-to-r from-blue-500/20 to-transparent"
         />
         <NuxtImg
-          src="/mock/close-up.jpg"
+          src="/landing/close-up.jpg"
           alt="Doctor atendiendo a un paciente"
           class="h-full max-h-[80vh] w-full rounded-lg object-cover object-center"
         />
@@ -91,7 +91,7 @@
           class="absolute inset-0 z-10 rounded-lg bg-gradient-to-l from-blue-500/20 to-transparent"
         />
         <NuxtImg
-          src="/mock/happy-mature.jpg"
+          src="/landing/happy-mature.jpg"
           alt="Madre con bebé"
           class="h-full max-h-[80vh] w-full rounded-lg object-cover object-center"
         />
