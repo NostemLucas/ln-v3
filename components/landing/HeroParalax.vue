@@ -1,94 +1,50 @@
 <template>
   <div
-    ref="heroSection"
+    ref="parallaxContainer"
     class="relative w-full h-[90vh] overflow-hidden text-white"
-    @wheel="handleWheel"
   >
-    <!-- Multiple background images with scroll-based transitions -->
-    <div class="absolute inset-0 w-full h-full overflow-hidden">
-      <!-- Image layers that change with scroll -->
+    <!-- Capa de imagen de fondo con efecto parallax -->
+    <div class="absolute inset-0 w-full h-full">
       <div
         v-for="(image, index) in images"
         :key="index"
-        class="absolute inset-0 w-full h-full transition-all duration-1000"
+        class="absolute inset-0 w-full h-full transition-opacity duration-1000"
         :style="{
           opacity: currentImageIndex === index ? 1 : 0,
-          transform: `scale(${
-            currentImageIndex === index
-              ? 1
-              : index < currentImageIndex
-              ? 0.9
-              : 1.1
-          })`,
           zIndex: images.length - index,
         }"
       >
-        <img
-          :src="image.src"
-          :alt="image.alt"
-          class="absolute w-full h-[120%] object-cover object-center transition-all duration-700 ease-out"
-          :style="{
-            transform: `translateY(${-scrollOffset * 40}px) scale(${
-              1 + scrollOffset * 0.05
-            })`,
-            filter: `brightness(${0.8 + scrollOffset * 0.2})`,
-          }"
-          draggable="false"
-        />
-
-        <!-- Per-image text that appears with scroll -->
-        <div
-          class="absolute inset-0 flex items-center justify-center z-10 transition-all duration-700"
-          :style="{
-            opacity: currentImageIndex === index ? scrollOffset * 2 : 0,
-            transform: `translateY(${(1 - scrollOffset) * 50}px)`,
-          }"
-        >
-          <div
-            class="text-6xl md:text-8xl font-bold text-white/80 text-center px-4 backdrop-blur-sm"
-          >
-            {{ image.title }}
-          </div>
+        <!-- Imagen con efecto parallax real -->
+        <div class="absolute inset-0 h-[120%] w-full overflow-hidden">
+          <img
+            :src="image.src"
+            :alt="image.alt"
+            class="absolute w-full h-full object-cover object-center transition-transform duration-700 ease-out"
+            :style="{
+              transform: `translateY(${parallaxOffset * -0.15}px) scale(${
+                1 + Math.abs(parallaxOffset) * 0.0001
+              })`,
+            }"
+            draggable="false"
+          />
         </div>
-      </div>
 
-      <!-- Overlay with gradient -->
-      <div
-        class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/75 z-10"
-        :style="{ opacity: 1 - scrollOffset * 0.3 }"
-      ></div>
-
-      <!-- Animated particles effect -->
-      <div class="absolute inset-0 overflow-hidden pointer-events-none z-20">
+        <!-- Overlay con gradiente para mejorar legibilidad -->
         <div
-          v-for="i in 20"
-          :key="`particle-${i}`"
-          class="absolute rounded-full bg-amber-400/30 blur-md"
-          :style="{
-            width: `${Math.random() * 10 + 5}px`,
-            height: `${Math.random() * 10 + 5}px`,
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            opacity: 0.1 + Math.random() * 0.2,
-            transform: `translateY(${
-              scrollOffset * 100 * (Math.random() * 2 - 1)
-            }px)`,
-            transition: 'transform 0.5s ease-out',
-          }"
+          class="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80"
         ></div>
       </div>
     </div>
 
-    <!-- Content Container -->
+    <!-- Contenido principal -->
     <div
       class="relative z-30 h-full w-full flex items-center"
       :style="{
-        opacity: 1 - scrollOffset * 2,
-        transform: `translateY(${scrollOffset * -100}px)`,
+        transform: `translateY(${parallaxOffset * 0.05}px)`,
       }"
     >
       <div class="container mx-auto px-6 md:px-8 lg:px-12">
-        <!-- Logo and Tagline -->
+        <!-- Logo y tagline con animación de entrada -->
         <div
           class="mb-4 md:mb-6 transform translate-y-8 opacity-0"
           :class="{ 'animate-slide-up': isLoaded }"
@@ -104,7 +60,7 @@
           </div>
         </div>
 
-        <!-- Main Heading with animated highlight -->
+        <!-- Título principal con highlight animado -->
         <h1
           class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight max-w-3xl mb-4 md:mb-6 transform translate-y-8 opacity-0"
           :class="{ 'animate-slide-up-delay-1': isLoaded }"
@@ -119,7 +75,7 @@
           y Sanitaria En Tu Ciudad
         </h1>
 
-        <!-- Subheading with decorative element -->
+        <!-- Subtítulo con elemento decorativo -->
         <div
           class="flex items-center mb-8 md:mb-10 transform translate-y-8 opacity-0"
           :class="{ 'animate-slide-up-delay-2': isLoaded }"
@@ -130,7 +86,7 @@
           </h6>
         </div>
 
-        <!-- Buttons with enhanced styling -->
+        <!-- Botones con estilos mejorados -->
         <div
           class="flex flex-col sm:flex-row gap-4 transform translate-y-8 opacity-0"
           :class="{ 'animate-slide-up-delay-3': isLoaded }"
@@ -189,12 +145,12 @@
       </div>
     </div>
 
-    <!-- Scroll indicator with enhanced effects -->
+    <!-- Indicador de scroll con efectos mejorados -->
     <div
       class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center z-40"
-      :style="{ opacity: 1 - scrollOffset * 3 }"
+      :style="{ opacity: Math.max(0, 1 - Math.abs(parallaxOffset) * 0.001) }"
     >
-      <!-- Animated scroll icon -->
+      <!-- Icono de scroll animado -->
       <div
         class="w-6 h-10 border-2 border-white/70 rounded-full mb-2 flex justify-center relative overflow-hidden"
       >
@@ -202,16 +158,12 @@
           class="w-1.5 h-1.5 bg-amber-400 rounded-full absolute top-2"
           :style="{
             transform: `translateY(${Math.sin(Date.now() / 500) * 4 + 4}px)`,
-            opacity: scrolling ? 0.5 : 1,
           }"
         ></div>
       </div>
 
-      <!-- Text indicator with dynamic effect -->
-      <div
-        class="flex items-center gap-2 text-sm font-light"
-        :class="{ 'animate-pulse': scrolling }"
-      >
+      <!-- Texto indicador con efecto dinámico -->
+      <div class="flex items-center gap-2 text-sm font-light">
         <span>Desliza para descubrir</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -233,7 +185,7 @@
       </div>
     </div>
 
-    <!-- Image indicators with enhanced interaction -->
+    <!-- Indicadores de imagen con interacción mejorada -->
     <div
       class="absolute right-8 top-1/2 transform -translate-y-1/2 flex flex-col gap-4 z-40"
     >
@@ -243,7 +195,7 @@
         class="group flex items-center gap-3 cursor-pointer"
         @click="navigateToImage(index)"
       >
-        <!-- Dot indicator -->
+        <!-- Indicador de punto -->
         <div
           class="w-3 h-3 rounded-full transition-all duration-300 relative"
           :class="
@@ -252,14 +204,14 @@
               : 'bg-white/40 hover:bg-white/60'
           "
         >
-          <!-- Ripple effect for active dot -->
+          <!-- Efecto de onda para punto activo -->
           <div
             v-if="currentImageIndex === index"
             class="absolute inset-0 bg-amber-400/50 rounded-full animate-ping"
           ></div>
         </div>
 
-        <!-- Label that appears on hover -->
+        <!-- Etiqueta que aparece al pasar el ratón -->
         <div
           class="text-sm font-medium opacity-0 transform translate-x-2 transition-all duration-300 whitespace-nowrap"
           :class="{
@@ -270,7 +222,7 @@
           {{ image.label }}
         </div>
 
-        <!-- Active label -->
+        <!-- Etiqueta activa -->
         <div
           v-if="currentImageIndex === index"
           class="text-sm font-medium text-amber-300"
@@ -283,205 +235,143 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, watch } from "vue";
+import { ref, onMounted, onUnmounted, nextTick } from "vue";
 
-// Images for the slideshow with titles and labels
+// Imágenes para el slideshow con títulos y etiquetas
 const images = [
   {
-    src: "/mock/paralax.jpg",
+    src: "/landing/paralax.jpg",
     alt: "Oncoclinic Background 1",
     title: "Excelencia",
     label: "Inicio",
   },
   {
-    src: "/mock/paralax.jpg", // En un caso real, estas serían diferentes imágenes
+    src: "/landing/paralax.jpg", // En un caso real, estas serían diferentes imágenes
     alt: "Oncoclinic Background 2",
     title: "Innovación",
     label: "Servicios",
   },
   {
-    src: "/mock/paralax.jpg", // En un caso real, estas serían diferentes imágenes
+    src: "/landing/paralax.jpg", // En un caso real, estas serían diferentes imágenes
     alt: "Oncoclinic Background 3",
     title: "Compromiso",
     label: "Especialistas",
   },
 ];
 
-// State variables
-const heroSection = ref<HTMLElement | null>(null);
+// Variables de estado
+const parallaxContainer = ref<HTMLElement | null>(null);
 const currentImageIndex = ref(0);
-const scrollOffset = ref(0); // 0 to 1 within each image section
 const isLoaded = ref(false);
-const scrolling = ref(false);
-const scrollTimeout = ref<number | null>(null);
-const wheelEvents = ref<number[]>([]);
-const lastScrollTime = ref(Date.now());
+const parallaxOffset = ref(0);
+const lastScrollY = ref(0);
+const ticking = ref(false);
+const animationFrameId = ref<number | null>(null);
 
-// Handle wheel events for custom scrolling
-const handleWheel = (e: WheelEvent) => {
-  e.preventDefault();
+// Manejar el efecto parallax basado en la posición de scroll
+const handleScroll = () => {
+  lastScrollY.value = window.scrollY;
 
-  // Track wheel events for momentum
-  const now = Date.now();
-  wheelEvents.value.push(e.deltaY);
+  if (!ticking.value) {
+    ticking.value = true;
 
-  // Keep only recent events (last 200ms)
-  wheelEvents.value = wheelEvents.value.filter(
-    () => now - lastScrollTime.value < 200
-  );
+    animationFrameId.value = requestAnimationFrame(() => {
+      // Actualizar el offset de parallax basado en la posición de scroll
+      parallaxOffset.value = lastScrollY.value;
 
-  // Calculate momentum based on recent wheel events
-  const momentum =
-    wheelEvents.value.reduce((sum, delta) => sum + delta, 0) / 100;
+      // Determinar qué imagen mostrar basado en la posición de scroll
+      // Este es un cálculo simple, puedes ajustarlo según tus necesidades
+      const scrollProgress =
+        lastScrollY.value / (document.body.scrollHeight - window.innerHeight);
+      const targetIndex = Math.min(
+        Math.floor(scrollProgress * images.length),
+        images.length - 1
+      );
 
-  // Update scroll offset with momentum
-  updateScrollOffset(momentum);
+      if (targetIndex !== currentImageIndex.value) {
+        currentImageIndex.value = targetIndex;
+      }
 
-  // Update last scroll time
-  lastScrollTime.value = now;
-
-  // Show scrolling indicator
-  scrolling.value = true;
-
-  // Clear previous timeout
-  if (scrollTimeout.value) {
-    clearTimeout(scrollTimeout.value);
-  }
-
-  // Set timeout to hide scrolling indicator
-  scrollTimeout.value = window.setTimeout(() => {
-    scrolling.value = false;
-  }, 500);
-};
-
-// Update scroll offset with momentum and handle image transitions
-const updateScrollOffset = (momentum: number) => {
-  // Update scroll offset
-  scrollOffset.value += momentum * 0.01;
-
-  // Constrain between 0 and 1
-  if (scrollOffset.value < 0) {
-    // If at first image and trying to scroll up, bounce effect
-    if (currentImageIndex.value === 0) {
-      scrollOffset.value = 0;
-    } else {
-      // Move to previous image
-      currentImageIndex.value--;
-      scrollOffset.value = 1;
-    }
-  } else if (scrollOffset.value > 1) {
-    // If at last image and trying to scroll down, bounce effect
-    if (currentImageIndex.value === images.length - 1) {
-      scrollOffset.value = 1;
-    } else {
-      // Move to next image
-      currentImageIndex.value++;
-      scrollOffset.value = 0;
-    }
-  }
-};
-
-// Navigate to specific image
-const navigateToImage = (index: number) => {
-  // If same image, do nothing
-  if (index === currentImageIndex.value) return;
-
-  // Set scroll offset based on direction
-  scrollOffset.value = index < currentImageIndex.value ? 1 : 0;
-
-  // Update current image
-  currentImageIndex.value = index;
-
-  // Animate scroll offset to show transition
-  const startOffset = scrollOffset.value;
-  const targetOffset = index < currentImageIndex.value ? 0 : 1;
-  const startTime = Date.now();
-  const duration = 800;
-
-  const animateOffset = () => {
-    const elapsed = Date.now() - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    const easedProgress = easeInOutCubic(progress);
-
-    scrollOffset.value =
-      startOffset + (targetOffset - startOffset) * easedProgress;
-
-    if (progress < 1) {
-      requestAnimationFrame(animateOffset);
-    }
-  };
-
-  requestAnimationFrame(animateOffset);
-};
-
-// Easing function for smoother animations
-const easeInOutCubic = (t: number): number => {
-  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-};
-
-// Animate scroll indicator
-const animateScrollIndicator = () => {
-  // Force component update for scroll indicator animation
-  setInterval(() => {
-    // This empty function just forces a component update for the scroll indicator animation
-  }, 50);
-};
-
-// Initialize
-onMounted(() => {
-  // Prevent default scroll behavior on the hero section
-  if (heroSection.value) {
-    heroSection.value.addEventListener("wheel", (e) => e.preventDefault(), {
-      passive: false,
+      ticking.value = false;
     });
   }
+};
 
-  // Start scroll indicator animation
+// Navegar a una imagen específica
+const navigateToImage = (index: number) => {
+  // Si es la misma imagen, no hacer nada
+  if (index === currentImageIndex.value) return;
+
+  // Actualizar la imagen actual
+  currentImageIndex.value = index;
+
+  // Calcular la posición de scroll aproximada para esta imagen
+  const targetScrollY =
+    (index / images.length) * (document.body.scrollHeight - window.innerHeight);
+
+  // Scroll suave a la posición
+  window.scrollTo({
+    top: targetScrollY,
+    behavior: "smooth",
+  });
+};
+
+// Animar el indicador de scroll
+const animateScrollIndicator = () => {
+  // Forzar actualización del componente para la animación del indicador de scroll
+  const animateFrame = () => {
+    // Esta función vacía solo fuerza una actualización del componente para la animación
+    animationFrameId.value = requestAnimationFrame(animateFrame);
+  };
+
+  animationFrameId.value = requestAnimationFrame(animateFrame);
+};
+
+// Inicializar
+onMounted(async () => {
+  // Esperar a que el DOM se actualice
+  await nextTick();
+
+  // Configurar el observador de intersección para detectar cuando el componente está visible
+  if (parallaxContainer.value) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // El componente está visible, activar las animaciones
+            isLoaded.value = true;
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(parallaxContainer.value);
+  }
+
+  // Iniciar la animación del indicador de scroll
   animateScrollIndicator();
 
-  // Trigger entrance animations
-  setTimeout(() => {
-    isLoaded.value = true;
-  }, 100);
+  // Agregar el evento de scroll
+  window.addEventListener("scroll", handleScroll, { passive: true });
 
-  // Demo effect to show scrolling functionality
-  setTimeout(() => {
-    // Simulate scrolling down slightly
-    let demoProgress = 0;
-    const demoInterval = setInterval(() => {
-      demoProgress += 0.02;
-      scrollOffset.value = Math.min(demoProgress, 0.3);
-
-      if (demoProgress >= 0.3) {
-        clearInterval(demoInterval);
-
-        // Then scroll back up
-        setTimeout(() => {
-          let reverseProgress = 0.3;
-          const reverseInterval = setInterval(() => {
-            reverseProgress -= 0.02;
-            scrollOffset.value = Math.max(reverseProgress, 0);
-
-            if (reverseProgress <= 0) {
-              clearInterval(reverseInterval);
-            }
-          }, 30);
-        }, 800);
-      }
-    }, 30);
-  }, 2000);
+  // Disparar una vez para inicializar
+  handleScroll();
 });
 
 onUnmounted(() => {
-  // Clear any timeouts
-  if (scrollTimeout.value) {
-    clearTimeout(scrollTimeout.value);
+  // Limpiar el evento de scroll
+  window.removeEventListener("scroll", handleScroll);
+
+  // Cancelar cualquier animación pendiente
+  if (animationFrameId.value !== null) {
+    cancelAnimationFrame(animationFrameId.value);
   }
 });
 </script>
 
 <style scoped>
-/* Custom animations */
+/* Animaciones personalizadas */
 @keyframes slide-up {
   from {
     transform: translateY(20px);
@@ -521,12 +411,12 @@ onUnmounted(() => {
   animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
-/* Ensure smooth animations */
+/* Asegurar animaciones suaves */
 * {
   @apply transition-all duration-300;
 }
 
-/* Custom scrollbar for webkit browsers */
+/* Scrollbar personalizado para navegadores webkit */
 ::-webkit-scrollbar {
   width: 6px;
 }

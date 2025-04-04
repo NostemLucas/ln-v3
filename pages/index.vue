@@ -3,9 +3,10 @@
     <EnhancedVideo />
     <HeroCards />
     <TreatmentCards />
+    <HeroParalax />
     <HeroAbout />
     <HeroCarrousel />
-    <HeroParalax />
+
     <DiagnosticCards />
   </div>
 </template>

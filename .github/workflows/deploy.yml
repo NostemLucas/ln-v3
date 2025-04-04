@@ -1,0 +1,27 @@
+name: Deploy via SSH
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Configurar SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 45.55.85.167 >> ~/.ssh/known_hosts
+
+      - name: Deploy a Servidor
+        run: |
+          ssh root@45.55.85.167"
+          cd /ruta/del/proyecto &&
+          git pull origin main &&
+          systemctl restart tu-app"

@@ -94,7 +94,7 @@
               <!-- Overlay para submenús  -->
               <div
                 v-if="(item.subItems || item.columns) && activeMenus[index]"
-                class="fixed left-0 right-0 bottom-0 top-[5rem] w-screen h-screen bg-black/10 backdrop-blur-sm z-40 transition-all duration-300"
+                class="fixed left-0 right-0 bottom-0 top-[5rem] w-screen h-screen bg-black/30 backdrop-blur-sm z-40 transition-all duration-300"
                 @mouseenter="closeAllMenus"
               />
 
