@@ -98,8 +98,11 @@
               <div
                 class="mt-6 transform transition-all duration-500 group-hover:translate-y-0 opacity-0 group-hover:opacity-100"
               >
-                <button
-                  class="rounded-full bg-white px-5 py-2 text-sm font-medium text-blue-900 transition-all duration-300 hover:bg-blue-50 hover:shadow-lg flex items-center"
+                <UButton
+                  variant="solid"
+                  type="button"
+                  :to="treatment.url"
+                  class="rounded-full bg-white px-5 py-2 text-sm font-medium text-blue-900 transition-all duration-300 hover:bg-blue-50 hover:shadow-lg flex items-center w-40"
                 >
                   <span>Conocer más</span>
                   <svg
@@ -114,7 +117,7 @@
                       clip-rule="evenodd"
                     />
                   </svg>
-                </button>
+                </UButton>
               </div>
             </div>
           </div>
@@ -136,6 +139,7 @@ const treatments = ref([
       "Procedimiento médico en el que se reemplaza la médula ósea dañada con células madre sanas, permitiendo la regeneración del tejido y mejorando la calidad de vida del paciente.",
     image:
       "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "/tratamientos/transplante-medula-osea",
   },
   {
     title: "Inmunoterapia",
@@ -143,6 +147,7 @@ const treatments = ref([
       "Terapia innovadora que fortalece el sistema inmunológico para atacar selectivamente las células cancerosas, minimizando el daño a las células sanas.",
     image:
       "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "/tratamientos/inmunoterapia",
   },
   {
     title: "Quimioterapia",
@@ -150,6 +155,7 @@ const treatments = ref([
       "Tratamiento basado en el uso de fármacos que destruyen células cancerosas. Puede emplearse solo o en combinación con otros tratamientos para aumentar su efectividad.",
     image:
       "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "/tratamientos/quimioterapia",
   },
   {
     title: "Quimioterapia Metronómica",
@@ -157,6 +163,7 @@ const treatments = ref([
       "Estrategia terapéutica que administra quimioterapia en dosis bajas y constantes, con el objetivo de reducir efectos secundarios y mejorar la calidad de vida del paciente.",
     image:
       "https://images.unsplash.com/photo-1530026186672-2cd00ffc50fe?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "/tratamientos/quimioterapia-metronomica",
   },
   {
     title: "Terapia Biológica",
@@ -164,6 +171,7 @@ const treatments = ref([
       "Tratamiento que utiliza sustancias naturales o modificadas genéticamente para interferir en los procesos que favorecen el crecimiento y propagación del cáncer.",
     image:
       "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "/tratamientos/terapia-biologica",
   },
   {
     title: "Cirugía Oncológica",
@@ -171,6 +179,7 @@ const treatments = ref([
       "Procedimiento quirúrgico especializado en la extirpación de tumores malignos y tejido circundante, con el objetivo de eliminar el cáncer de manera segura y efectiva.",
     image:
       "https://images.unsplash.com/photo-1571772996211-2f02974a9f91?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "/tratamientos/cirugia-oncologica",
   },
 ]);
 </script>
