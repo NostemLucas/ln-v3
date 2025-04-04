@@ -64,8 +64,8 @@
                 <span
                   class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300"
                   :class="{
-                    'w-0': !isActiveRoute(item.url) && !activeMenus[index],
-                    'w-full': !isActiveRoute(item.url) && activeMenus[index],
+                    'w-0': !isActiveRoute(item.url) || !activeMenus[index],
+                    'w-full': isActiveRoute(item.url) || activeMenus[index],
                   }"
                 />
               </UButton>
