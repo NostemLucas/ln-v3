@@ -621,9 +621,24 @@ const navigationItems: NavigationItem[] = [
       {
         title: "Tratamientos",
         links: [
-          { label: "Ensayos Clínicos", url: "/medula-osea" },
-          { label: "Publicaciones", url: "/inmunoterapia" },
-          { label: "Conferencias Médicas", url: "/quimioterapia" },
+          {
+            label: "Transplante de Medula Osea",
+            url: "/tratamientos/transplante-medula-osea",
+          },
+          { label: "Inmunoterapia", url: "/tratamientos/inmunoterapia" },
+          { label: "Quimioterapia", url: "/tratamientos/quimioterapia" },
+          {
+            label: "Cirugía Oncológica",
+            url: "/tratamientos/cirugia-oncologica",
+          },
+          {
+            label: "Quimioterapia Metronómica",
+            url: "/tratamientos/quimioterapia-metronomica",
+          },
+          {
+            label: "Terapia Biológica",
+            url: "/tratamientos/terapia-biologica",
+          },
         ],
       },
       {
