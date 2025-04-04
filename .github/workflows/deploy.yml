@@ -19,9 +19,6 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 45.55.85.167 >> ~/.ssh/known_hosts
 
-      - name: Deploy a Servidor
+      - name: Probar conexión SSH
         run: |
-          ssh root@45.55.85.167"
-          cd /ruta/del/proyecto &&
-          git pull origin main &&
-          systemctl restart tu-app"
+          ssh root@45.55.85.167 "echo ✅ ¡Conexión SSH exitosa desde GitHub Actions!"
