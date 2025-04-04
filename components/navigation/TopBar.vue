@@ -296,7 +296,7 @@
               Solicita una cita
             </UButton>
             <NuxtLink
-              href="/login"
+              to="/login"
               class="rounded-full border border-gray-400 font-medium transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white lg:text-xs lg:px-3 lg:py-1 xl:text-sm xl:px-4 xl:py-1.5 2xl:text-sm 2xl:px-5 2xl:py-2"
             >
               Iniciar Sesión
@@ -372,9 +372,12 @@
               :key="index"
               class="border-b border-gray-100"
             >
-              <div
+              <NuxtLink
+                :to="item.url || '#'"
                 class="flex items-center justify-between py-4 cursor-pointer"
-                @click="toggleMobileSection(index)"
+                @click="
+                  item.url ? toggleMobileMenu() : toggleMobileSection(index)
+                "
               >
                 <span class="text-base font-medium">{{ item.label }}</span>
                 <div
@@ -387,7 +390,7 @@
                     :class="{ 'rotate-180': mobileOpenSections[index] }"
                   />
                 </div>
-              </div>
+              </NuxtLink>
 
               <!-- Submenu para subItems en móvil  -->
               <transition
@@ -484,27 +487,27 @@
 
           <!-- Mobile Action Buttons -->
           <div class="mt-8 grid grid-cols-1 gap-3">
-            <a
-              href="#"
+            <NuxtLink
+              to="#"
               class="w-full rounded-lg bg-gray-100 px-4 py-3.5 text-center font-medium hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center"
             >
               <Icon name="lucide:calendar" class="h-4 w-4 mr-2" />
               Solicita una cita
-            </a>
-            <a
-              href="#"
+            </NuxtLink>
+            <NuxtLink
+              to="/login"
               class="w-full rounded-lg bg-primary px-4 py-3.5 text-center font-medium text-white hover:bg-primary/90 transition-colors duration-200 flex items-center justify-center"
             >
               <Icon name="lucide:log-in" class="h-4 w-4 mr-2" />
               Iniciar Sesión
-            </a>
+            </NuxtLink>
           </div>
 
           <!-- Información de contacto en móvil -->
           <div class="mt-8 border-t border-gray-100 pt-6">
             <div class="grid grid-cols-1 gap-4">
-              <a
-                href="tel:+123456789"
+              <NuxtLink
+                to="tel:+123456789"
                 class="flex items-center gap-2 text-sm text-gray-600 hover:text-primary transition-colors"
               >
                 <div
@@ -513,9 +516,9 @@
                   <Icon name="lucide:phone" class="h-4 w-4 text-primary" />
                 </div>
                 +123 456 789
-              </a>
-              <a
-                href="mailto:info@example.com"
+              </NuxtLink>
+              <NuxtLink
+                to="mailto:info@example.com"
                 class="flex items-center gap-2 text-sm text-gray-600 hover:text-primary transition-colors"
               >
                 <div
@@ -524,7 +527,7 @@
                   <Icon name="lucide:mail" class="h-4 w-4 text-primary" />
                 </div>
                 info@example.com
-              </a>
+              </NuxtLink>
               <div class="flex items-center gap-2 text-sm text-gray-600">
                 <div
                   class="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10"
@@ -537,30 +540,30 @@
 
             <!-- Redes sociales en móvil -->
             <div class="mt-6 flex items-center gap-3 justify-center">
-              <a
-                href="#"
+              <NuxtLink
+                to="https://www.facebook.com/OncoclinicBolivia/"
                 class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-primary hover:text-white transition-all duration-300 transform hover:scale-110"
               >
                 <Icon name="lucide:facebook" class="h-5 w-5" />
-              </a>
-              <a
-                href="#"
+              </NuxtLink>
+              <NuxtLink
+                to="#"
                 class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-primary hover:text-white transition-all duration-300 transform hover:scale-110"
               >
                 <Icon name="lucide:twitter" class="h-5 w-5" />
-              </a>
-              <a
-                href="#"
+              </NuxtLink>
+              <NuxtLink
+                to="#"
                 class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-primary hover:text-white transition-all duration-300 transform hover:scale-110"
               >
                 <Icon name="lucide:instagram" class="h-5 w-5" />
-              </a>
-              <a
-                href="#"
+              </NuxtLink>
+              <NuxtLink
+                to="#"
                 class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-primary hover:text-white transition-all duration-300 transform hover:scale-110"
               >
-                <Icon name="lucide:linkedin" class="h-5 w-5" />
-              </a>
+                <Icon name="lucide:tik" class="h-5 w-5" />
+              </NuxtLink>
             </div>
           </div>
         </div>
