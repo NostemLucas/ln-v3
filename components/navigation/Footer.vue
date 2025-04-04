@@ -391,11 +391,31 @@ const footerSections: FooterSection[] = [
 ];
 
 const socialLinks: SocialLink[] = [
-  { name: "Twitter", icon: "mdi:twitter", url: "#" },
-  { name: "Facebook", icon: "mdi:facebook", url: "#" },
-  { name: "LinkedIn", icon: "mdi:linkedin", url: "#" },
-  { name: "YouTube", icon: "mdi:youtube", url: "#" },
-  { name: "Instagram", icon: "mdi:instagram", url: "#" },
+  {
+    name: "Twitter",
+    icon: "mdi:twitter",
+    url: "https://www.youtube.com/@Oncoclinic_Bolivia",
+  },
+  {
+    name: "Facebook",
+    icon: "mdi:facebook",
+    url: "https://www.facebook.com/OncoclinicBolivia/",
+  },
+  {
+    name: "TiKTok",
+    icon: "mdi:ticket",
+    url: "https://www.tiktok.com/@oncologia.oncoclinic",
+  },
+  {
+    name: "YouTube",
+    icon: "mdi:youtube",
+    url: "https://www.youtube.com/@Oncoclinic_Bolivia",
+  },
+  {
+    name: "Instagram",
+    icon: "mdi:instagram",
+    url: "https://www.instagram.com/oncoclinic/",
+  },
 ];
 
 const legalLinks = [

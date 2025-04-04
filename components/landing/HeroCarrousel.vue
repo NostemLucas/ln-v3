@@ -300,6 +300,7 @@ onBeforeUnmount(() => {
                   :aria-label="`Ver más información sobre Dr. ${person.name}`"
                   class="bg-white rounded-full px-4 py-2 text-primary-500"
                   label="Ver más"
+                  to="/profesionales"
                 />
               </div>
             </div>

@@ -96,56 +96,60 @@
           class="flex flex-col sm:flex-row gap-4 transform translate-y-8 opacity-0"
           :class="{ 'animate-slide-up-delay-3': isLoaded }"
         >
-          <button
-            class="group flex items-center justify-center gap-2 px-8 py-3 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-amber-500/30"
-          >
-            Contactos
-            <span
-              class="inline-block transition-transform duration-300 group-hover:translate-x-1"
+          <NuxtLink to="/contactos">
+            <button
+              class="group cursor-pointer flex items-center justify-center gap-2 px-8 py-3 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-amber-500/30"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-arrow-right"
+              Contactos
+              <span
+                class="inline-block transition-transform duration-300 group-hover:translate-x-1"
               >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
-            </span>
-          </button>
-          <button
-            class="group flex items-center justify-center gap-2 px-8 py-3 bg-transparent hover:bg-white/10 text-white border-2 border-white/70 hover:border-white rounded-full transition-all duration-300"
-          >
-            Nuestros Doctores
-            <span
-              class="inline-block transition-transform duration-300 group-hover:translate-x-1"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-arrow-right"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </span>
+            </button>
+          </NuxtLink>
+          <NuxtLink to="/profesionales">
+            <button
+              class="group cursor-pointer flex items-center justify-center gap-2 px-8 py-3 bg-transparent hover:bg-white/10 text-white border-2 border-white/70 hover:border-white rounded-full transition-all duration-300"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-users"
+              Nuestros Doctores
+              <span
+                class="inline-block transition-transform duration-300 group-hover:translate-x-1"
               >
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
-            </span>
-          </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-users"
+                >
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </span>
+            </button>
+          </NuxtLink>
         </div>
       </div>
     </div>
