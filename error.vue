@@ -2,28 +2,37 @@
   <div
     class="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white flex flex-col"
   >
-    <!-- Header with logo -->
+    <!-- Header with logo and back button -->
     <header class="container mx-auto px-4 py-6">
       <div class="flex justify-between items-center">
-        <div class="text-2xl font-bold text-teal-400">OncoClinic</div>
+        <div class="flex items-center">
+          <button
+            @click="goBack"
+            class="mr-4 flex items-center text-slate-300 hover:text-teal-400 transition-colors duration-300"
+          >
+            <Icon icon="mdi:arrow-left" class="h-5 w-5 mr-1" />
+            <span>Volver</span>
+          </button>
+          <div class="text-2xl font-bold text-teal-400">OncoClinic</div>
+        </div>
         <div class="flex space-x-4">
           <a
             href="#"
             class="hover:text-teal-400 transition-colors duration-300"
           >
-            <Icon name="lucide:mail" class="h-5 w-5" />
+            <Icon icon="mdi:email-outline" class="h-5 w-5" />
           </a>
           <a
             href="#"
             class="hover:text-teal-400 transition-colors duration-300"
           >
-            <Icon name="lucide:instagram" class="h-5 w-5" />
+            <Icon icon="mdi:instagram" class="h-5 w-5" />
           </a>
           <a
             href="#"
             class="hover:text-teal-400 transition-colors duration-300"
           >
-            <Icon name="lucide:x" class="h-5 w-5" />
+            <Icon icon="mdi:twitter" class="h-5 w-5" />
           </a>
         </div>
       </div>
@@ -87,7 +96,7 @@
               class="px-6 py-3 bg-gradient-to-r from-teal-500 to-emerald-500 rounded-lg font-medium hover:from-teal-600 hover:to-emerald-600 transition-all duration-300 flex items-center justify-center"
             >
               <span>Notificarme</span>
-              <Icon name="lucide:bell-ring" class="ml-2 h-4 w-4" />
+              <Icon icon="mdi:bell-ring-outline" class="ml-2 h-4 w-4" />
             </button>
           </div>
           <p
@@ -108,12 +117,12 @@
       <div
         class="absolute bottom-0 left-1/4 transform -translate-x-1/2 animate-bounce-slow"
       >
-        <Icon name="lucide:hard-hat" class="h-12 w-12 text-yellow-400" />
+        <Icon icon="mdi:hard-hat" class="h-12 w-12 text-yellow-400" />
       </div>
       <div
         class="absolute bottom-0 right-1/4 transform translate-x-1/2 animate-pulse"
       >
-        <Icon name="lucide:construction" class="h-16 w-16 text-orange-400" />
+        <Icon icon="mdi:construction" class="h-16 w-16 text-orange-400" />
       </div>
     </div>
 
@@ -130,8 +139,16 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted, computed } from "vue";
+import { Icon } from "@iconify/vue";
+
+// Go back function
+const goBack = () => {
+  window.history.back();
+};
+
 // Countdown timer logic
-const launchDate = new Date("2025-01-01T00:00:00");
+const launchDate = new Date("2025-04-14T00:00:00"); // Updated to April 14, 2025
 const now = ref(new Date());
 const timer = ref<number | null>(null);
 
