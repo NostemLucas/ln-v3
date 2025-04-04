@@ -9,7 +9,7 @@
           class="mb-4 text-3xl leading-tight font-bold text-gray-900 lg:text-4xl"
         >
           La recuperación
-          <span class="text-primary-600">empieza aquí</span>
+          <span class="text-primary-400">empieza aquí</span>
         </h2>
         <div class="mb-6 h-1 w-20 rounded-full bg-primary-700" />
 
@@ -101,7 +101,7 @@
           class="mb-4 text-3xl leading-tight font-bold text-gray-900 lg:text-4xl"
         >
           Atención médica de
-          <span class="text-primary-600">primera categoría</span>
+          <span class="text-primary-400">primera categoría</span>
           para pacientes de todo el mundo
         </h2>
         <div class="mb-6 h-1 w-20 rounded-full bg-primary-700" />
@@ -114,10 +114,10 @@
 
         <div class="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div class="flex items-start">
-            <div class="mr-3 rounded-full bg-primary-100 p-2">
+            <div class="mr-3 rounded-full bg-blue-100 p-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-primary-600"
+                class="h-5 w-5 text-blue-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
