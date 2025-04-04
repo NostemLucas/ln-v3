@@ -1,33 +1,29 @@
 <template>
-  <div
-    ref="parallaxContainer"
-    class="relative w-full h-[90vh] overflow-hidden text-white"
-  >
-    <!-- Capa de imagen de fondo con efecto parallax -->
-    <div class="absolute inset-0 w-full h-full">
+  <div class="relative w-full h-screen overflow-hidden text-white">
+    <!-- Capa de imagen de fondo con efecto parallax simple y confiable -->
+    <div
+      ref="parallaxBg"
+      class="absolute inset-0 w-full h-[120%] -top-[10%]"
+      :style="{
+        transform: `translateY(${translateY}px)`,
+        willChange: 'transform',
+      }"
+    >
       <div
         v-for="(image, index) in images"
         :key="index"
         class="absolute inset-0 w-full h-full transition-opacity duration-1000"
         :style="{
           opacity: currentImageIndex === index ? 1 : 0,
-          zIndex: images.length - index,
         }"
       >
-        <!-- Imagen con efecto parallax real -->
-        <div class="absolute inset-0 h-[120%] w-full overflow-hidden">
-          <img
-            :src="image.src"
-            :alt="image.alt"
-            class="absolute w-full h-full object-cover object-center transition-transform duration-700 ease-out"
-            :style="{
-              transform: `translateY(${parallaxOffset * -0.15}px) scale(${
-                1 + Math.abs(parallaxOffset) * 0.0001
-              })`,
-            }"
-            draggable="false"
-          />
-        </div>
+        <!-- Imagen con efecto parallax simple -->
+        <img
+          :src="image.src"
+          :alt="image.alt"
+          class="w-full h-full object-cover object-center"
+          draggable="false"
+        />
 
         <!-- Overlay con gradiente para mejorar legibilidad -->
         <div
@@ -36,13 +32,8 @@
       </div>
     </div>
 
-    <!-- Contenido principal -->
-    <div
-      class="relative z-30 h-full w-full flex items-center"
-      :style="{
-        transform: `translateY(${parallaxOffset * 0.05}px)`,
-      }"
-    >
+    <!-- Contenido principal - este NO se mueve con parallax -->
+    <div class="relative z-30 h-full w-full flex items-center">
       <div class="container mx-auto px-6 md:px-8 lg:px-12">
         <!-- Logo y tagline con animación de entrada -->
         <div
@@ -148,21 +139,18 @@
     <!-- Indicador de scroll con efectos mejorados -->
     <div
       class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center z-40"
-      :style="{ opacity: Math.max(0, 1 - Math.abs(parallaxOffset) * 0.001) }"
     >
       <!-- Icono de scroll animado -->
       <div
         class="w-6 h-10 border-2 border-white/70 rounded-full mb-2 flex justify-center relative overflow-hidden"
       >
         <div
-          class="w-1.5 h-1.5 bg-amber-400 rounded-full absolute top-2"
-          :style="{
-            transform: `translateY(${Math.sin(Date.now() / 500) * 4 + 4}px)`,
-          }"
+          class="w-1.5 h-1.5 bg-amber-400 rounded-full absolute animate-bounce-slow"
+          style="top: 2px"
         ></div>
       </div>
 
-      <!-- Texto indicador con efecto dinámico -->
+      <!-- Texto indicador -->
       <div class="flex items-center gap-2 text-sm font-light">
         <span>Desliza para descubrir</span>
         <svg
@@ -175,17 +163,14 @@
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="transition-transform duration-300"
-          :style="{
-            transform: `translateY(${Math.sin(Date.now() / 300) * 3}px)`,
-          }"
+          class="animate-bounce-slow"
         >
           <path d="m6 9 6 6 6-6" />
         </svg>
       </div>
     </div>
 
-    <!-- Indicadores de imagen con interacción mejorada -->
+    <!-- Indicadores de imagen -->
     <div
       class="absolute right-8 top-1/2 transform -translate-y-1/2 flex flex-col gap-4 z-40"
     >
@@ -260,71 +245,58 @@ const images = [
 ];
 
 // Variables de estado
-const parallaxContainer = ref<HTMLElement | null>(null);
+const parallaxBg = ref<HTMLElement | null>(null);
 const currentImageIndex = ref(0);
 const isLoaded = ref(false);
-const parallaxOffset = ref(0);
-const lastScrollY = ref(0);
-const ticking = ref(false);
-const animationFrameId = ref<number | null>(null);
+const translateY = ref(0);
+const autoChangeInterval = ref<number | null>(null);
 
-// Manejar el efecto parallax basado en la posición de scroll
+// Cambiar imagen automáticamente cada 8 segundos
+const startAutoChange = () => {
+  autoChangeInterval.value = window.setInterval(() => {
+    currentImageIndex.value = (currentImageIndex.value + 1) % images.length;
+  }, 8000);
+};
+
+// Detener cambio automático
+const stopAutoChange = () => {
+  if (autoChangeInterval.value !== null) {
+    clearInterval(autoChangeInterval.value);
+    autoChangeInterval.value = null;
+  }
+};
+
+// Efecto parallax simple y confiable
 const handleScroll = () => {
-  lastScrollY.value = window.scrollY;
+  if (!parallaxBg.value) return;
 
-  if (!ticking.value) {
-    ticking.value = true;
+  // Calcular la posición del scroll relativa a la ventana
+  const scrollPosition = window.scrollY;
+  const windowHeight = window.innerHeight;
 
-    animationFrameId.value = requestAnimationFrame(() => {
-      // Actualizar el offset de parallax basado en la posición de scroll
-      parallaxOffset.value = lastScrollY.value;
+  // Calcular si el elemento está visible en la ventana
+  const rect = parallaxBg.value.getBoundingClientRect();
+  const isVisible = rect.top < windowHeight && rect.bottom > 0;
 
-      // Determinar qué imagen mostrar basado en la posición de scroll
-      // Este es un cálculo simple, puedes ajustarlo según tus necesidades
-      const scrollProgress =
-        lastScrollY.value / (document.body.scrollHeight - window.innerHeight);
-      const targetIndex = Math.min(
-        Math.floor(scrollProgress * images.length),
-        images.length - 1
-      );
-
-      if (targetIndex !== currentImageIndex.value) {
-        currentImageIndex.value = targetIndex;
-      }
-
-      ticking.value = false;
-    });
+  if (isVisible) {
+    // Calcular el valor de transformación para el efecto parallax
+    // Usamos un factor de 0.3 para un efecto suave (30% de la velocidad de scroll)
+    translateY.value = scrollPosition * 0.3;
   }
 };
 
 // Navegar a una imagen específica
 const navigateToImage = (index: number) => {
-  // Si es la misma imagen, no hacer nada
-  if (index === currentImageIndex.value) return;
+  // Detener el cambio automático temporalmente
+  stopAutoChange();
 
-  // Actualizar la imagen actual
+  // Cambiar a la imagen seleccionada
   currentImageIndex.value = index;
 
-  // Calcular la posición de scroll aproximada para esta imagen
-  const targetScrollY =
-    (index / images.length) * (document.body.scrollHeight - window.innerHeight);
-
-  // Scroll suave a la posición
-  window.scrollTo({
-    top: targetScrollY,
-    behavior: "smooth",
-  });
-};
-
-// Animar el indicador de scroll
-const animateScrollIndicator = () => {
-  // Forzar actualización del componente para la animación del indicador de scroll
-  const animateFrame = () => {
-    // Esta función vacía solo fuerza una actualización del componente para la animación
-    animationFrameId.value = requestAnimationFrame(animateFrame);
-  };
-
-  animationFrameId.value = requestAnimationFrame(animateFrame);
+  // Reiniciar el cambio automático después de un tiempo
+  setTimeout(() => {
+    startAutoChange();
+  }, 10000);
 };
 
 // Inicializar
@@ -332,30 +304,18 @@ onMounted(async () => {
   // Esperar a que el DOM se actualice
   await nextTick();
 
-  // Configurar el observador de intersección para detectar cuando el componente está visible
-  if (parallaxContainer.value) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // El componente está visible, activar las animaciones
-            isLoaded.value = true;
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+  // Activar las animaciones
+  setTimeout(() => {
+    isLoaded.value = true;
+  }, 100);
 
-    observer.observe(parallaxContainer.value);
-  }
-
-  // Iniciar la animación del indicador de scroll
-  animateScrollIndicator();
-
-  // Agregar el evento de scroll
+  // Agregar el evento de scroll para el efecto parallax
   window.addEventListener("scroll", handleScroll, { passive: true });
 
-  // Disparar una vez para inicializar
+  // Iniciar el cambio automático de imágenes
+  startAutoChange();
+
+  // Ejecutar una vez para inicializar
   handleScroll();
 });
 
@@ -363,10 +323,8 @@ onUnmounted(() => {
   // Limpiar el evento de scroll
   window.removeEventListener("scroll", handleScroll);
 
-  // Cancelar cualquier animación pendiente
-  if (animationFrameId.value !== null) {
-    cancelAnimationFrame(animationFrameId.value);
-  }
+  // Detener el cambio automático
+  stopAutoChange();
 });
 </script>
 
@@ -391,6 +349,16 @@ onUnmounted(() => {
   }
 }
 
+@keyframes bounce-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
 .animate-slide-up {
   animation: slide-up 0.8s ease forwards;
 }
@@ -411,9 +379,15 @@ onUnmounted(() => {
   animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
+.animate-bounce-slow {
+  animation: bounce-slow 1.5s ease-in-out infinite;
+}
+
 /* Asegurar animaciones suaves */
-* {
-  @apply transition-all duration-300;
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }
 
 /* Scrollbar personalizado para navegadores webkit */
