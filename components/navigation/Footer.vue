@@ -1,5 +1,5 @@
 <template>
-  <footer class="w-full max-w-full overflow-hidden font-sans">
+  <footer class="font-sans">
     <!-- Selector de Banner -->
     <div v-if="currentBanner === 'research'" key="research">
       <ResearchBanner
@@ -7,6 +7,7 @@
         @show-modal="showDonationModal = true"
       />
     </div>
+
     <div v-else-if="currentBanner === 'event'" key="event">
       <EventBanner @show-modal="showEventModal = true" />
     </div>
@@ -47,7 +48,6 @@
         </div>
 
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <!-- Sección de Enlaces Rápidos -->
           <div class="space-y-4">
             <h3
               class="mb-5 text-sm font-semibold uppercase tracking-wider text-[#2C74B3]"
@@ -71,7 +71,6 @@
             </div>
           </div>
 
-          <!-- Columnas de Navegación -->
           <div
             v-for="(section, index) in footerSections"
             :key="index"
@@ -99,7 +98,6 @@
           </div>
         </div>
 
-        <!-- Sección de Contacto y Boletín -->
         <div
           class="mt-12 grid gap-6 rounded-lg border border-[#205295]/20 bg-[#144272]/10 p-6 md:grid-cols-2"
         >
@@ -161,7 +159,6 @@
         <div
           class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between"
         >
-          <!-- Enlaces de Redes Sociales -->
           <div class="flex items-center gap-4">
             <h4
               class="text-xs font-medium uppercase tracking-wider text-[#2C74B3]"
@@ -184,7 +181,6 @@
             </div>
           </div>
 
-          <!-- Certificaciones -->
           <div class="flex items-center gap-4">
             <span
               class="text-xs font-medium uppercase tracking-wider text-[#2C74B3]"
@@ -213,7 +209,6 @@
           </div>
         </div>
 
-        <!-- Enlaces Legales -->
         <div
           class="mt-8 flex flex-wrap gap-4 border-t border-[#205295]/20 pt-6"
         >
@@ -227,7 +222,6 @@
           </a>
         </div>
 
-        <!-- Copyright e Idioma -->
         <div
           class="mt-6 flex flex-col items-start justify-between gap-4 text-xs text-gray-400 md:flex-row md:items-center"
         >
