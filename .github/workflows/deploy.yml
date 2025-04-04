@@ -25,7 +25,7 @@ jobs:
       # Paso 3: Subir los archivos al servidor
       - name: Subir archivos al servidor
         run: |
-          rsync -avz --delete ./ root@45.55.85.167:/var/www/mi-app  # Asegúrate de cambiar esta ruta
+          rsync -avz --delete ./ root@45.55.85.167:/var/www/mi-app
 
       # Paso 4: Instalar dependencias y construir la app en el servidor
       - name: Instalar dependencias y construir la app

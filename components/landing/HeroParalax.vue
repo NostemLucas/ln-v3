@@ -1,38 +1,52 @@
 <template>
   <div class="relative w-full h-screen overflow-hidden text-white">
-    <!-- Capa de imagen de fondo con efecto parallax simple y confiable -->
-    <div
-      ref="parallaxBg"
-      class="absolute inset-0 w-full h-[120%] -top-[10%]"
-      :style="{
-        transform: `translateY(${translateY}px)`,
-        willChange: 'transform',
-      }"
-    >
-      <div
-        v-for="(image, index) in images"
-        :key="index"
-        class="absolute inset-0 w-full h-full transition-opacity duration-1000"
-        :style="{
-          opacity: currentImageIndex === index ? 1 : 0,
-        }"
+    <!-- Contenedor de imágenes con efecto de transición de cuadrícula -->
+    <div class="absolute inset-0 w-full h-full">
+      <transition-group
+        name="grid-transition"
+        tag="div"
+        class="relative w-full h-full"
       >
-        <!-- Imagen con efecto parallax simple -->
-        <img
-          :src="image.src"
-          :alt="image.alt"
-          class="w-full h-full object-cover object-center"
-          draggable="false"
-        />
-
-        <!-- Overlay con gradiente para mejorar legibilidad -->
         <div
-          class="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80"
-        ></div>
-      </div>
+          v-for="(image, index) in images"
+          :key="image.id"
+          v-show="currentImageIndex === index"
+          class="absolute inset-0 w-full h-full"
+        >
+          <!-- Imagen de fondo -->
+          <img
+            :src="image.src"
+            :alt="image.alt"
+            class="w-full h-full object-cover object-center"
+            draggable="false"
+          />
+
+          <!-- Overlay con gradiente para mejorar legibilidad -->
+          <div
+            class="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80"
+          ></div>
+
+          <!-- Efecto de cuadrícula para transición -->
+          <div
+            class="absolute inset-0 grid-effect"
+            :class="{ active: isTransitioning && nextImageIndex !== index }"
+          >
+            <div
+              v-for="i in gridSize * gridSize"
+              :key="i"
+              class="grid-item"
+              :style="{
+                animationDelay: `${
+                  (i % gridSize) * 50 + Math.floor(i / gridSize) * 50
+                }ms`,
+              }"
+            ></div>
+          </div>
+        </div>
+      </transition-group>
     </div>
 
-    <!-- Contenido principal - este NO se mueve con parallax -->
+    <!-- Contenido principal fijo -->
     <div class="relative z-30 h-full w-full flex items-center">
       <div class="container mx-auto px-6 md:px-8 lg:px-12">
         <!-- Logo y tagline con animación de entrada -->
@@ -136,48 +150,14 @@
       </div>
     </div>
 
-    <!-- Indicador de scroll con efectos mejorados -->
+    <!-- Indicadores de imagen con interacción mejorada -->
     <div
-      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center z-40"
-    >
-      <!-- Icono de scroll animado -->
-      <div
-        class="w-6 h-10 border-2 border-white/70 rounded-full mb-2 flex justify-center relative overflow-hidden"
-      >
-        <div
-          class="w-1.5 h-1.5 bg-amber-400 rounded-full absolute animate-bounce-slow"
-          style="top: 2px"
-        ></div>
-      </div>
-
-      <!-- Texto indicador -->
-      <div class="flex items-center gap-2 text-sm font-light">
-        <span>Desliza para descubrir</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="animate-bounce-slow"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
-      </div>
-    </div>
-
-    <!-- Indicadores de imagen -->
-    <div
-      class="absolute right-8 top-1/2 transform -translate-y-1/2 flex flex-col gap-4 z-40"
+      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4 z-40"
     >
       <div
         v-for="(image, index) in images"
         :key="`indicator-${index}`"
-        class="group flex items-center gap-3 cursor-pointer"
+        class="group cursor-pointer"
         @click="navigateToImage(index)"
       >
         <!-- Indicador de punto -->
@@ -195,25 +175,6 @@
             class="absolute inset-0 bg-amber-400/50 rounded-full animate-ping"
           ></div>
         </div>
-
-        <!-- Etiqueta que aparece al pasar el ratón -->
-        <div
-          class="text-sm font-medium opacity-0 transform translate-x-2 transition-all duration-300 whitespace-nowrap"
-          :class="{
-            'group-hover:opacity-100 group-hover:translate-x-0':
-              currentImageIndex !== index,
-          }"
-        >
-          {{ image.label }}
-        </div>
-
-        <!-- Etiqueta activa -->
-        <div
-          v-if="currentImageIndex === index"
-          class="text-sm font-medium text-amber-300"
-        >
-          {{ image.label }}
-        </div>
       </div>
     </div>
   </div>
@@ -222,40 +183,46 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from "vue";
 
-// Imágenes para el slideshow con títulos y etiquetas
+// Tamaño de la cuadrícula para el efecto de transición
+const gridSize = 8; // 8x8 cuadrícula
+
+// Imágenes de alta calidad de Unsplash
 const images = [
   {
-    src: "/landing/paralax.jpg",
-    alt: "Oncoclinic Background 1",
+    id: 1,
+    src: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?q=80&w=1920&auto=format&fit=crop",
+    alt: "Hospital moderno",
     title: "Excelencia",
     label: "Inicio",
   },
   {
-    src: "/landing/paralax.jpg", // En un caso real, estas serían diferentes imágenes
-    alt: "Oncoclinic Background 2",
+    id: 2,
+    src: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1920&auto=format&fit=crop",
+    alt: "Equipo médico",
     title: "Innovación",
     label: "Servicios",
   },
   {
-    src: "/landing/paralax.jpg", // En un caso real, estas serían diferentes imágenes
-    alt: "Oncoclinic Background 3",
+    id: 3,
+    src: "https://images.unsplash.com/photo-1504439468489-c8920d796a29?q=80&w=1920&auto=format&fit=crop",
+    alt: "Tecnología médica",
     title: "Compromiso",
     label: "Especialistas",
   },
 ];
 
 // Variables de estado
-const parallaxBg = ref<HTMLElement | null>(null);
 const currentImageIndex = ref(0);
+const nextImageIndex = ref(0);
 const isLoaded = ref(false);
-const translateY = ref(0);
+const isTransitioning = ref(false);
 const autoChangeInterval = ref<number | null>(null);
 
-// Cambiar imagen automáticamente cada 8 segundos
+// Cambiar imagen automáticamente cada 6 segundos
 const startAutoChange = () => {
   autoChangeInterval.value = window.setInterval(() => {
-    currentImageIndex.value = (currentImageIndex.value + 1) % images.length;
-  }, 8000);
+    changeImage((currentImageIndex.value + 1) % images.length);
+  }, 6000);
 };
 
 // Detener cambio automático
@@ -266,23 +233,18 @@ const stopAutoChange = () => {
   }
 };
 
-// Efecto parallax simple y confiable
-const handleScroll = () => {
-  if (!parallaxBg.value) return;
+// Cambiar a una imagen específica con efecto de transición
+const changeImage = (index: number) => {
+  if (index === currentImageIndex.value || isTransitioning.value) return;
 
-  // Calcular la posición del scroll relativa a la ventana
-  const scrollPosition = window.scrollY;
-  const windowHeight = window.innerHeight;
+  isTransitioning.value = true;
+  nextImageIndex.value = index;
 
-  // Calcular si el elemento está visible en la ventana
-  const rect = parallaxBg.value.getBoundingClientRect();
-  const isVisible = rect.top < windowHeight && rect.bottom > 0;
-
-  if (isVisible) {
-    // Calcular el valor de transformación para el efecto parallax
-    // Usamos un factor de 0.3 para un efecto suave (30% de la velocidad de scroll)
-    translateY.value = scrollPosition * 0.3;
-  }
+  // Esperar a que termine la animación
+  setTimeout(() => {
+    currentImageIndex.value = index;
+    isTransitioning.value = false;
+  }, 1000); // Duración de la animación
 };
 
 // Navegar a una imagen específica
@@ -291,7 +253,7 @@ const navigateToImage = (index: number) => {
   stopAutoChange();
 
   // Cambiar a la imagen seleccionada
-  currentImageIndex.value = index;
+  changeImage(index);
 
   // Reiniciar el cambio automático después de un tiempo
   setTimeout(() => {
@@ -309,26 +271,55 @@ onMounted(async () => {
     isLoaded.value = true;
   }, 100);
 
-  // Agregar el evento de scroll para el efecto parallax
-  window.addEventListener("scroll", handleScroll, { passive: true });
-
   // Iniciar el cambio automático de imágenes
-  startAutoChange();
-
-  // Ejecutar una vez para inicializar
-  handleScroll();
+  setTimeout(() => {
+    startAutoChange();
+  }, 3000);
 });
 
 onUnmounted(() => {
-  // Limpiar el evento de scroll
-  window.removeEventListener("scroll", handleScroll);
-
   // Detener el cambio automático
   stopAutoChange();
 });
 </script>
 
 <style scoped>
+/* Efecto de cuadrícula para transiciones */
+.grid-effect {
+  display: grid;
+  grid-template-columns: repeat(v-bind(gridSize), 1fr);
+  grid-template-rows: repeat(v-bind(gridSize), 1fr);
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+}
+
+.grid-item {
+  background-color: transparent;
+  transform: scale(1);
+  opacity: 1;
+}
+
+.grid-effect.active .grid-item {
+  animation: gridItemOut 0.8s forwards;
+}
+
+@keyframes gridItemOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    background-color: transparent;
+  }
+  20% {
+    background-color: #000;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+    background-color: #000;
+  }
+}
+
 /* Animaciones personalizadas */
 @keyframes slide-up {
   from {
@@ -346,16 +337,6 @@ onUnmounted(() => {
   100% {
     transform: scale(2);
     opacity: 0;
-  }
-}
-
-@keyframes bounce-slow {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(5px);
   }
 }
 
@@ -379,8 +360,15 @@ onUnmounted(() => {
   animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
-.animate-bounce-slow {
-  animation: bounce-slow 1.5s ease-in-out infinite;
+/* Transiciones de Vue */
+.grid-transition-enter-active,
+.grid-transition-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.grid-transition-enter-from,
+.grid-transition-leave-to {
+  opacity: 0;
 }
 
 /* Asegurar animaciones suaves */

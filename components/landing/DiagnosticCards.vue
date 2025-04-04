@@ -75,7 +75,8 @@
                         <div
                           class="relative z-10 flex items-center justify-center"
                         >
-                          <lucid
+                          <Icon
+                            size="4rem"
                             name="lucide:microscope"
                             class="h-16 w-16 text-white"
                           />
@@ -231,6 +232,7 @@
                           class="relative z-10 flex items-center justify-center"
                         >
                           <Icon
+                            size="4rem"
                             name="lucide:dna"
                             class="h-16 w-16 text-white"
                           />
@@ -342,6 +344,7 @@
                           class="relative z-10 flex items-center justify-center"
                         >
                           <Icon
+                            size="4rem"
                             name="lucide:flask-conical"
                             class="h-16 w-16 text-white"
                           />
@@ -497,6 +500,7 @@
                           class="relative z-10 flex items-center justify-center"
                         >
                           <Icon
+                            size="4rem"
                             name="lucide:test-tube"
                             class="h-16 w-16 text-white"
                           />
@@ -572,7 +576,7 @@
       <div class="mt-16 text-center">
         <a
           href="#"
-          class="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 font-medium text-white shadow-md transition-colors hover:bg-blue-700 hover:shadow-lg"
+          class="inline-flex items-center justify-center rounded-full bg-primary-600 px-8 py-3 font-medium text-white shadow-md transition-colors hover:bg-primary-700 hover:shadow-lg"
         >
           Solicitar diagnóstico especializado
           <Icon name="lucide:chevron-right" class="ml-2 h-4 w-4" />
