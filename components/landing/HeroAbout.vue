@@ -6,12 +6,12 @@
         class="relative order-2 w-full h-[600px] md:aspect-square lg:order-1"
       >
         <!-- Image container with improved responsive sizing -->
-        <div class="relative mx-auto h-full w-full max-w-[600px]">
+        <div class="relative mx-auto h-full w-full">
           <NuxtImg
             src="landing/flecha.png"
             draggable="false"
             alt="Award trophy"
-            :class="['absolute h-60 ']"
+            class="absolute h-45 left-[15%] md:left-[20%] lg:left-[10%]"
           />
 
           <NuxtImg
@@ -19,10 +19,9 @@
             draggable="false"
             alt="Award trophy"
             :class="[
-              'absolute',
-              'rounded-2xl',
-              'z-30 object-cover ',
-              'shadow-xl shadow-current right-0  xl:max-w-[400px]',
+              'absolute rounded-2xl shadow-xl shadow-current z-30 bg-cover  bg-center bg-no-repeat',
+              'top-10 right-0',
+              'w-[50%] md:w-[48%] h-[35%]',
             ]"
           />
 
@@ -31,9 +30,9 @@
             draggable="false"
             alt="Award trophy"
             :class="[
-              'absolute z-20 lg:max-w-[400px] top-[40%]',
-              'rounded-2xl object-cover shadow-xl shadow-current',
-              'transition-all duration-300',
+              'absolute rounded-2xl shadow-2xl shadow-currentbg-cover bg-center bg-no-repeat z-20  aspect-square',
+              'top-[30%]',
+              'w-[50%] md:w-[48%] h-[35%]',
             ]"
           />
 
@@ -42,8 +41,9 @@
             draggable="false"
             alt="Clinic building"
             :class="[
-              'absolute right-0 bottom-0 z-10 aspect-video max-w-[400px]',
-              'rounded-xl object-cover shadow-lg',
+              'absolute rounded-2xl aspect-video shadow-xl shadow-current object-cover z.10',
+              'right-0 md:right-10 bottom-10',
+              'w-[66%] h-[40%] ',
             ]"
           />
         </div>
