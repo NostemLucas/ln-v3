@@ -27,6 +27,12 @@
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.34",
     "@iconify-json/mdi": "^1.2.3",
-    "@iconify-json/svg-spinners": "^1.2.2"
+    "@iconify-json/svg-spinners": "^1.2.2",
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
