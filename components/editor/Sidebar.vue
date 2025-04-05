@@ -58,6 +58,19 @@
 </template>
 
 <script setup lang="ts">
+import {
+  Type,
+  Heading1,
+  Heading2,
+  AlignLeft,
+  Image as ImageIcon,
+  SeparatorHorizontal,
+  Eye,
+  Download,
+  Code,
+  Columns,
+} from "lucide-vue-next";
+
 const props = defineProps<{
   availableComponents: Array<{ type: string; label: string }>;
   handleDragStart: (event: DragEvent, componentType: string) => void;
