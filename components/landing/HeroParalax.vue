@@ -1,94 +1,55 @@
 <template>
-  <div
-    ref="heroSection"
-    class="relative w-full h-[90vh] overflow-hidden text-white"
-    @wheel="handleWheel"
-  >
-    <!-- Multiple background images with scroll-based transitions -->
-    <div class="absolute inset-0 w-full h-full overflow-hidden">
-      <!-- Image layers that change with scroll -->
-      <div
-        v-for="(image, index) in images"
-        :key="index"
-        class="absolute inset-0 w-full h-full transition-all duration-1000"
-        :style="{
-          opacity: currentImageIndex === index ? 1 : 0,
-          transform: `scale(${
-            currentImageIndex === index
-              ? 1
-              : index < currentImageIndex
-              ? 0.9
-              : 1.1
-          })`,
-          zIndex: images.length - index,
-        }"
+  <div class="relative w-full h-screen overflow-hidden text-white">
+    <!-- Contenedor de imágenes con efecto de transición de cuadrícula -->
+    <div class="absolute inset-0 w-full h-full">
+      <transition-group
+        name="grid-transition"
+        tag="div"
+        class="relative w-full h-full"
       >
-        <img
-          :src="image.src"
-          :alt="image.alt"
-          class="absolute w-full h-[120%] object-cover object-center transition-all duration-700 ease-out"
-          :style="{
-            transform: `translateY(${-scrollOffset * 40}px) scale(${
-              1 + scrollOffset * 0.05
-            })`,
-            filter: `brightness(${0.8 + scrollOffset * 0.2})`,
-          }"
-          draggable="false"
-        />
-
-        <!-- Per-image text that appears with scroll -->
         <div
-          class="absolute inset-0 flex items-center justify-center z-10 transition-all duration-700"
-          :style="{
-            opacity: currentImageIndex === index ? scrollOffset * 2 : 0,
-            transform: `translateY(${(1 - scrollOffset) * 50}px)`,
-          }"
+          v-for="(image, index) in images"
+          :key="image.id"
+          v-show="currentImageIndex === index"
+          class="absolute inset-0 w-full h-full"
         >
+          <!-- Imagen de fondo -->
+          <NuxtImg
+            :src="image.src"
+            :alt="image.alt"
+            class="w-full h-full object-cover object-center"
+            draggable="false"
+          />
+
+          <!-- Overlay con gradiente para mejorar legibilidad -->
           <div
-            class="text-6xl md:text-8xl font-bold text-white/80 text-center px-4 backdrop-blur-sm"
+            class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black/80"
+          ></div>
+
+          <!-- Efecto de cuadrícula para transición -->
+          <div
+            class="absolute inset-0 grid-effect"
+            :class="{ active: isTransitioning && nextImageIndex !== index }"
           >
-            {{ image.title }}
+            <div
+              v-for="i in gridSize * gridSize"
+              :key="i"
+              class="grid-item"
+              :style="{
+                animationDelay: `${
+                  (i % gridSize) * 50 + Math.floor(i / gridSize) * 50
+                }ms`,
+              }"
+            ></div>
           </div>
         </div>
-      </div>
-
-      <!-- Overlay with gradient -->
-      <div
-        class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/75 z-10"
-        :style="{ opacity: 1 - scrollOffset * 0.3 }"
-      ></div>
-
-      <!-- Animated particles effect -->
-      <div class="absolute inset-0 overflow-hidden pointer-events-none z-20">
-        <div
-          v-for="i in 20"
-          :key="`particle-${i}`"
-          class="absolute rounded-full bg-amber-400/30 blur-md"
-          :style="{
-            width: `${Math.random() * 10 + 5}px`,
-            height: `${Math.random() * 10 + 5}px`,
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            opacity: 0.1 + Math.random() * 0.2,
-            transform: `translateY(${
-              scrollOffset * 100 * (Math.random() * 2 - 1)
-            }px)`,
-            transition: 'transform 0.5s ease-out',
-          }"
-        ></div>
-      </div>
+      </transition-group>
     </div>
 
-    <!-- Content Container -->
-    <div
-      class="relative z-30 h-full w-full flex items-center"
-      :style="{
-        opacity: 1 - scrollOffset * 2,
-        transform: `translateY(${scrollOffset * -100}px)`,
-      }"
-    >
+    <!-- Contenido principal fijo -->
+    <div class="relative z-30 h-full w-full flex items-center">
       <div class="container mx-auto px-6 md:px-8 lg:px-12">
-        <!-- Logo and Tagline -->
+        <!-- Logo y tagline con animación de entrada -->
         <div
           class="mb-4 md:mb-6 transform translate-y-8 opacity-0"
           :class="{ 'animate-slide-up': isLoaded }"
@@ -104,7 +65,7 @@
           </div>
         </div>
 
-        <!-- Main Heading with animated highlight -->
+        <!-- Título principal con highlight animado -->
         <h1
           class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight max-w-3xl mb-4 md:mb-6 transform translate-y-8 opacity-0"
           :class="{ 'animate-slide-up-delay-1': isLoaded }"
@@ -119,7 +80,7 @@
           y Sanitaria En Tu Ciudad
         </h1>
 
-        <!-- Subheading with decorative element -->
+        <!-- Subtítulo con elemento decorativo -->
         <div
           class="flex items-center mb-8 md:mb-10 transform translate-y-8 opacity-0"
           :class="{ 'animate-slide-up-delay-2': isLoaded }"
@@ -130,120 +91,80 @@
           </h6>
         </div>
 
-        <!-- Buttons with enhanced styling -->
+        <!-- Botones con estilos mejorados -->
         <div
           class="flex flex-col sm:flex-row gap-4 transform translate-y-8 opacity-0"
           :class="{ 'animate-slide-up-delay-3': isLoaded }"
         >
-          <button
-            class="group flex items-center justify-center gap-2 px-8 py-3 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-amber-500/30"
-          >
-            Contactos
-            <span
-              class="inline-block transition-transform duration-300 group-hover:translate-x-1"
+          <NuxtLink to="/contactos">
+            <button
+              class="group cursor-pointer flex items-center justify-center gap-2 px-8 py-3 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-amber-500/30"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-arrow-right"
+              Contactos
+              <span
+                class="inline-block transition-transform duration-300 group-hover:translate-x-1"
               >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
-            </span>
-          </button>
-          <button
-            class="group flex items-center justify-center gap-2 px-8 py-3 bg-transparent hover:bg-white/10 text-white border-2 border-white/70 hover:border-white rounded-full transition-all duration-300"
-          >
-            Nuestros Doctores
-            <span
-              class="inline-block transition-transform duration-300 group-hover:translate-x-1"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-arrow-right"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </span>
+            </button>
+          </NuxtLink>
+          <NuxtLink to="/profesionales">
+            <button
+              class="group cursor-pointer flex items-center justify-center gap-2 px-8 py-3 bg-transparent hover:bg-white/10 text-white border-2 border-white/70 hover:border-white rounded-full transition-all duration-300"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-users"
+              Nuestros Doctores
+              <span
+                class="inline-block transition-transform duration-300 group-hover:translate-x-1"
               >
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
-            </span>
-          </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-users"
+                >
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </span>
+            </button>
+          </NuxtLink>
         </div>
       </div>
     </div>
 
-    <!-- Scroll indicator with enhanced effects -->
+    <!-- Indicadores de imagen con interacción mejorada -->
     <div
-      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center z-40"
-      :style="{ opacity: 1 - scrollOffset * 3 }"
-    >
-      <!-- Animated scroll icon -->
-      <div
-        class="w-6 h-10 border-2 border-white/70 rounded-full mb-2 flex justify-center relative overflow-hidden"
-      >
-        <div
-          class="w-1.5 h-1.5 bg-amber-400 rounded-full absolute top-2"
-          :style="{
-            transform: `translateY(${Math.sin(Date.now() / 500) * 4 + 4}px)`,
-            opacity: scrolling ? 0.5 : 1,
-          }"
-        ></div>
-      </div>
-
-      <!-- Text indicator with dynamic effect -->
-      <div
-        class="flex items-center gap-2 text-sm font-light"
-        :class="{ 'animate-pulse': scrolling }"
-      >
-        <span>Desliza para descubrir</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="transition-transform duration-300"
-          :style="{
-            transform: `translateY(${Math.sin(Date.now() / 300) * 3}px)`,
-          }"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
-      </div>
-    </div>
-
-    <!-- Image indicators with enhanced interaction -->
-    <div
-      class="absolute right-8 top-1/2 transform -translate-y-1/2 flex flex-col gap-4 z-40"
+      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4 z-40"
     >
       <div
         v-for="(image, index) in images"
         :key="`indicator-${index}`"
-        class="group flex items-center gap-3 cursor-pointer"
+        class="group cursor-pointer"
         @click="navigateToImage(index)"
       >
-        <!-- Dot indicator -->
+        <!-- Indicador de punto -->
         <div
           class="w-3 h-3 rounded-full transition-all duration-300 relative"
           :class="
@@ -252,30 +173,11 @@
               : 'bg-white/40 hover:bg-white/60'
           "
         >
-          <!-- Ripple effect for active dot -->
+          <!-- Efecto de onda para punto activo -->
           <div
             v-if="currentImageIndex === index"
             class="absolute inset-0 bg-amber-400/50 rounded-full animate-ping"
           ></div>
-        </div>
-
-        <!-- Label that appears on hover -->
-        <div
-          class="text-sm font-medium opacity-0 transform translate-x-2 transition-all duration-300 whitespace-nowrap"
-          :class="{
-            'group-hover:opacity-100 group-hover:translate-x-0':
-              currentImageIndex !== index,
-          }"
-        >
-          {{ image.label }}
-        </div>
-
-        <!-- Active label -->
-        <div
-          v-if="currentImageIndex === index"
-          class="text-sm font-medium text-amber-300"
-        >
-          {{ image.label }}
         </div>
       </div>
     </div>
@@ -283,205 +185,147 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, watch } from "vue";
+import { NuxtImg } from "#components";
+import { ref, onMounted, onUnmounted, nextTick } from "vue";
 
-// Images for the slideshow with titles and labels
+// Tamaño de la cuadrícula para el efecto de transición
+const gridSize = 8; // 8x8 cuadrícula
+
+// Imágenes de alta calidad de Unsplash
 const images = [
   {
-    src: "/mock/paralax.jpg",
-    alt: "Oncoclinic Background 1",
+    id: 1,
+    src: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?q=80&w=1920&auto=format&fit=crop",
+    alt: "Hospital moderno",
     title: "Excelencia",
     label: "Inicio",
   },
   {
-    src: "/mock/paralax.jpg", // En un caso real, estas serían diferentes imágenes
-    alt: "Oncoclinic Background 2",
+    id: 2,
+    src: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1920&auto=format&fit=crop",
+    alt: "Equipo médico",
     title: "Innovación",
     label: "Servicios",
   },
   {
-    src: "/mock/paralax.jpg", // En un caso real, estas serían diferentes imágenes
-    alt: "Oncoclinic Background 3",
+    id: 3,
+    src: "https://images.unsplash.com/photo-1504439468489-c8920d796a29?q=80&w=1920&auto=format&fit=crop",
+    alt: "Tecnología médica",
     title: "Compromiso",
     label: "Especialistas",
   },
 ];
 
-// State variables
-const heroSection = ref<HTMLElement | null>(null);
+// Variables de estado
 const currentImageIndex = ref(0);
-const scrollOffset = ref(0); // 0 to 1 within each image section
+const nextImageIndex = ref(0);
 const isLoaded = ref(false);
-const scrolling = ref(false);
-const scrollTimeout = ref<number | null>(null);
-const wheelEvents = ref<number[]>([]);
-const lastScrollTime = ref(Date.now());
+const isTransitioning = ref(false);
+const autoChangeInterval = ref<number | null>(null);
 
-// Handle wheel events for custom scrolling
-const handleWheel = (e: WheelEvent) => {
-  e.preventDefault();
-
-  // Track wheel events for momentum
-  const now = Date.now();
-  wheelEvents.value.push(e.deltaY);
-
-  // Keep only recent events (last 200ms)
-  wheelEvents.value = wheelEvents.value.filter(
-    () => now - lastScrollTime.value < 200
-  );
-
-  // Calculate momentum based on recent wheel events
-  const momentum =
-    wheelEvents.value.reduce((sum, delta) => sum + delta, 0) / 100;
-
-  // Update scroll offset with momentum
-  updateScrollOffset(momentum);
-
-  // Update last scroll time
-  lastScrollTime.value = now;
-
-  // Show scrolling indicator
-  scrolling.value = true;
-
-  // Clear previous timeout
-  if (scrollTimeout.value) {
-    clearTimeout(scrollTimeout.value);
-  }
-
-  // Set timeout to hide scrolling indicator
-  scrollTimeout.value = window.setTimeout(() => {
-    scrolling.value = false;
-  }, 500);
+// Cambiar imagen automáticamente cada 6 segundos
+const startAutoChange = () => {
+  autoChangeInterval.value = window.setInterval(() => {
+    changeImage((currentImageIndex.value + 1) % images.length);
+  }, 6000);
 };
 
-// Update scroll offset with momentum and handle image transitions
-const updateScrollOffset = (momentum: number) => {
-  // Update scroll offset
-  scrollOffset.value += momentum * 0.01;
-
-  // Constrain between 0 and 1
-  if (scrollOffset.value < 0) {
-    // If at first image and trying to scroll up, bounce effect
-    if (currentImageIndex.value === 0) {
-      scrollOffset.value = 0;
-    } else {
-      // Move to previous image
-      currentImageIndex.value--;
-      scrollOffset.value = 1;
-    }
-  } else if (scrollOffset.value > 1) {
-    // If at last image and trying to scroll down, bounce effect
-    if (currentImageIndex.value === images.length - 1) {
-      scrollOffset.value = 1;
-    } else {
-      // Move to next image
-      currentImageIndex.value++;
-      scrollOffset.value = 0;
-    }
+// Detener cambio automático
+const stopAutoChange = () => {
+  if (autoChangeInterval.value !== null) {
+    clearInterval(autoChangeInterval.value);
+    autoChangeInterval.value = null;
   }
 };
 
-// Navigate to specific image
+// Cambiar a una imagen específica con efecto de transición
+const changeImage = (index: number) => {
+  if (index === currentImageIndex.value || isTransitioning.value) return;
+
+  isTransitioning.value = true;
+  nextImageIndex.value = index;
+
+  // Esperar a que termine la animación
+  setTimeout(() => {
+    currentImageIndex.value = index;
+    isTransitioning.value = false;
+  }, 1000); // Duración de la animación
+};
+
+// Navegar a una imagen específica
 const navigateToImage = (index: number) => {
-  // If same image, do nothing
-  if (index === currentImageIndex.value) return;
+  // Detener el cambio automático temporalmente
+  stopAutoChange();
 
-  // Set scroll offset based on direction
-  scrollOffset.value = index < currentImageIndex.value ? 1 : 0;
+  // Cambiar a la imagen seleccionada
+  changeImage(index);
 
-  // Update current image
-  currentImageIndex.value = index;
-
-  // Animate scroll offset to show transition
-  const startOffset = scrollOffset.value;
-  const targetOffset = index < currentImageIndex.value ? 0 : 1;
-  const startTime = Date.now();
-  const duration = 800;
-
-  const animateOffset = () => {
-    const elapsed = Date.now() - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    const easedProgress = easeInOutCubic(progress);
-
-    scrollOffset.value =
-      startOffset + (targetOffset - startOffset) * easedProgress;
-
-    if (progress < 1) {
-      requestAnimationFrame(animateOffset);
-    }
-  };
-
-  requestAnimationFrame(animateOffset);
+  // Reiniciar el cambio automático después de un tiempo
+  setTimeout(() => {
+    startAutoChange();
+  }, 10000);
 };
 
-// Easing function for smoother animations
-const easeInOutCubic = (t: number): number => {
-  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-};
+// Inicializar
+onMounted(async () => {
+  // Esperar a que el DOM se actualice
+  await nextTick();
 
-// Animate scroll indicator
-const animateScrollIndicator = () => {
-  // Force component update for scroll indicator animation
-  setInterval(() => {
-    // This empty function just forces a component update for the scroll indicator animation
-  }, 50);
-};
-
-// Initialize
-onMounted(() => {
-  // Prevent default scroll behavior on the hero section
-  if (heroSection.value) {
-    heroSection.value.addEventListener("wheel", (e) => e.preventDefault(), {
-      passive: false,
-    });
-  }
-
-  // Start scroll indicator animation
-  animateScrollIndicator();
-
-  // Trigger entrance animations
+  // Activar las animaciones
   setTimeout(() => {
     isLoaded.value = true;
   }, 100);
 
-  // Demo effect to show scrolling functionality
+  // Iniciar el cambio automático de imágenes
   setTimeout(() => {
-    // Simulate scrolling down slightly
-    let demoProgress = 0;
-    const demoInterval = setInterval(() => {
-      demoProgress += 0.02;
-      scrollOffset.value = Math.min(demoProgress, 0.3);
-
-      if (demoProgress >= 0.3) {
-        clearInterval(demoInterval);
-
-        // Then scroll back up
-        setTimeout(() => {
-          let reverseProgress = 0.3;
-          const reverseInterval = setInterval(() => {
-            reverseProgress -= 0.02;
-            scrollOffset.value = Math.max(reverseProgress, 0);
-
-            if (reverseProgress <= 0) {
-              clearInterval(reverseInterval);
-            }
-          }, 30);
-        }, 800);
-      }
-    }, 30);
-  }, 2000);
+    startAutoChange();
+  }, 3000);
 });
 
 onUnmounted(() => {
-  // Clear any timeouts
-  if (scrollTimeout.value) {
-    clearTimeout(scrollTimeout.value);
-  }
+  // Detener el cambio automático
+  stopAutoChange();
 });
 </script>
 
 <style scoped>
-/* Custom animations */
+/* Efecto de cuadrícula para transiciones */
+.grid-effect {
+  display: grid;
+  grid-template-columns: repeat(v-bind(gridSize), 1fr);
+  grid-template-rows: repeat(v-bind(gridSize), 1fr);
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+}
+
+.grid-item {
+  background-color: transparent;
+  transform: scale(1);
+  opacity: 1;
+}
+
+.grid-effect.active .grid-item {
+  animation: gridItemOut 0.8s forwards;
+}
+
+@keyframes gridItemOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    background-color: transparent;
+  }
+  20% {
+    background-color: #000;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+    background-color: #000;
+  }
+}
+
+/* Animaciones personalizadas */
 @keyframes slide-up {
   from {
     transform: translateY(20px);
@@ -521,12 +365,25 @@ onUnmounted(() => {
   animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
-/* Ensure smooth animations */
-* {
-  @apply transition-all duration-300;
+/* Transiciones de Vue */
+.grid-transition-enter-active,
+.grid-transition-leave-active {
+  transition: opacity 0.5s ease;
 }
 
-/* Custom scrollbar for webkit browsers */
+.grid-transition-enter-from,
+.grid-transition-leave-to {
+  opacity: 0;
+}
+
+/* Asegurar animaciones suaves */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Scrollbar personalizado para navegadores webkit */
 ::-webkit-scrollbar {
   width: 6px;
 }

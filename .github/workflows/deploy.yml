@@ -1,0 +1,43 @@
+name: Deploy to Server (Nuxt SSR)
+
+on:
+  push:
+    branches:
+      - main # Esto se ejecuta cuando se haga un push a la rama principal
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Checkout del código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Paso 2: Configurar SSH
+      - name: Configurar SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 45.55.85.167 >> ~/.ssh/known_hosts  # Cambia la IP por la tuya
+
+      # Paso 3: Subir los archivos al servidor
+      - name: Subir archivos al servidor
+        run: |
+          rsync -avz --delete ./ root@45.55.85.167:/var/www/mi-app
+
+      # Paso 4: Instalar dependencias y construir la app en el servidor
+      - name: Instalar dependencias y construir la app
+        run: |
+          ssh root@45.55.85.167 "
+            cd /var/www/mi-app &&  # Cambia esta ruta según sea necesario
+            npm install &&
+            npm run build"
+
+      # Paso 5: Iniciar o reiniciar la app con PM2
+      - name: Iniciar/rehacer la app con PM2
+        run: |
+          ssh root@45.55.85.167 "
+            cd /var/www/mi-app &&
+            pm2 restart mi-app || pm2 start .output/server/index.mjs --name mi-app --interpreter=node"

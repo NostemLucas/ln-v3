@@ -1,5 +1,5 @@
 <template>
-  <section class="container mx-auto max-w-7xl px-4 py-12 overflow-hidden">
+  <section class="container mx-auto max-w-7xl px-8 py-12 overflow-hidden">
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
       <!-- Image section with improved responsive behavior -->
       <div
@@ -26,18 +26,18 @@
           />
 
           <NuxtImg
-            src="landing/premio1.png"
+            src="landing/principal.jpg"
             draggable="false"
             alt="Award trophy"
             :class="[
               'absolute rounded-2xl shadow-2xl shadow-currentbg-cover bg-center bg-no-repeat z-20  aspect-square',
               'top-[30%]',
-              'w-[50%] md:w-[48%] h-[35%]',
+              'w-[65%] md:w-[48%] h-[35%]',
             ]"
           />
 
           <NuxtImg
-            src="landing/principal.jpg"
+            src="landing/premio1.png"
             draggable="false"
             alt="Clinic building"
             :class="[
@@ -76,9 +76,9 @@
 
         <div class="flex flex-wrap items-center gap-4">
           <UButton
-            class="rounded-full ring-4 px-10 py-4 font-black"
+            class="rounded-full px-10 py-4 font-black ring-2"
             to=""
-            trailing-icon="i-lucide-phone-call"
+            trailing-icon="i-lucide-arrow-right"
             variant="outline"
           >
             Ver Más
@@ -87,8 +87,12 @@
             href="tel:+59174846264"
             class="inline-flex items-center tracking-widest text-slate-700"
           >
-            <PhoneCallIcon class="mr-2 h-6 w-6 text-red-500 md:h-7 md:w-7" />
-            (+591) 74846264
+            <Icon
+              name="lucide:phone-call"
+              size="2rem"
+              class="mr-2 h-6 w-6 text-red-500 md:h-7 md:w-7"
+            />
+            <span class="font-bold mr-2">(+591)</span> 74846264
           </a>
         </div>
 
@@ -98,11 +102,7 @@
             <div
               class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 p-3 md:h-20 md:w-20"
             >
-              <NuxtImg
-                src="medicine-icon.png"
-                alt="Hospitalisation icon"
-                draggable="false"
-              />
+              <Icon name="lucide:pill" size="2.4rem" class="text-blue-500" />
             </div>
             <div class="text-sm font-semibold md:text-base">
               Medicina y Atención Sanitaria
@@ -113,10 +113,10 @@
             <div
               class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 p-3 md:h-20 md:w-20"
             >
-              <NuxtImg
-                src="stetoscop-icon.png"
-                alt="Hospitalisation icon"
-                draggable="false"
+              <Icon
+                name="lucide:stethoscope"
+                size="2.4rem"
+                class="text-blue-500"
               />
             </div>
             <div class="text-sm font-semibold md:text-base">
@@ -128,10 +128,7 @@
             <div
               class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 p-3 md:h-20 md:w-20"
             >
-              <NuxtImg
-                src="hospitalisation-icon.png"
-                alt="Hospitalisation icon"
-              />
+              <Icon name="lucide:bed" size="2.4rem" class="text-blue-500" />
             </div>
             <div class="text-sm font-semibold md:text-base">
               Servicio de Internación
@@ -142,7 +139,11 @@
             <div
               class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 p-3 md:h-20 md:w-20"
             >
-              <NuxtImg src="laboratory-icon.png" alt="Laboratory icon" />
+              <Icon
+                name="lucide:microscope"
+                size="2.4rem"
+                class="text-blue-500"
+              />
             </div>
             <div class="text-sm font-semibold md:text-base">
               Servicio de Laboratorios
