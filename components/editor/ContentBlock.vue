@@ -282,13 +282,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import {
-  ChevronUp,
-  ChevronDown,
-  LayoutGrid,
-  Copy,
-  Trash2,
-} from "lucide-vue-next";
+
 import type { ContentBlock, ImageProperties } from "@/types/content-builder";
 
 const props = defineProps<{
