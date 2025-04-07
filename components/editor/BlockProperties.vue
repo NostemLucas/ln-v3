@@ -528,7 +528,7 @@
 
           <div class="mb-4">
             <label
-              class="block text-sm font-medium text-gray-700 mb-1 flex justify-between"
+              class="text-sm font-medium text-gray-700 mb-1 flex justify-between"
             >
               <span>Elementos de la lista</span>
               <button
@@ -695,7 +695,7 @@
         <div v-if="selectedBlock.type === 'table'">
           <div class="mb-4">
             <label
-              class="block text-sm font-medium text-gray-700 mb-1 flex justify-between"
+              class="text-sm font-medium text-gray-700 mb-1 flex justify-between"
             >
               <span>Filas</span>
               <button
@@ -721,7 +721,7 @@
 
           <div class="mb-4">
             <label
-              class="block text-sm font-medium text-gray-700 mb-1 flex justify-between"
+              class="text-sm font-medium text-gray-700 mb-1 flex justify-between"
             >
               <span>Columnas</span>
               <button
@@ -812,14 +812,11 @@
 
 <script setup lang="ts">
 import { defineProps, defineEmits, ref } from "vue";
-import type { TextAlignment, DividerStyle } from "@/types/content-builder";
+import type { ContentBlock } from "~/types/content-builder";
 
-const props = defineProps({
-  selectedBlock: {
-    type: Object,
-    required: true,
-  },
-});
+defineProps<{
+  selectedBlock: ContentBlock | null;
+}>();
 
 defineEmits([
   "close",

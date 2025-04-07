@@ -132,9 +132,6 @@ import type {
   ComponentDefinition,
   TextAlignment,
   DividerStyle,
-  ObjectFitType,
-  ListType,
-  QuoteStyle,
 } from "@/types/content-builder";
 import type {
   CodeProperties,
@@ -164,7 +161,7 @@ const templates = ref<Template[]>([
   },
 ]);
 
-const selectedTemplate = ref<string | null>(null);
+const selectedTemplate = ref<string | undefined>(undefined);
 const fixedFields = ref<FixedFields>({
   title: "",
   author: "",
@@ -183,10 +180,6 @@ const gridStack = ref<any>(null);
 
 // Computed properties
 const hasBlocks = computed(() => blocks.value.length > 0);
-
-const sortedBlocks = computed(() => {
-  return [...blocks.value].sort((a, b) => a.y - b.y);
-});
 
 // Computed para obtener el bloque seleccionado
 const selectedBlock = computed(() => {

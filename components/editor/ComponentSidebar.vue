@@ -53,10 +53,11 @@
 
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
+import type { ComponentDefinition } from "~/types/content-builder";
 
 defineProps({
   availableComponents: {
-    type: Array,
+    type: Array as () => ComponentDefinition[],
     required: true,
   },
 });

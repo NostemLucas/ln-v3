@@ -46,10 +46,11 @@
 
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
+import type { Template } from "~/types/content-builder";
 
 defineProps({
   templates: {
-    type: Array,
+    type: Array as () => Template[],
     required: true,
   },
   selectedTemplate: {

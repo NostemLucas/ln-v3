@@ -43,8 +43,8 @@
             <!-- Banner de la plantilla -->
             <TemplateHeader
               v-if="selectedTemplate && selectedTemplate !== 'none'"
-              :selectedTemplate="selectedTemplate"
-              :fixedFields="fixedFields"
+              :selected-template="selectedTemplate"
+              :fixed-fields="fixedFields"
             />
 
             <!-- Contenedor para la vista previa de GridStack -->
@@ -63,10 +63,11 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import { GridStack } from "gridstack";
 import TemplateHeader from "./TemplateHeader.vue";
+import type { ContentBlock } from "~/types/content-builder";
 
 const props = defineProps({
   blocks: {
-    type: Array,
+    type: Array as () => ContentBlock[],
     required: true,
   },
   selectedTemplate: {
@@ -114,7 +115,7 @@ const initPreviewGridStack = () => {
 };
 
 // Renderizar un bloque en la vista previa
-const renderPreviewBlock = (block: any) => {
+const renderPreviewBlock = (block: ContentBlock) => {
   if (!previewGridStack.value) return;
 
   // Crear el contenido HTML del bloque para la vista previa (sin controles de edición)
@@ -122,10 +123,10 @@ const renderPreviewBlock = (block: any) => {
 
   // Aplicar propiedades de texto
   const textStyles = block.textProps
-    ? `${block.textProps.bold ? "font-bold" : ""} 
-     ${block.textProps.italic ? "italic" : ""} 
-     ${block.textProps.underline ? "underline" : ""} 
-     ${block.textProps.color ? `color: ${block.textProps.color};` : ""} 
+    ? `${block.textProps.bold ? "font-bold" : ""}
+     ${block.textProps.italic ? "italic" : ""}
+     ${block.textProps.underline ? "underline" : ""}
+     ${block.textProps.color ? `color: ${block.textProps.color};` : ""}
      ${block.textProps.alignment ? `text-${block.textProps.alignment}` : ""}`
     : "";
 
