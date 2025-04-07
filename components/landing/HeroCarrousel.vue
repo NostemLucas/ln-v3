@@ -283,7 +283,7 @@ onBeforeUnmount(() => {
             </div>
 
             <div
-              class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-primary-900 via-primary-800/70 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:p-6"
+              class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-blue-900/90 via-blue-800/20 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:p-6"
             >
               <div class="text-white">
                 <div class="mb-1 text-xs font-medium sm:text-sm">

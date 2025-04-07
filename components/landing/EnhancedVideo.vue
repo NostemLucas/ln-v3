@@ -840,7 +840,7 @@ onUnmounted(() => {
   background-color: rgba(255, 255, 255, 0.15);
 }
 
-.video-btn::before {
+/* .video-btn::before {
   content: "";
   position: absolute;
   top: 0;
@@ -855,7 +855,7 @@ onUnmounted(() => {
   );
   transform: skewX(-25deg);
   transition: 0.5s;
-}
+} */
 
 .video-btn:hover::before {
   left: 150%;

@@ -43,13 +43,13 @@
                   class="h-4 w-4 transition-transform duration-300"
                   :class="{ 'rotate-180': activeMenus[index] }"
                 />
-                <span
+                <!--          <span
                   class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300"
                   :class="{
                     'w-full': activeMenus[index],
                     'w-0': !activeMenus[index],
                   }"
-                />
+                /> -->
               </UButton>
 
               <!-- Enlace con url -->
@@ -61,13 +61,13 @@
                 :class="{ 'text-primary': isActiveRoute(item.url) }"
               >
                 {{ item.label }}
-                <span
+                <!--        <span
                   class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300"
                   :class="{
                     'w-0': !isActiveRoute(item.url) || !activeMenus[index],
                     'w-full': isActiveRoute(item.url) || activeMenus[index],
                   }"
-                />
+                /> -->
               </UButton>
 
               <!-- Botón con columnas -->
@@ -82,13 +82,13 @@
                   class="h-4 w-4 transition-transform duration-300"
                   :class="{ 'rotate-180': activeMenus[index] }"
                 />
-                <span
+                <!--      <span
                   class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300"
                   :class="{
                     'w-full': activeMenus[index],
                     'w-0': !activeMenus[index],
                   }"
-                />
+                /> -->
               </UButton>
 
               <!-- Overlay para submenús  -->
@@ -151,13 +151,13 @@
                         />
                       </div>
                       {{ subItem.label }}
-                      <span
+                      <!--      <span
                         class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300"
                         :class="{
                           'w-full': isActiveRoute(subItem.url),
                           'w-0 group-hover:w-full': !isActiveRoute(subItem.url),
                         }"
-                      ></span>
+                      ></span> -->
                     </NuxtLink>
                   </li>
                 </ul>
@@ -253,7 +253,7 @@
                             />
                           </div>
                           {{ link.label }}
-                          <span
+                          <!--         <span
                             class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300"
                             :class="{
                               'w-full': isActiveRoute(link.url),
@@ -261,7 +261,7 @@
                                 link.url
                               ),
                             }"
-                          ></span>
+                          ></span> -->
                         </NuxtLink>
                       </li>
                     </ul>

@@ -4,18 +4,18 @@
       <!-- Encabezado de sección con animación sutil -->
       <div class="mb-12 text-center">
         <h2
-          class="text-3xl font-bold text-gray-900 md:text-4xl relative inline-block"
+          class="text-3xl font-bold text-gray-900 md:text-4xl relative inline-block pb-5"
         >
           Nuestros Tratamientos
           <span
-            class="absolute -bottom-2 left-0 h-1 w-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transform origin-left"
-          ></span>
+            class="absolute bottom-2 left-0 h-1 w-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transform origin-left"
+          />
         </h2>
         <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
           Ofrecemos tratamientos oncológicos avanzados con tecnología de
           vanguardia y atención personalizada
         </p>
-        <!--       <div class="mt-4">
+        <div class="mt-4">
           <a
             href="#"
             class="inline-flex items-center text-blue-600 font-medium transition-all duration-300 hover:text-blue-800 group"
@@ -35,7 +35,7 @@
               />
             </svg>
           </a>
-        </div> -->
+        </div>
       </div>
 
       <!-- Grid de tarjetas con efectos mejorados -->
@@ -61,7 +61,7 @@
               class="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-80 transition-all duration-700 ease-in-out]"
             />
             <div
-              class="absolute inset-0 z-10 bg-gradient-to-t from-blue-900/90 via-blue-800/70 to-transparent opacity-80 transition-all duration-700 ease-in-out group-hover:translate-y-[70%]"
+              class="absolute inset-0 z-10 bg-gradient-to-t from-blue-900/90 via-blue-800/70 to-transparent opacity-80 transition-all duration-700 ease-in-out group-hover:translate-y-[70%] translate-y-28"
             />
 
             <!-- Imagen con efecto de zoom -->
@@ -136,7 +136,7 @@ const treatments = ref([
   {
     title: "Trasplante de Médula Ósea",
     description:
-      "Procedimiento médico en el que se reemplaza la médula ósea dañada con células madre sanas, permitiendo la regeneración del tejido y mejorando la calidad de vida del paciente.",
+      "Procedimiento que reemplaza células madre dañadas por células sanas, para tratar enfermedades como leucemias, linfomas y otros trastornos hematológicos graves.",
     image:
       "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     url: "/tratamientos/transplante-medula-osea",
@@ -144,7 +144,7 @@ const treatments = ref([
   {
     title: "Inmunoterapia",
     description:
-      "Terapia innovadora que fortalece el sistema inmunológico para atacar selectivamente las células cancerosas, minimizando el daño a las células sanas.",
+      "Terapia innovadora que estimula o refuerza el sistema inmunológico del paciente para que reconozca y destruya células cancerosas de forma más específica y efectiva.",
     image:
       "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     url: "/tratamientos/inmunoterapia",
@@ -152,7 +152,7 @@ const treatments = ref([
   {
     title: "Quimioterapia",
     description:
-      "Tratamiento basado en el uso de fármacos que destruyen células cancerosas. Puede emplearse solo o en combinación con otros tratamientos para aumentar su efectividad.",
+      "Uso de medicamentos potentes que destruyen células cancerosas, impidiendo su crecimiento y multiplicación. Puede administrarse por vía oral o intravenosa.",
     image:
       "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     url: "/tratamientos/quimioterapia",
@@ -176,7 +176,7 @@ const treatments = ref([
   {
     title: "Cirugía Oncológica",
     description:
-      "Procedimiento quirúrgico especializado en la extirpación de tumores malignos y tejido circundante, con el objetivo de eliminar el cáncer de manera segura y efectiva.",
+      "Intervención quirúrgica para extirpar tumores cancerosos, tejidos afectados o ganglios, con el fin de controlar o curar el cáncer.",
     image:
       "https://images.unsplash.com/photo-1571772996211-2f02974a9f91?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     url: "/tratamientos/cirugia-oncologica",

@@ -27,11 +27,12 @@
           class="mb-6 rounded-lg border-l-4 border-primary-500 bg-blue-50 p-4"
         >
           <p class="mb-2 font-semibold text-gray-800">
-            Entre los mejores expertos en Bolivia.
+            Pioneros en el Trasplante de Médula Osea en Bolivia
           </p>
           <p class="mb-2 text-gray-700">
-            Oncoclinic clasifica más veces en el n.º 1 que ningún otro hospital
-            del país, según
+            Oncoclinic marcó un hito en la historia de la medicina boliviana al
+            realizar por primera vez el trasplante autólogo en 2017 y el
+            trasplante alogénico en adultos en 2023
             <!-- 	<span class="font-medium italic">..</span> -->
             .
           </p>
@@ -100,16 +101,16 @@
         <h2
           class="mb-4 text-3xl leading-tight font-bold text-gray-900 lg:text-4xl"
         >
-          Atención médica de
-          <span class="text-primary-400">primera categoría</span>
-          para pacientes de todo el mundo
+          El futuro de la oncología pasa por la
+          <span class="text-primary-400"> medicina de precisión.</span>
         </h2>
         <div class="mb-6 h-1 w-20 rounded-full bg-primary-700" />
 
         <p class="mb-6 text-gray-700">
-          Hacemos que sea fácil recibir atención médica en Oncoclinic para los
-          pacientes de todo el país, con servicios de asistencia personalizada
-          durante todo el proceso.
+          Es una forma moderna de tratar el cáncer. En lugar de usar el mismo
+          tratamiento para todos, estudiamos las características específicas del
+          tumor de cada persona, como su genética, para elegir el tratamiento
+          más adecuado.
         </p>
 
         <div class="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -131,9 +132,11 @@
               </svg>
             </div>
             <div>
-              <h3 class="font-medium text-gray-900">Atención personalizada</h3>
+              <h3 class="font-medium text-gray-900">
+                Tratamiento personalizado
+              </h3>
               <p class="text-sm text-gray-600">
-                Adaptada a sus necesidades específicas
+                El tratamiento se adapta a ti y a tu tipo de cáncer
               </p>
             </div>
           </div>
@@ -155,9 +158,12 @@
               </svg>
             </div>
             <div>
-              <h3 class="font-medium text-gray-900">Asistencia multilingüe</h3>
+              <h3 class="font-medium text-gray-900">
+                Diagnóstico molecular avanzado
+              </h3>
               <p class="text-sm text-gray-600">
-                Servicios de traducción disponibles
+                Se utilizan pruebas especiales (como la secuenciación genética)
+                para identificar alteraciones específicas en el cáncer
               </p>
             </div>
           </div>
