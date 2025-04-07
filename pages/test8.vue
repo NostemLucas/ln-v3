@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-500">
+  <div class="min-h-screen bg-gray-50">
     <!-- Layout principal con panel lateral y área de contenido -->
     <div class="flex h-screen overflow-hidden">
       <!-- Panel lateral izquierdo con componentes -->
