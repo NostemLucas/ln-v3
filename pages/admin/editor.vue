@@ -1,3 +1,3 @@
 <template>
-  <div>dssdssds</div>
+  <div>platilld prueba</div>
 </template>
