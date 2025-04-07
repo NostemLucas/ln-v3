@@ -45,27 +45,28 @@
                 :selected-template="selectedTemplate"
                 :fixed-fields="fixedFields"
               />
-
-              <!-- Content Grid with GridStack -->
-              <div class="p-6 editor-area" ref="contentGridRef">
-                <div
-                  v-if="!hasBlocks"
-                  class="min-h-[300px] border-2 border-dashed border-gray-200 rounded-md flex items-center justify-center"
-                >
-                  <div class="text-center">
-                    <Icon
-                      name="lucide:layout"
-                      class="h-12 w-12 text-gray-300 mx-auto mb-2"
-                    />
-                    <p class="text-gray-400">
-                      Haga clic en los componentes para añadirlos al contenido
-                    </p>
+              <div class="grid grid-cols-12 gap-2">
+                <div class="p-6 editor-area col-span-6" ref="contentGridRef">
+                  <div
+                    v-if="!hasBlocks"
+                    class="min-h-[300px] border-2 border-dashed border-gray-200 rounded-md flex items-center justify-center"
+                  >
+                    <div class="text-center">
+                      <Icon
+                        name="lucide:layout"
+                        class="h-12 w-12 text-gray-300 mx-auto mb-2"
+                      />
+                      <p class="text-gray-400">
+                        Haga clic en los componentes para añadirlos al contenido
+                      </p>
+                    </div>
+                  </div>
+                  <div v-else>
+                    <div ref="gridStackContainer" class="grid-stack" />
                   </div>
                 </div>
-                <div v-else>
-                  <div ref="gridStackContainer" class="grid-stack"></div>
-                </div>
               </div>
+              <!-- Content Grid with GridStack -->
             </div>
           </div>
 
@@ -98,6 +99,22 @@
             @add-table-row="addTableRow"
             @add-table-column="addTableColumn"
           />
+          <div
+            class="bg-amber-500 w-12 overflow-hidden grid grid-flow-col grid-rows-12 gap-2"
+          >
+            <UButton
+              class="bg-amber-500 text-white hover:bg-amber-600"
+              icon="lucide:gallery-thumbnails"
+            />
+            <UButton
+              class="bg-amber-500 text-white hover:bg-amber-600"
+              icon="lucide:gallery-thumbnails"
+            />
+            <UButton
+              class="bg-amber-500 text-white hover:bg-amber-600"
+              icon="lucide:gallery-thumbnails"
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -21,7 +21,7 @@
         <div
           v-for="component in availableComponents"
           :key="component.type"
-          class="bg-white p-3 rounded-md cursor-move hover:bg-gray-50 transition-colors flex items-center gap-2 border border-gray-200 shadow-sm"
+          class="bg-white p-3 cursor-pointer rounded-md hover:bg-gray-50 transition-colors flex items-center gap-2 border border-gray-200 shadow-sm"
           @click="$emit('add-component', component.type)"
         >
           <Icon :name="getIcon(component.type)" class="h-5 w-5 text-gray-500" />
