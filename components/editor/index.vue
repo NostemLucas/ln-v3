@@ -275,7 +275,7 @@ const renderBlock = (block: ContentBlock) => {
 
   // Controles del bloque
   content += `
-  <div class="absolute right-2 top-2 flex space-x-1 bg-white shadow-sm rounded-md p-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+  <div class="absolute right-2 top-0 flex space-x-1 bg-white shadow-sm rounded-md p-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
     <button class="duplicate-btn p-1 hover:bg-gray-100 rounded" title="Duplicar">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
     </button>
@@ -743,7 +743,7 @@ const addComponent = (componentType: ComponentType) => {
   switch (componentType) {
     case "title":
     case "subtitle":
-      defaultHeight = 1;
+      defaultHeight = 2;
       break;
     case "text":
       defaultHeight = 3;

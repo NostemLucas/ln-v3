@@ -81,8 +81,165 @@
           </div>
         </div>
 
+        <div v-if="['title', 'subtitle'].includes(selectedBlock.type)">
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Contenido
+            </label>
+            <textarea
+              :value="selectedBlock.content || ''"
+              class="w-full p-2 border rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+              :rows="selectedBlock.type === 'text' ? 5 : 2"
+              @input="
+                $emit(
+                  'update-block-content',
+                  ($event.target as HTMLTextAreaElement).value
+                )
+              "
+            ></textarea>
+          </div>
+
+          <!-- Opciones de formato de texto -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Formato de texto
+            </label>
+            <div class="flex flex-wrap gap-2">
+              <button
+                @click="$emit('toggle-text-format', 'bold')"
+                class="p-1.5 border rounded-md hover:bg-gray-100"
+                :class="{
+                  'bg-gray-100 ring-2 ring-emerald-500':
+                    selectedBlock.textProps?.bold,
+                }"
+                title="Negrita"
+              >
+                <Icon name="lucide:bold" class="h-4 w-4" />
+              </button>
+              <button
+                @click="$emit('toggle-text-format', 'italic')"
+                class="p-1.5 border rounded-md hover:bg-gray-100"
+                :class="{
+                  'bg-gray-100 ring-2 ring-emerald-500':
+                    selectedBlock.textProps?.italic,
+                }"
+                title="Cursiva"
+              >
+                <Icon name="lucide:italic" class="h-4 w-4" />
+              </button>
+              <button
+                @click="$emit('toggle-text-format', 'underline')"
+                class="p-1.5 border rounded-md hover:bg-gray-100"
+                :class="{
+                  'bg-gray-100 ring-2 ring-emerald-500':
+                    selectedBlock.textProps?.underline,
+                }"
+                title="Subrayado"
+              >
+                <Icon name="lucide:underline" class="h-4 w-4" />
+              </button>
+              <div class="flex-1"></div>
+              <button
+                @click="showColorPicker = !showColorPicker"
+                class="p-1.5 border rounded-md hover:bg-gray-100 relative"
+                title="Color de texto"
+              >
+                <Icon name="lucide:palette" class="h-4 w-4" />
+                <div
+                  v-if="selectedBlock.textProps?.color"
+                  class="absolute bottom-0 right-0 w-2 h-2 rounded-full"
+                  :style="{
+                    backgroundColor: selectedBlock.textProps.color,
+                  }"
+                ></div>
+              </button>
+            </div>
+
+            <!-- Selector de color -->
+            <div
+              v-if="showColorPicker"
+              class="mt-2 p-2 border rounded-md bg-white shadow-md"
+            >
+              <div class="grid grid-cols-8 gap-1">
+                <button
+                  v-for="color in textColors"
+                  :key="color.value"
+                  @click="$emit('update-text-color', color.value)"
+                  class="w-6 h-6 rounded-full border"
+                  :style="{ backgroundColor: color.value }"
+                  :title="color.name"
+                ></button>
+              </div>
+              <div class="mt-2 flex items-center gap-2">
+                <input
+                  type="text"
+                  v-model="customColor"
+                  class="flex-1 p-1 text-xs border rounded"
+                  placeholder="#RRGGBB"
+                />
+                <button
+                  @click="$emit('update-text-color', customColor)"
+                  class="px-2 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200"
+                >
+                  Aplicar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Alineación de texto -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Alineación
+            </label>
+            <div class="flex gap-1">
+              <button
+                @click="$emit('update-text-alignment', 'left')"
+                class="flex-1 p-1.5 border rounded-md hover:bg-gray-100"
+                :class="{
+                  'bg-gray-100 ring-2 ring-emerald-500':
+                    !selectedBlock.textProps?.alignment ||
+                    selectedBlock.textProps?.alignment === 'left',
+                }"
+              >
+                <Icon name="lucide:align-left" class="h-4 w-4 mx-auto" />
+              </button>
+              <button
+                @click="$emit('update-text-alignment', 'center')"
+                class="flex-1 p-1.5 border rounded-md hover:bg-gray-100"
+                :class="{
+                  'bg-gray-100 ring-2 ring-emerald-500':
+                    selectedBlock.textProps?.alignment === 'center',
+                }"
+              >
+                <Icon name="lucide:align-center" class="h-4 w-4 mx-auto" />
+              </button>
+              <button
+                @click="$emit('update-text-alignment', 'right')"
+                class="flex-1 p-1.5 border rounded-md hover:bg-gray-100"
+                :class="{
+                  'bg-gray-100 ring-2 ring-emerald-500':
+                    selectedBlock.textProps?.alignment === 'right',
+                }"
+              >
+                <Icon name="lucide:align-right" class="h-4 w-4 mx-auto" />
+              </button>
+              <button
+                @click="$emit('update-text-alignment', 'justify')"
+                class="flex-1 p-1.5 border rounded-md hover:bg-gray-100"
+                :class="{
+                  'bg-gray-100 ring-2 ring-emerald-500':
+                    selectedBlock.textProps?.alignment === 'justify',
+                }"
+              >
+                <Icon name="lucide:align-justify" class="h-4 w-4 mx-auto" />
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Propiedades específicas por tipo de bloque -->
-        <div v-if="['title', 'subtitle', 'text'].includes(selectedBlock.type)">
+        <div v-else-if="['text'].includes(selectedBlock.type)">
           <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">
               Contenido

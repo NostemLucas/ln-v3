@@ -803,31 +803,6 @@ onUnmounted(() => {
   transform: scaleX(1);
 }
 
-.appointment-btn span {
-  position: relative;
-  z-index: 10;
-}
-
-.appointment-btn::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
-  transition: 0.5s;
-}
-
-.appointment-btn:hover::before {
-  left: 100%;
-}
-
 /* Video Button - Restored semi-transparent design with glow */
 .video-btn {
   box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);

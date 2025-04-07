@@ -100,3 +100,8 @@ export interface ComponentDefinition {
   type: string;
   label: string;
 }
+
+export interface TitleProperties {
+  alignment?: TextAlignment;
+  fontSize?: number;
+}

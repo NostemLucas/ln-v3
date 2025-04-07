@@ -11,7 +11,7 @@
           La recuperación
           <span class="text-primary-400">empieza aquí</span>
         </h2>
-        <div class="mb-6 h-1 w-20 rounded-full bg-primary-700" />
+        <div class="mb-6 h-1 w-20 rounded-full bg-primary-300" />
 
         <p class="mb-2 font-medium text-gray-700">
           El éxito del tratamiento comienza con un diagnóstico preciso
