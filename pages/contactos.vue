@@ -320,10 +320,10 @@
               </div>
             </div>
 
-            <!-- Popup de información - Diseño mejorado -->
+            <!-- Popup de información -->
             <div
               v-if="showPopup && selectedLocation"
-              class="absolute z-10 max-w-xs rounded-lg bg-white/95 p-4 shadow-lg backdrop-blur-sm"
+              class="absolute z-10 max-w-xs rounded-lg bg-white/95 p-4 shadow-lg backdrop-blur-sm translate-y-80 translate-x-55"
               :style="popupStyle"
             >
               <div class="mb-2 flex items-start justify-between">
@@ -887,7 +887,7 @@ const locations = ref<Location[]>([
   },
   {
     id: 2,
-    title: "Oncoclinic Sopocachi",
+    title: "Oncoclinic Sopocachi - Sucursal",
     address: "Av. 6 de Agosto Nº2255",
     city: "La Paz, Bolivia",
     phone: "+591 2 2444-5555",
@@ -1269,7 +1269,6 @@ button:active {
   transform: scale(0.97);
 }
 
-/* Personalización de OpenLayers */
 .ol-attribution {
   bottom: 0.5rem;
   right: 0.5rem;

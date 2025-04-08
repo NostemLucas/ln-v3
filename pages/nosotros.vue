@@ -288,7 +288,7 @@
             "Soñar, querer que el arte se una al de la medicina es una tentativa
             a la humanidad."
           </blockquote>
-          <p class="text-xl font-semibold">- Renoir</p>
+          <p class="text-xl font-semibold pb-10">- Renoir</p>
         </div>
       </div>
     </section>

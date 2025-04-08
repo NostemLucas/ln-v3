@@ -1,5 +1,5 @@
 <template>
-  <section class="container mx-auto max-w-7xl px-8 py-12 overflow-hidden">
+  <section class="container mx-auto max-w-7xl px-8 py-28 overflow-hidden">
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
       <!-- Image section with improved responsive behavior -->
       <div
@@ -57,9 +57,9 @@
         <h2
           class="mt-2 mb-4 text-3xl font-medium text-slate-800 sm:text-4xl md:text-5xl"
         >
-          Acerca De Nosotros
+          Acerca de <span class="text-primary-300"> Nosotros</span>
         </h2>
-        <div class="mb-4 h-1 w-20 rounded-full bg-blue-600 md:mb-6" />
+        <div class="mb-4 h-1 w-20 rounded-full bg-primary-300 md:mb-6" />
         <p class="mb-4 text-gray-500">
           En ONCOCLINIC, nos esforzamos por ser líderes en la lucha contra el
           cáncer, promoviendo la investigación, la educación y la conciencia
@@ -76,8 +76,8 @@
 
         <div class="flex flex-wrap items-center gap-4">
           <UButton
-            class="rounded-full px-10 py-4 font-black ring-2"
-            to=""
+            class="rounded-full px-10 py-4 font-black ring-4"
+            to="/nosotros"
             trailing-icon="i-lucide-arrow-right"
             variant="outline"
           >
@@ -100,9 +100,9 @@
         <div class="mt-8 grid grid-cols-2 gap-4 md:mt-12 md:grid-cols-4">
           <div class="flex flex-col items-center text-center">
             <div
-              class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 p-3 md:h-20 md:w-20"
+              class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 p-3 md:h-20 md:w-20"
             >
-              <Icon name="lucide:pill" size="2.4rem" class="text-blue-500" />
+              <Icon name="lucide:pill" size="2.4rem" class="text-primary-500" />
             </div>
             <div class="text-sm font-semibold md:text-base">
               Medicina y Atención Sanitaria
@@ -111,12 +111,12 @@
 
           <div class="flex flex-col items-center text-center">
             <div
-              class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 p-3 md:h-20 md:w-20"
+              class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 p-3 md:h-20 md:w-20"
             >
               <Icon
                 name="lucide:stethoscope"
                 size="2.4rem"
-                class="text-blue-500"
+                class="text-primary-600"
               />
             </div>
             <div class="text-sm font-semibold md:text-base">
@@ -124,25 +124,25 @@
             </div>
           </div>
 
-          <div class="flex flex-col items-center text-center">
+          <div class="flex flex-col items-center text-center text-primary-500">
             <div
-              class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 p-3 md:h-20 md:w-20"
+              class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 p-3 md:h-20 md:w-20"
             >
-              <Icon name="lucide:bed" size="2.4rem" class="text-blue-500" />
+              <Icon name="lucide:bed" size="2.4rem" />
             </div>
-            <div class="text-sm font-semibold md:text-base">
+            <div class="text-sm font-semibold md:text-base tracking-wide">
               Servicio de Internación
             </div>
           </div>
 
           <div class="flex flex-col items-center text-center">
             <div
-              class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 p-3 md:h-20 md:w-20"
+              class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 p-3 md:h-20 md:w-20"
             >
               <Icon
                 name="lucide:microscope"
                 size="2.4rem"
-                class="text-blue-500"
+                class="text-primary-500"
               />
             </div>
             <div class="text-sm font-semibold md:text-base">

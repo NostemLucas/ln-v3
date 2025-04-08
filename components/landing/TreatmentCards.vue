@@ -8,7 +8,7 @@
         >
           Nuestros Tratamientos
           <span
-            class="absolute bottom-2 left-0 h-1 w-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transform origin-left"
+            class="absolute bottom-1 left-[30%] h-1 w-40 bg-primary-300 rounded-full transform origin-left"
           />
         </h2>
         <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
@@ -18,7 +18,7 @@
         <div class="mt-4">
           <a
             href="#"
-            class="inline-flex items-center text-blue-600 font-medium transition-all duration-300 hover:text-blue-800 group"
+            class="inline-flex items-center text-primary-500 font-medium transition-all duration-300 hover:text-blue-800 group"
           >
             <span>Ver Todos los Tratamientos</span>
             <svg
@@ -48,7 +48,7 @@
           <!-- Indicador de categoría -->
           <div class="absolute top-4 right-4 z-30">
             <span
-              class="bg-blue-600/90 text-white text-xs font-medium px-3 py-1 rounded-full backdrop-blur-sm"
+              class="bg-primary-500/90 text-white text-xs font-medium px-3 py-1 rounded-full backdrop-blur-sm"
             >
               Tratamiento Especializado
             </span>
@@ -61,7 +61,7 @@
               class="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-80 transition-all duration-700 ease-in-out]"
             />
             <div
-              class="absolute inset-0 z-10 bg-gradient-to-t from-blue-900/90 via-blue-800/70 to-transparent opacity-80 transition-all duration-700 ease-in-out group-hover:translate-y-[70%] translate-y-28"
+              class="absolute inset-0 z-10 bg-gradient-to-t from-primary-800/90 via-primary-600/70 to-transparent opacity-80 transition-all duration-700 ease-in-out group-hover:translate-y-[70%] translate-y-28"
             />
 
             <!-- Imagen con efecto de zoom -->

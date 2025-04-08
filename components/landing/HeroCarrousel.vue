@@ -1,13 +1,4 @@
 <script setup>
-import {
-  ref,
-  computed,
-  onMounted,
-  onBeforeUnmount,
-  watch,
-  defineProps,
-} from "vue";
-
 const props = defineProps({
   autoplay: {
     type: Boolean,
@@ -194,11 +185,13 @@ onBeforeUnmount(() => {
       class="mb-8 flex flex-col items-center justify-between gap-4 sm:flex-row"
     >
       <div class="relative">
-        <div class="absolute -top-3 left-0 h-1 w-12 rounded-full bg-blue-600" />
+        <div
+          class="absolute -top-3 left-0 h-1 w-12 rounded-full bg-primary-300"
+        />
         <h2
           class="text-center text-2xl font-bold text-gray-800 sm:text-left md:text-3xl lg:text-4xl"
         >
-          Nuestros Profesionales Médicos
+          Nuestros Profesionales <span class="text-primary-300"> Médicos </span>
         </h2>
         <p class="mt-2 max-w-xl text-gray-600">
           Expertos altamente calificados dedicados a brindar la mejor atención
@@ -209,11 +202,11 @@ onBeforeUnmount(() => {
       <div class="flex space-x-3">
         <button
           aria-label="Previous slide"
-          class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-100 bg-white shadow-md transition-colors hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-100 bg-white shadow-md transition-colors hover:bg-primary-50 focus:ring-2 focus:ring-primary-500 focus:outline-none"
           :disabled="!isInfinite && currentIndex === 0"
           :class="{
             'cursor-not-allowed opacity-50': !isInfinite && currentIndex === 0,
-            'text-blue-600 hover:text-blue-700': true,
+            'text-primary-600 hover:text-primary-700': true,
           }"
           @click="prevSlide"
         >
@@ -221,14 +214,14 @@ onBeforeUnmount(() => {
         </button>
         <button
           aria-label="Next slide"
-          class="bg-blue-white flex h-12 w-12 items-center justify-center rounded-full shadow-md transition-colors hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          class="bg-primary-white flex h-12 w-12 items-center justify-center rounded-full shadow-md transition-colors hover:bg-primary-50 focus:ring-2 focus:ring-primary-500 focus:outline-none"
           :disabled="
             !isInfinite && currentIndex >= personnel.length - visibleSlides
           "
           :class="{
             'cursor-not-allowed opacity-50':
               !isInfinite && currentIndex >= personnel.length - visibleSlides,
-            'text-blue-600 hover:text-blue-700': true,
+            'text-primary-600 hover:text-primary-700': true,
           }"
           @click="nextSlide"
         >
@@ -283,7 +276,7 @@ onBeforeUnmount(() => {
             </div>
 
             <div
-              class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-blue-900/90 via-blue-800/20 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:p-6"
+              class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-primary-900/90 via-primary-800/20 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:p-6"
             >
               <div class="text-white">
                 <div class="mb-1 text-xs font-medium sm:text-sm">
@@ -316,7 +309,7 @@ onBeforeUnmount(() => {
         class="mx-1.5 h-2.5 w-2.5 cursor-pointer rounded-full transition-all duration-300"
         :class="
           Math.floor(currentIndex / visibleSlides) === index
-            ? 'scale-125 bg-blue-600'
+            ? 'scale-125 bg-primary-600'
             : 'bg-gray-300 hover:bg-gray-400'
         "
         :aria-label="`Go to slide group ${index + 1}`"
