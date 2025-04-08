@@ -291,87 +291,14 @@
           <p class="text-xl font-semibold">- Renoir</p>
         </div>
       </div>
-    </section>
-
-    <!-- Sección de Timeline Horizontal -->
-    <section class="py-16 bg-gray-50">
-      <div class="container mx-auto px-4 md:px-8">
-        <div class="mb-12 text-center">
-          <div class="mx-auto mb-2 h-1 w-16 bg-blue-600"></div>
-          <h2 class="text-3xl font-bold text-gray-900">Nuestra Historia</h2>
-          <p class="mt-4 text-gray-600">
-            Conoce nuestra trayectoria y línea de crecimiento a lo largo del
-            tiempo
-          </p>
-        </div>
-
-        <div class="mx-auto max-w-6xl">
-          <!-- Timeline Horizontal -->
-          <div class="relative">
-            <!-- Línea horizontal -->
-            <div class="absolute top-16 left-0 h-1 w-full bg-blue-500"></div>
-
-            <!-- Contenedor con scroll horizontal en móvil -->
-            <div class="overflow-x-auto pb-10">
-              <div class="flex min-w-max space-x-16 px-4 py-8">
-                <div
-                  v-for="(item, index) in timelineItems"
-                  :key="index"
-                  class="relative flex flex-col items-center"
-                  :class="{
-                    'first:ml-8': index === 0,
-                    'last:mr-8': index === timelineItems.length - 1,
-                  }"
-                >
-                  <!-- Punto en la línea -->
-                  <div
-                    class="z-10 flex h-10 w-10 items-center justify-center rounded-full border-4 border-blue-500 bg-white transition-all duration-500 hover:scale-125 hover:border-blue-600 hover:bg-blue-100"
-                  ></div>
-
-                  <!-- Año -->
-                  <div
-                    class="absolute top-0 z-20 -translate-y-full transform rounded-full bg-blue-600 px-4 py-1 font-bold text-white"
-                  >
-                    {{ item.year }}
-                  </div>
-
-                  <!-- Contenido -->
-                  <div
-                    class="mt-8 w-64 rounded-xl bg-white p-5 shadow-lg transition-all duration-300 hover:shadow-xl border-l-4 border-blue-500"
-                    :class="index % 2 === 0 ? 'mt-8' : 'mt-24'"
-                  >
-                    <p class="text-gray-700">{{ item.content }}</p>
-                    <button
-                      @click="toggleTimelineContent(index)"
-                      class="mt-3 inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800"
-                    >
-                      <span>Ver alternativa</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="ml-1 h-4 w-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                      >
-                        <path d="M7 16V4m0 0L3 8m4-4l4 4"></path>
-                        <path d="M17 8v12m0 0l4-4m-4 4l-4-4"></path>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Line />
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-
+import Line from "~/components/timeline/Line.vue";
 // Estado para los tabs
 const activeTab = ref("mission");
 
