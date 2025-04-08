@@ -291,8 +291,8 @@
           <p class="text-xl font-semibold">- Renoir</p>
         </div>
       </div>
-      <Line />
     </section>
+    <Line />
   </div>
 </template>
 
@@ -371,103 +371,4 @@ const valuesList: Value[] = [
     description: "Educación preventiva y acceso a tratamientos con equidad.",
   },
 ];
-
-// Datos para la línea de tiempo (sin usar refs para evitar problemas de renderizado)
-const timelineItems = [
-  {
-    year: "2025",
-    content:
-      "Expansión internacional y apertura de centros de investigación avanzada en tres continentes.",
-    alternative:
-      "Implementación de terapias personalizadas basadas en IA y medicina de precisión.",
-  },
-  {
-    year: "2024",
-    content:
-      "Lanzamiento de programa de telemedicina oncológica para llegar a zonas rurales.",
-    alternative:
-      "Desarrollo de plataforma digital integrada para seguimiento de pacientes en tiempo real.",
-  },
-  {
-    year: "2023",
-    content:
-      "Certificación internacional ISO para todos nuestros procesos y servicios.",
-    alternative:
-      "Alianza estratégica con universidades para programas de formación especializada.",
-  },
-  {
-    year: "2022",
-    content:
-      "Incorporación de tecnología de vanguardia para diagnósticos no invasivos.",
-    alternative:
-      "Creación del departamento de bienestar integral y apoyo psicológico.",
-  },
-  {
-    year: "2021",
-    content:
-      "Ampliación de instalaciones y apertura de nueva unidad de radioterapia.",
-    alternative:
-      "Implementación del programa de investigación en inmunoterapia oncológica.",
-  },
-  {
-    year: "2020",
-    content:
-      "Desarrollo de protocolos propios de tratamiento con reconocimiento internacional.",
-    alternative:
-      "Adaptación de servicios durante la pandemia con protocolos de seguridad avanzados.",
-  },
-  {
-    year: "2019",
-    content:
-      "Inicio de colaboraciones con centros oncológicos internacionales.",
-    alternative:
-      "Lanzamiento del programa de prevención comunitaria en escuelas y empresas.",
-  },
-  {
-    year: "2018",
-    content:
-      "Implementación del sistema de historia clínica electrónica integrada.",
-    alternative:
-      "Creación del primer laboratorio de investigación genómica propio.",
-  },
-  {
-    year: "2017",
-    content:
-      "Fundación del centro y primeras atenciones a pacientes oncológicos.",
-    alternative:
-      "Establecimiento de la visión, misión y valores que guían nuestra institución.",
-  },
-];
-
-// Función para cambiar el contenido de la línea de tiempo
-const toggleTimelineContent = (index: number) => {
-  const item = timelineItems[index];
-  const temp = item.content;
-  item.content = item.alternative;
-  item.alternative = temp;
-};
 </script>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-/* Estilos para mejorar la experiencia en dispositivos móviles */
-@media (max-width: 768px) {
-  .overflow-x-auto {
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-  }
-
-  .overflow-x-auto::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Edge */
-  }
-}
-</style>

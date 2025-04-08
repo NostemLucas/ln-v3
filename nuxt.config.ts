@@ -20,4 +20,5 @@ export default defineNuxtConfig({
     collections: ["lucide", "svg-spinners", "mdi"],
     size: "1.253em",
   },
+  plugins: [{ src: "~/plugins/drag-scroll", ssr: false }],
 });
