@@ -3278,7 +3278,7 @@ onUnmounted(() => {
 });
 </script>
 
-<style>
+<style scoped>
 [contenteditable] {
   outline: none;
 }

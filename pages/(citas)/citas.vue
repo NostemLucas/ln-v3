@@ -1372,7 +1372,7 @@ const resetForm = () => {
 };
 </script>
 
-<style>
+<style scoped>
 /* Transitions */
 .fade-enter-active,
 .fade-leave-active {

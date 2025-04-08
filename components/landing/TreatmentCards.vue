@@ -177,8 +177,7 @@ const treatments = ref([
     title: "Cirugía Oncológica",
     description:
       "Intervención quirúrgica para extirpar tumores cancerosos, tejidos afectados o ganglios, con el fin de controlar o curar el cáncer.",
-    image:
-      "https://images.unsplash.com/photo-1571772996211-2f02974a9f91?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "/treatments/oncologia.jpg",
     url: "/tratamientos/cirugia-oncologica",
   },
 ]);

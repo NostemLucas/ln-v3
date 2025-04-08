@@ -332,7 +332,7 @@ onUnmounted(() => {
 });
 </script>
 
-<style>
+<style scoped>
 .grid-stack {
   min-height: 300px;
   padding: 0;
