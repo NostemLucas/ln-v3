@@ -90,10 +90,10 @@
               </p>
               <div class="mt-3 flex flex-wrap gap-2">
                 <!-- WhatsApp - Diseño mejorado -->
-                <a
+                <UButton
                   :href="'https://wa.me/' + location.whatsapp"
                   target="_blank"
-                  class="flex items-center rounded-md bg-green-50 px-3 py-1.5 text-sm font-medium text-green-700 shadow-sm transition-all hover:bg-green-100 hover:shadow"
+                  variant="outline"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -110,12 +110,12 @@
                     ></path>
                   </svg>
                   WhatsApp
-                </a>
+                </UButton>
                 <!-- Chat - Diseño mejorado -->
-                <a
+                <UButton
                   href="#"
+                  variant="outline"
                   @click.prevent="openChat(location)"
-                  class="flex items-center rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 shadow-sm transition-all hover:bg-blue-100 hover:shadow"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -132,12 +132,12 @@
                     ></path>
                   </svg>
                   Chat
-                </a>
+                </UButton>
                 <!-- Google Maps - Diseño mejorado -->
-                <a
+                <UButton
+                  variant="outline"
                   :href="getGoogleMapsUrl(location)"
                   target="_blank"
-                  class="flex items-center rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-700 shadow-sm transition-all hover:bg-red-100 hover:shadow"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -155,7 +155,7 @@
                     <circle cx="12" cy="10" r="3"></circle>
                   </svg>
                   Google Maps
-                </a>
+                </UButton>
               </div>
             </div>
           </div>

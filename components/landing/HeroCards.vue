@@ -37,7 +37,7 @@
             .
           </p>
           <NuxtLink
-            to="#"
+            to="/tratamientos"
             class="inline-flex items-center font-medium text-primary-600 hover:underline"
           >
             Informarse sobre las especialidades más destacadas
@@ -172,8 +172,9 @@
           <UButton
             variant="solid"
             size="xl"
+            to="/tratamientos"
             class="rounded-full py-4 px-6 ring-2 transition-colors duration-500 group"
-            label="Servicios a nivel Nacional"
+            label="Secuenciación Genética"
             trailing-icon="i-lucide-arrow-right"
             :ui="{
               trailingIcon:

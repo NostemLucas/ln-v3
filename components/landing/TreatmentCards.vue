@@ -136,7 +136,7 @@ const treatments = ref([
   {
     title: "Trasplante de Médula Ósea",
     description:
-      "Procedimiento que reemplaza células madre dañadas por células sanas, para tratar enfermedades como leucemias, linfomas y otros trastornos hematológicos graves.",
+      "Reemplaza células madre dañadas por células sanas, para tratar enfermedades.",
     image:
       "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     url: "/tratamientos/transplante-medula-osea",
@@ -144,7 +144,7 @@ const treatments = ref([
   {
     title: "Inmunoterapia",
     description:
-      "Terapia innovadora que estimula o refuerza el sistema inmunológico del paciente para que reconozca y destruya células cancerosas de forma más específica y efectiva.",
+      "Terapia innovadora que estimula el sistema inmunológico para que reconozca y destruya células cancerosas.",
     image:
       "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     url: "/tratamientos/inmunoterapia",
@@ -152,7 +152,7 @@ const treatments = ref([
   {
     title: "Quimioterapia",
     description:
-      "Uso de medicamentos potentes que destruyen células cancerosas, impidiendo su crecimiento y multiplicación. Puede administrarse por vía oral o intravenosa.",
+      "Uso de medicamentos potentes que destruyen células cancerosas, impidiendo su crecimiento y multiplicación.",
     image:
       "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     url: "/tratamientos/quimioterapia",
@@ -160,7 +160,7 @@ const treatments = ref([
   {
     title: "Quimioterapia Metronómica",
     description:
-      "Estrategia terapéutica que administra quimioterapia en dosis bajas y constantes, con el objetivo de reducir efectos secundarios y mejorar la calidad de vida del paciente.",
+      "Administración de dosis bajas y continuas de quimioterapia para evitar el crecimiento del tumor.",
     image:
       "https://images.unsplash.com/photo-1530026186672-2cd00ffc50fe?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     url: "/tratamientos/quimioterapia-metronomica",

@@ -50,9 +50,10 @@ const personnel: Doctor[] = [
     },
     languages: ["Ingles", "Español"],
     about: [
-      "En Bolivia fue Docente de PosGrado en las Universidad de la UMSA de la ciudad de La Paz  y UMSS de Cochabamba. En 2017 inicia el Programa de Trasplantes de Médula Ósea en Bolivia, en 2023 ingresa a un programa de acreditación de la unidad de trasplantes.",
-      "Desde el año 2023 estableció su Laboratorio de Investigación en Oncoclinic realizando técnicas de alta tecnología en Biología Molecular y Secuenciación Genética para la investigación en enfermedades oncológicas.",
-      "El Dr. Ariel Amaru es el Director Médico de Oncoclinic, responsable del área de Trasplante de Células Madre para enfermedades oncohematológicas, como las leucemias, linfomas, mielomas o mielofibrosis, y para pacientes con aplasia de médula ósea.  Es autor de revistas científicas y colaborador en trabajos de investigación. \n El Dr. Ariel Amaru se graduó en la Facultad de Medicina de la UMSA de la ciudad de La Paz en Bolivia,  realizó sus estudios de especialidad de Oncohematologia y Trasplante de Médula Ósea en  el “Ospedale Papa Giovanni XXII” en Bérgamo, Italia y su estudio de Doctorado en la Universidad de Milano-Bicocca (UNIMIB) en Milán, Italia. Posteriormente realizo sus estudios Posdoctorado en la Universidad de Chicago en Estados Unidos.",
+      "El Dr. Ariel Amaru es Director Médico de Oncoclinic y responsable del área de Trasplante de Células Madre para el tratamiento de enfermedades oncohematológicas como leucemias, linfomas, mielomas, mielofibrosis y aplasia medular. Es autor de publicaciones científicas y colaborador activo en diversos proyectos de investigación.",
+      "Se graduó en la Facultad de Medicina de la Universidad Mayor de San Andrés (UMSA) en La Paz, Bolivia. Posteriormente, se especializó en Oncohematología y Trasplante de Médula Ósea en el Ospedale Papa Giovanni XXIII de Bérgamo, Italia, y obtuvo su Doctorado en la Universidad de Milano-Bicocca (UNIMIB), en Milán. Realizó estudios de posdoctorado en la Universidad de Chicago, Estados Unidos.",
+      "En Bolivia, fue docente de posgrado en la UMSA (La Paz) y en la UMSS (Cochabamba). En 2017, lideró la implementación del Programa de Trasplante de Médula Ósea en el país y, en 2023, inició el proceso de acreditación internacional de la unidad de trasplantes.",
+      "Ese mismo año, fundó el Laboratorio de Investigación en Oncoclinic, donde se aplican técnicas avanzadas de Biología Molecular y Secuenciación Genética orientadas al estudio de enfermedades oncológicas.",
     ],
     image: "/doctors/amaru.png",
     videoThumbnail: "",
