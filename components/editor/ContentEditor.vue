@@ -273,7 +273,7 @@ const renderBlock = (block: ContentBlock) => {
   // Crear el contenido HTML del bloque
   let content = "";
 
-  // Controles del bloque
+  // Controles del bloque (se puden adiconar mas pero en este)
   content += `
   <div class="absolute right-2 top-0 flex space-x-1 bg-white shadow-sm rounded-md p-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
     <button class="duplicate-btn p-1 hover:bg-gray-100 rounded" title="Duplicar">
@@ -660,8 +660,7 @@ const addComponent = (componentType: ComponentType) => {
   // Generate a unique ID for the block
   const blockId = `block-${Date.now()}-${Math.random()
     .toString(36)
-    .substr(2, 9)}`;
-
+    .slice(2, 11)}`;
   // Default image properties
   const imageProps =
     componentType === "image"
@@ -798,6 +797,21 @@ const addComponent = (componentType: ComponentType) => {
   };
 
   // Add the block to our blocks array
+  /*   blocks.value.push(newBlock);
+
+  // Render the new block
+  if (gridStack.value) {
+    renderBlock(newBlock);
+  } else {
+    // Initialize GridStack if it doesn't exist yet
+    nextTick(() => {
+      initGridStack();
+      renderBlocks();
+    });
+  }
+
+  // Select the new block
+  selectedBlockId.value = blockId; */
   blocks.value.push(newBlock);
 
   // Render the new block
@@ -1419,6 +1433,17 @@ const removeBlock = (blockId: string) => {
   if (selectedBlockId.value === blockId) {
     selectedBlockId.value = null;
   }
+
+  // Reinicializar GridStack si eliminamos el último bloque
+  if (blocks.value.length === 0) {
+    nextTick(() => {
+      if (gridStack.value) {
+        gridStack.value.destroy();
+        gridStack.value = null;
+      }
+      // El área vacía se mostrará automáticamente gracias al v-if en el template
+    });
+  }
 };
 
 const duplicateBlock = (blockId: string) => {
@@ -1479,11 +1504,24 @@ const exportContent = () => {
 };
 
 // Observar cambios en los bloques para re-renderizar
+// Observar cambios en los bloques para re-renderizar
 watch(
   blocks,
   () => {
-    if (gridStack.value) {
-      renderBlocks();
+    if (blocks.value.length > 0) {
+      if (gridStack.value) {
+        renderBlocks();
+      } else {
+        nextTick(() => {
+          initGridStack();
+          renderBlocks();
+        });
+      }
+    } else {
+      // No hay bloques, asegurémonos de que el área vacía se muestre
+      if (gridStack.value) {
+        gridStack.value.removeAll();
+      }
     }
   },
   { deep: true }
