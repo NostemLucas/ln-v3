@@ -39,7 +39,7 @@
             ]"
             @click="selectedAmount = amount"
           >
-            {{ amount }}€
+            {{ amount }} Bs
           </button>
         </div>
 
@@ -56,7 +56,7 @@
             />
             <span
               class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-              >€</span
+              >Bs</span
             >
           </div>
         </div>

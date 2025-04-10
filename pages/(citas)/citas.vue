@@ -1,633 +1,787 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex flex-col md:flex-row">
-    <!-- Información de la clínica (siempre visible) -->
-    <div class="bg-white p-6 md:w-1/4 md:min-h-screen shadow-md relative z-10">
-      <div class="sticky top-6">
-        <h2 class="text-gray-700 text-xl font-medium">Contáctanos</h2>
-        <h1 class="text-primary text-3xl font-bold mb-6">Reserva Una Cita</h1>
+  <div class="min-h-screen bg-slate-50 font-sans">
+    <!-- Header móvil -->
 
-        <div class="space-y-6">
+    <div class="lg:flex">
+      <!-- Sidebar (visible en desktop) -->
+      <aside
+        class="hidden lg:block lg:w-80 xl:w-96 bg-white border-r border-slate-200 h-screen sticky top-0 overflow-auto p-8"
+      >
+        <div class="mb-8">
+          <h2 class="text-3xl font-bold text-slate-900 mb-2">
+            Reserva Una Cita
+          </h2>
+          <p class="text-slate-500">
+            Complete los pasos para agendar su consulta médica.
+          </p>
+        </div>
+
+        <div class="space-y-8">
           <div>
-            <h3 class="text-gray-700 text-lg font-medium mb-2">Horarios</h3>
-            <div class="space-y-1 text-gray-600">
-              <div class="flex justify-between items-center">
-                <div class="flex items-center">
-                  <Icon icon="mdi:calendar-clock" class="mr-2 text-primary" />
-                  <span>Lunes – Viernes</span>
+            <h3
+              class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-3"
+            >
+              Horarios
+            </h3>
+            <div class="space-y-3 text-slate-700">
+              <div class="flex items-center p-3 bg-slate-50 rounded-lg">
+                <Icon
+                  icon="mdi:calendar-clock"
+                  class="w-6 h-6 text-primary mr-3"
+                />
+                <div>
+                  <div class="font-medium">Lunes – Viernes</div>
+                  <div class="text-sm text-slate-500">08:00 am – 18:00 pm</div>
                 </div>
-                <span>08:00 am – 18:00 pm</span>
               </div>
-              <div class="flex justify-between items-center">
-                <div class="flex items-center">
-                  <Icon icon="mdi:calendar-weekend" class="mr-2 text-primary" />
-                  <span>Sábado</span>
+              <div class="flex items-center p-3 bg-slate-50 rounded-lg">
+                <Icon
+                  icon="mdi:calendar-weekend"
+                  class="w-6 h-6 text-primary mr-3"
+                />
+                <div>
+                  <div class="font-medium">Sábado</div>
+                  <div class="text-sm text-slate-500">08:00 am – 12:00 pm</div>
                 </div>
-                <span>08:00 am – 12:00 pm</span>
               </div>
             </div>
           </div>
 
           <div>
-            <h3 class="text-gray-700 text-lg font-medium mb-2">Dirección</h3>
-            <div class="flex items-start">
+            <h3
+              class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-3"
+            >
+              Dirección
+            </h3>
+            <div class="flex items-start p-3 bg-slate-50 rounded-lg">
               <Icon
                 icon="mdi:map-marker"
-                class="mr-2 text-primary mt-1 flex-shrink-0"
+                class="w-6 h-6 text-primary mr-3 mt-0.5 flex-shrink-0"
               />
-              <p class="text-gray-600">
+              <div class="text-slate-700">
                 Obrajes, Avenida Costanerita Oncoclinic<br />
                 entre calles 5 y 6 N 71.<br />
                 La Paz – Bolivia
-              </p>
-            </div>
-          </div>
-
-          <div class="pt-4 hidden md:block">
-            <div class="bg-primary/10 rounded-lg p-4">
-              <div class="flex items-center mb-2">
-                <Icon
-                  icon="mdi:information-outline"
-                  class="text-primary mr-2"
-                />
-                <h4 class="font-medium text-primary">Información</h4>
               </div>
-              <p class="text-sm text-gray-600">
-                Recuerde llegar 15 minutos antes de su cita. Si necesita
-                cancelar, por favor hágalo con 24 horas de anticipación.
-              </p>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Contenido principal -->
-    <div class="flex-1 flex flex-col">
-      <!-- Barra de progreso -->
-      <div class="bg-white shadow-sm">
-        <div class="max-w-3xl mx-auto px-4 py-4">
-          <div class="flex items-center justify-between">
-            <div
-              v-for="(step, index) in steps"
-              :key="index"
-              class="flex items-center relative"
-              :class="{
-                'text-primary': currentStep >= index,
-                'text-gray-400': currentStep < index,
-              }"
-            >
-              <div
-                class="flex items-center justify-center w-10 h-10 rounded-full mr-2 transition-all duration-300"
-                :class="
-                  currentStep > index
-                    ? 'bg-primary text-white'
-                    : currentStep === index
-                    ? 'border-2 border-primary text-primary'
-                    : 'border-2 border-gray-300 text-gray-400'
-                "
-              >
-                <Icon
-                  v-if="currentStep <= index"
-                  :icon="step.icon"
-                  class="w-5 h-5"
-                />
-                <Icon v-else icon="mdi:check" class="w-5 h-5" />
-              </div>
-              <span class="hidden md:inline font-medium">{{ step.label }}</span>
-
-              <!-- Línea conectora -->
-              <div
-                v-if="index < steps.length - 1"
-                class="hidden md:block absolute h-0.5 bg-gray-300 w-12 left-full top-1/2 -translate-y-1/2 ml-2"
-                :class="{ 'bg-primary': currentStep > index }"
-              ></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Contenido del paso actual -->
-      <div class="flex-1 p-4">
-        <div
-          class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300"
-        >
-          <!-- Cabecera del paso -->
-          <div class="p-4 border-b flex items-center">
-            <button
-              v-if="currentStep > 0"
-              @click="currentStep--"
-              class="mr-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
-            >
-              <Icon icon="mdi:chevron-left" class="w-6 h-6 text-gray-500" />
-            </button>
-            <h2 class="text-xl font-semibold text-gray-800">
-              {{ steps[currentStep].label }}
-            </h2>
-          </div>
-
-          <!-- Contenido del paso -->
-          <div class="p-6">
-            <!-- Paso 1: Selección de médico -->
-            <div v-if="currentStep === 0" class="space-y-4">
-              <div class="space-y-2">
-                <label class="block text-sm font-medium text-gray-700">
-                  Médico <span class="text-primary">*</span>
-                </label>
-                <div class="relative">
-                  <select
-                    v-model="formData.doctor"
-                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 transition pl-10"
-                  >
-                    <option value="" disabled>Seleccione un médico</option>
-                    <option
-                      v-for="doctor in doctors"
-                      :key="doctor.id"
-                      :value="doctor.id"
-                    >
-                      {{ doctor.name }}
-                    </option>
-                  </select>
-                  <Icon
-                    icon="mdi:doctor"
-                    class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
-                  />
-                  <Icon
-                    icon="mdi:chevron-down"
-                    class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
-                  />
-                </div>
-                <p
-                  v-if="errors.doctor"
-                  class="text-sm text-red-500 mt-1 flex items-center"
-                >
-                  <Icon icon="mdi:alert-circle" class="w-4 h-4 mr-1" />
-                  {{ errors.doctor }}
+          <div class="p-4 bg-primary/10 rounded-xl border border-primary/20">
+            <div class="flex items-start">
+              <Icon
+                icon="mdi:information-outline"
+                class="text-primary w-6 h-6 mr-3 mt-0.5 flex-shrink-0"
+              />
+              <div>
+                <h4 class="font-medium text-primary mb-1">
+                  Información importante
+                </h4>
+                <p class="text-sm text-slate-600">
+                  Recuerde llegar 15 minutos antes de su cita. Si necesita
+                  cancelar, por favor hágalo con 24 horas de anticipación.
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </aside>
 
+      <!-- Contenido principal -->
+      <main class="flex-1 min-h-screen">
+        <!-- Indicador de progreso -->
+        <div
+          class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm lg:top-0"
+        >
+          <div class="container mx-auto px-4 py-5">
+            <div class="flex items-center justify-between max-w-3xl mx-auto">
               <div
-                class="mt-6 bg-blue-50 rounded-lg p-4 border border-blue-100"
+                v-for="(step, index) in steps"
+                :key="index"
+                class="flex flex-col items-center relative group"
+                :class="{
+                  'text-primary': currentStep >= index,
+                  'text-slate-400': currentStep < index,
+                }"
               >
-                <div class="flex">
+                <div
+                  class="flex items-center justify-center w-12 h-12 rounded-full bg-white mb-1 transition-all duration-300 z-10"
+                  :class="{
+                    'bg-primary text-white shadow-md shadow-primary/30':
+                      currentStep > index,
+                    'border-3 border-primary bg-white text-primary':
+                      currentStep === index,
+                    'border-3 border-slate-300 text-slate-400':
+                      currentStep < index,
+                  }"
+                >
                   <Icon
-                    icon="mdi:information"
-                    class="text-blue-500 w-5 h-5 mr-2 flex-shrink-0"
+                    v-if="currentStep <= index"
+                    :icon="step.icon"
+                    class="w-6 h-6"
                   />
-                  <div>
-                    <h4 class="font-medium text-blue-700 mb-1">
-                      Especialistas disponibles
-                    </h4>
-                    <p class="text-sm text-blue-600">
-                      Todos nuestros médicos son especialistas certificados con
-                      amplia experiencia en su campo.
+                  <Icon v-else icon="mdi:check" class="w-6 h-6" />
+                </div>
+                <span class="text-xs font-medium whitespace-nowrap">{{
+                  step.label
+                }}</span>
+
+                <!-- Línea conectora -->
+                <div
+                  v-if="index < steps.length - 1"
+                  class="absolute h-1 w-[240px] left-1/2 top-6 -translate-y-1/2 z-0"
+                  :class="currentStep > index ? 'bg-primary' : 'bg-slate-300'"
+                  style="transform: translateX(0%)"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contenido del paso actual -->
+        <div class="container mx-auto px-4 py-8">
+          <div class="max-w-3xl mx-auto">
+            <!-- Título del paso actual -->
+            <div class="mb-6">
+              <div class="flex items-center">
+                <button
+                  v-if="currentStep > 0"
+                  @click="currentStep--"
+                  class="mr-3 p-2 rounded-full hover:bg-slate-100 transition-colors"
+                  aria-label="Volver al paso anterior"
+                >
+                  <Icon icon="mdi:arrow-left" class="w-5 h-5 text-slate-600" />
+                </button>
+                <h2 class="text-2xl font-bold text-slate-800">
+                  {{ steps[currentStep].label }}
+                </h2>
+              </div>
+              <p class="text-slate-500 mt-1">
+                {{ steps[currentStep].description }}
+              </p>
+            </div>
+
+            <div
+              class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden transition-all duration-300"
+            >
+              <!-- Contenido del paso -->
+              <div class="p-6 md:p-8">
+                <!-- Paso 1: Selección de médico -->
+                <div v-if="currentStep === 0" class="space-y-6">
+                  <div class="space-y-4">
+                    <label class="block text-base font-medium text-slate-700">
+                      Seleccione un médico <span class="text-primary">*</span>
+                    </label>
+                    <div class="space-y-4">
+                      <div
+                        v-for="doctor in doctors"
+                        :key="doctor.id"
+                        @click="formData.doctor = doctor.id"
+                        class="flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-200"
+                        :class="{
+                          'border-primary bg-primary/5 shadow-sm':
+                            formData.doctor === doctor.id,
+                          'border-slate-200 hover:border-slate-300 hover:bg-slate-50':
+                            formData.doctor !== doctor.id,
+                        }"
+                      >
+                        <div
+                          class="w-14 h-14 rounded-full flex items-center justify-center mr-4 flex-shrink-0"
+                          :class="{
+                            'bg-primary text-white':
+                              formData.doctor === doctor.id,
+                            'bg-slate-100 text-slate-600':
+                              formData.doctor !== doctor.id,
+                          }"
+                        >
+                          <Icon icon="mdi:doctor" class="w-7 h-7" />
+                        </div>
+                        <div class="flex-1">
+                          <div class="font-medium text-slate-800 text-lg">
+                            {{ doctor.name }}
+                          </div>
+                          <div class="text-slate-500">
+                            {{ doctor.specialty }}
+                          </div>
+                        </div>
+                        <div
+                          class="w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0"
+                          :class="{
+                            'border-primary bg-primary':
+                              formData.doctor === doctor.id,
+                            'border-slate-300': formData.doctor !== doctor.id,
+                          }"
+                        >
+                          <Icon
+                            v-if="formData.doctor === doctor.id"
+                            icon="mdi:check"
+                            class="w-4 h-4 text-white"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <p
+                      v-if="errors.doctor"
+                      class="text-sm text-red-500 mt-2 flex items-center"
+                    >
+                      <Icon icon="mdi:alert-circle" class="w-4 h-4 mr-1" />
+                      {{ errors.doctor }}
                     </p>
                   </div>
-                </div>
-              </div>
-            </div>
 
-            <!-- Paso 2: Selección de fecha y hora -->
-            <div v-else-if="currentStep === 1" class="space-y-6">
-              <!-- Selector de mes y año -->
-              <div class="flex justify-between items-center">
-                <div class="flex space-x-2">
-                  <div class="relative">
-                    <select
-                      v-model="currentMonth"
-                      class="pl-10 pr-8 py-2 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20"
-                    >
-                      <option
-                        v-for="(month, index) in months"
-                        :key="index"
-                        :value="index"
-                      >
-                        {{ month }}
-                      </option>
-                    </select>
-                    <Icon
-                      icon="mdi:calendar-month"
-                      class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"
-                    />
-                  </div>
-                  <div class="relative">
-                    <select
-                      v-model="currentYear"
-                      class="pl-10 pr-8 py-2 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20"
-                    >
-                      <option v-for="year in years" :key="year" :value="year">
-                        {{ year }}
-                      </option>
-                    </select>
-                    <Icon
-                      icon="mdi:calendar-today"
-                      class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"
-                    />
+                  <div class="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                    <div class="flex">
+                      <Icon
+                        icon="mdi:information"
+                        class="text-blue-500 w-6 h-6 mr-3 flex-shrink-0 mt-0.5"
+                      />
+                      <div>
+                        <h4 class="font-medium text-blue-700 mb-1">
+                          Especialistas disponibles
+                        </h4>
+                        <p class="text-blue-600">
+                          Todos nuestros médicos son especialistas certificados
+                          con amplia experiencia en su campo. Seleccione el
+                          especialista que mejor se adapte a sus necesidades
+                          médicas.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="flex space-x-2">
-                  <button
-                    @click="previousMonth"
-                    class="p-2 rounded-md hover:bg-gray-100 transition-colors"
-                  >
-                    <Icon
-                      icon="mdi:chevron-left"
-                      class="w-5 h-5 text-gray-500"
-                    />
-                  </button>
-                  <button
-                    @click="nextMonth"
-                    class="p-2 rounded-md hover:bg-gray-100 transition-colors"
-                  >
-                    <Icon
-                      icon="mdi:chevron-right"
-                      class="w-5 h-5 text-gray-500"
-                    />
-                  </button>
-                </div>
-              </div>
 
-              <!-- Calendario -->
-              <div
-                class="bg-white rounded-lg border border-gray-200 overflow-hidden"
-              >
-                <div
-                  class="grid grid-cols-7 gap-1 text-center p-2 bg-gray-50 border-b"
-                >
+                <!-- Paso 2: Selección de fecha y hora -->
+                <div v-else-if="currentStep === 1" class="space-y-8">
+                  <!-- Selector de mes y año -->
                   <div
-                    v-for="day in weekDays"
-                    :key="day"
-                    class="text-sm font-medium text-gray-500 py-1"
+                    class="flex flex-wrap justify-between items-center gap-3"
                   >
-                    {{ day }}
+                    <div class="flex flex-wrap gap-3">
+                      <div class="relative">
+                        <select
+                          v-model="currentMonth"
+                          class="pl-10 pr-10 py-3 rounded-xl border-2 border-slate-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 bg-white text-base"
+                        >
+                          <option
+                            v-for="(month, index) in months"
+                            :key="index"
+                            :value="index"
+                          >
+                            {{ month }}
+                          </option>
+                        </select>
+                        <Icon
+                          icon="mdi:calendar-month"
+                          class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500"
+                        />
+                      </div>
+                      <div class="relative">
+                        <select
+                          v-model="currentYear"
+                          class="pl-10 pr-10 py-3 rounded-xl border-2 border-slate-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 bg-white text-base"
+                        >
+                          <option
+                            v-for="year in years"
+                            :key="year"
+                            :value="year"
+                          >
+                            {{ year }}
+                          </option>
+                        </select>
+                        <Icon
+                          icon="mdi:calendar-today"
+                          class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500"
+                        />
+                      </div>
+                    </div>
+                    <div class="flex space-x-2">
+                      <button
+                        @click="previousMonth"
+                        class="p-3 rounded-xl hover:bg-slate-100 transition-colors border-2 border-slate-200"
+                        aria-label="Mes anterior"
+                      >
+                        <Icon
+                          icon="mdi:chevron-left"
+                          class="w-5 h-5 text-slate-600"
+                        />
+                      </button>
+                      <button
+                        @click="nextMonth"
+                        class="p-3 rounded-xl hover:bg-slate-100 transition-colors border-2 border-slate-200"
+                        aria-label="Mes siguiente"
+                      >
+                        <Icon
+                          icon="mdi:chevron-right"
+                          class="w-5 h-5 text-slate-600"
+                        />
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div class="grid grid-cols-7 gap-1 p-2">
-                  <button
-                    v-for="(day, index) in calendarDays"
-                    :key="index"
-                    :disabled="!day.available"
-                    @click="selectDate(day)"
-                    class="aspect-square flex items-center justify-center rounded-md text-sm transition-all duration-200"
-                    :class="{
-                      'bg-gray-100 text-gray-400 cursor-not-allowed':
-                        !day.available,
-                      'hover:bg-gray-100 hover:scale-105':
-                        day.available && !isSelectedDate(day),
-                      'bg-primary text-white scale-105 shadow-sm':
-                        isSelectedDate(day),
-                      'text-gray-800': day.available && !isSelectedDate(day),
-                      'opacity-50': day.month !== currentMonth,
-                    }"
+
+                  <!-- Calendario -->
+                  <div
+                    class="bg-white rounded-xl border-2 border-slate-200 overflow-hidden shadow-sm"
                   >
-                    {{ day.day }}
-                  </button>
-                </div>
-              </div>
-
-              <!-- Selector de hora -->
-              <div v-if="formData.date" class="space-y-2">
-                <h3 class="font-medium text-gray-700 flex items-center">
-                  <Icon icon="mdi:clock-outline" class="mr-2 text-primary" />
-                  Horarios disponibles
-                </h3>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  <button
-                    v-for="time in availableTimes"
-                    :key="time"
-                    @click="formData.time = time"
-                    class="py-2 px-3 rounded-md text-sm transition-all duration-200 flex items-center justify-center"
-                    :class="
-                      formData.time === time
-                        ? 'bg-primary text-white shadow-sm scale-105'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
-                    "
-                  >
-                    <Icon icon="mdi:clock" class="mr-1 w-4 h-4" />
-                    {{ time }}
-                  </button>
-                </div>
-                <p
-                  v-if="errors.time"
-                  class="text-sm text-red-500 mt-1 flex items-center"
-                >
-                  <Icon icon="mdi:alert-circle" class="w-4 h-4 mr-1" />
-                  {{ errors.time }}
-                </p>
-              </div>
-            </div>
-
-            <!-- Paso 3: Información personal -->
-            <div v-else-if="currentStep === 2" class="space-y-6">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="space-y-2">
-                  <label class="block text-sm font-medium text-gray-700">
-                    Nombre <span class="text-primary">*</span>
-                  </label>
-                  <div class="relative">
-                    <input
-                      v-model="formData.firstName"
-                      type="text"
-                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 pl-10"
-                      placeholder="Ingrese su nombre"
-                    />
-                    <Icon
-                      icon="mdi:account"
-                      class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-                    />
-                  </div>
-                  <p
-                    v-if="errors.firstName"
-                    class="text-sm text-red-500 mt-1 flex items-center"
-                  >
-                    <Icon icon="mdi:alert-circle" class="w-4 h-4 mr-1" />
-                    {{ errors.firstName }}
-                  </p>
-                </div>
-                <div class="space-y-2">
-                  <label class="block text-sm font-medium text-gray-700">
-                    Apellido
-                  </label>
-                  <div class="relative">
-                    <input
-                      v-model="formData.lastName"
-                      type="text"
-                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 pl-10"
-                      placeholder="Ingrese su apellido"
-                    />
-                    <Icon
-                      icon="mdi:account-outline"
-                      class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="space-y-2">
-                <label class="block text-sm font-medium text-gray-700">
-                  Correo electrónico <span class="text-primary">*</span>
-                </label>
-                <div class="relative">
-                  <input
-                    v-model="formData.email"
-                    type="email"
-                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 pl-10"
-                    placeholder="ejemplo@correo.com"
-                  />
-                  <Icon
-                    icon="mdi:email-outline"
-                    class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-                  />
-                </div>
-                <p
-                  v-if="errors.email"
-                  class="text-sm text-red-500 mt-1 flex items-center"
-                >
-                  <Icon icon="mdi:alert-circle" class="w-4 h-4 mr-1" />
-                  {{ errors.email }}
-                </p>
-              </div>
-
-              <div class="space-y-2">
-                <label class="block text-sm font-medium text-gray-700">
-                  Teléfono <span class="text-primary">*</span>
-                </label>
-                <div class="flex">
-                  <div class="w-24 relative">
-                    <select
-                      v-model="formData.countryCode"
-                      class="block w-full rounded-l-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 pl-8"
+                    <div
+                      class="grid grid-cols-7 text-center p-3 bg-slate-50 border-b-2 border-slate-200"
                     >
-                      <option value="+591">🇧🇴 +591</option>
-                      <option value="+1">🇺🇸 +1</option>
-                      <option value="+34">🇪🇸 +34</option>
-                    </select>
-                    <Icon
-                      icon="mdi:earth"
-                      class="absolute left-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
-                    />
+                      <div
+                        v-for="day in weekDays"
+                        :key="day"
+                        class="text-sm font-semibold text-slate-500 py-2 uppercase tracking-wider"
+                      >
+                        {{ day }}
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-7 p-3 gap-2">
+                      <button
+                        v-for="(day, index) in calendarDays"
+                        :key="index"
+                        :disabled="!day.available"
+                        @click="selectDate(day)"
+                        class="aspect-square flex items-center justify-center rounded-xl text-base transition-all duration-200 relative"
+                        :class="{
+                          'bg-slate-100 text-slate-400 cursor-not-allowed':
+                            !day.available,
+                          'hover:bg-slate-100 hover:scale-105':
+                            day.available && !isSelectedDate(day),
+                          'bg-primary text-white scale-105 shadow-md':
+                            isSelectedDate(day),
+                          'text-slate-800':
+                            day.available && !isSelectedDate(day),
+                          'opacity-40': day.month !== currentMonth,
+                        }"
+                      >
+                        {{ day.day }}
+                        <span
+                          v-if="isToday(day)"
+                          class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rounded-full"
+                          :class="
+                            isSelectedDate(day) ? 'bg-white' : 'bg-primary'
+                          "
+                        ></span>
+                      </button>
+                    </div>
                   </div>
-                  <div class="flex-1 relative">
-                    <input
-                      v-model="formData.phone"
-                      type="tel"
-                      class="block w-full rounded-r-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 pl-10"
-                      placeholder="Número de teléfono"
-                    />
-                    <Icon
-                      icon="mdi:phone"
-                      class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-                    />
+
+                  <!-- Selector de hora -->
+                  <div v-if="formData.date" class="space-y-4">
+                    <h3
+                      class="font-medium text-slate-700 flex items-center text-lg"
+                    >
+                      <Icon
+                        icon="mdi:clock-outline"
+                        class="mr-2 text-primary w-5 h-5"
+                      />
+                      Horarios disponibles
+                    </h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      <button
+                        v-for="time in availableTimes"
+                        :key="time"
+                        @click="formData.time = time"
+                        class="py-3 px-3 rounded-xl text-base transition-all duration-200 flex items-center justify-center border-2"
+                        :class="
+                          formData.time === time
+                            ? 'bg-primary text-white border-primary shadow-md'
+                            : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200 hover:border-slate-300'
+                        "
+                      >
+                        <Icon icon="mdi:clock" class="mr-2 w-5 h-5" />
+                        {{ time }}
+                      </button>
+                    </div>
+                    <p
+                      v-if="errors.time"
+                      class="text-sm text-red-500 mt-2 flex items-center"
+                    >
+                      <Icon icon="mdi:alert-circle" class="w-4 h-4 mr-1" />
+                      {{ errors.time }}
+                    </p>
+                  </div>
+
+                  <div
+                    v-if="formData.date && formData.time"
+                    class="bg-green-50 rounded-xl p-4 border-2 border-green-100 mt-4"
+                  >
+                    <div class="flex">
+                      <Icon
+                        icon="mdi:calendar-check"
+                        class="text-green-500 w-6 h-6 mr-3 flex-shrink-0 mt-0.5"
+                      />
+                      <div>
+                        <h4 class="font-medium text-green-700 mb-1 text-lg">
+                          Cita seleccionada
+                        </h4>
+                        <p class="text-green-600">
+                          {{ formatDate(formData.date) }} a las
+                          {{ formData.time }} con
+                          {{ getDoctorName(formData.doctor) }}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <p
-                  v-if="errors.phone"
-                  class="text-sm text-red-500 mt-1 flex items-center"
-                >
-                  <Icon icon="mdi:alert-circle" class="w-4 h-4 mr-1" />
-                  {{ errors.phone }}
-                </p>
+
+                <!-- Paso 3: Información personal -->
+                <div v-else-if="currentStep === 2" class="space-y-8">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                      <label class="block text-base font-medium text-slate-700">
+                        Nombre <span class="text-primary">*</span>
+                      </label>
+                      <div class="relative">
+                        <input
+                          v-model="formData.firstName"
+                          type="text"
+                          class="block w-full rounded-xl border-2 border-slate-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 pl-12 py-3 text-base"
+                          placeholder="Ingrese su nombre"
+                        />
+                        <div
+                          class="absolute left-0 top-0 bottom-0 w-10 flex items-center justify-center border-r-2 border-slate-200"
+                        >
+                          <Icon
+                            icon="mdi:account"
+                            class="w-5 h-5 text-slate-500"
+                          />
+                        </div>
+                      </div>
+                      <p
+                        v-if="errors.firstName"
+                        class="text-sm text-red-500 mt-1 flex items-center"
+                      >
+                        <Icon icon="mdi:alert-circle" class="w-4 h-4 mr-1" />
+                        {{ errors.firstName }}
+                      </p>
+                    </div>
+                    <div class="space-y-2">
+                      <label class="block text-base font-medium text-slate-700">
+                        Apellido
+                      </label>
+                      <div class="relative">
+                        <input
+                          v-model="formData.lastName"
+                          type="text"
+                          class="block w-full rounded-xl border-2 border-slate-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 pl-12 py-3 text-base"
+                          placeholder="Ingrese su apellido"
+                        />
+                        <div
+                          class="absolute left-0 top-0 bottom-0 w-10 flex items-center justify-center border-r-2 border-slate-200"
+                        >
+                          <Icon
+                            icon="mdi:account-outline"
+                            class="w-5 h-5 text-slate-500"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="space-y-2">
+                    <label class="block text-base font-medium text-slate-700">
+                      Teléfono <span class="text-primary">*</span>
+                    </label>
+                    <div class="flex">
+                      <div class="w-32 relative">
+                        <select
+                          v-model="formData.countryCode"
+                          class="block w-full rounded-l-xl border-2 border-slate-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 pl-10 py-3 text-base"
+                        >
+                          <option value="+591">🇧🇴 +591</option>
+                          <option value="+1">🇺🇸 +1</option>
+                          <option value="+34">🇪🇸 +34</option>
+                        </select>
+                        <div
+                          class="absolute left-2 top-0 bottom-0 w-8 flex items-center justify-center"
+                        >
+                          <Icon
+                            icon="mdi:earth"
+                            class="w-5 h-5 text-slate-500"
+                          />
+                        </div>
+                      </div>
+                      <div class="flex-1 relative">
+                        <input
+                          v-model="formData.phone"
+                          type="tel"
+                          class="block w-full rounded-r-xl border-2 border-l-0 border-slate-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 pl-12 py-3 text-base"
+                          placeholder="Número de teléfono"
+                        />
+                        <div
+                          class="absolute left-0 top-0 bottom-0 w-10 flex items-center justify-center border-r-2 border-slate-200"
+                        >
+                          <Icon
+                            icon="mdi:phone"
+                            class="w-5 h-5 text-slate-500"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <p
+                      v-if="errors.phone"
+                      class="text-sm text-red-500 mt-1 flex items-center"
+                    >
+                      <Icon icon="mdi:alert-circle" class="w-4 h-4 mr-1" />
+                      {{ errors.phone }}
+                    </p>
+                  </div>
+
+                  <div
+                    class="mt-4 bg-slate-50 rounded-xl p-5 border-2 border-slate-200"
+                  >
+                    <div class="flex items-start">
+                      <Icon
+                        icon="mdi:shield-check"
+                        class="text-primary w-6 h-6 mr-3 flex-shrink-0 mt-0.5"
+                      />
+                      <div>
+                        <h4 class="font-medium text-slate-700 mb-1 text-lg">
+                          Protección de datos
+                        </h4>
+                        <p class="text-slate-600">
+                          Sus datos personales están protegidos y solo serán
+                          utilizados para gestionar su cita médica. No
+                          compartiremos su información con terceros sin su
+                          consentimiento.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Paso 4: Confirmación -->
+                <div v-else-if="currentStep === 3" class="space-y-8">
+                  <div class="flex justify-center mb-8">
+                    <div
+                      class="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center"
+                    >
+                      <Icon
+                        icon="mdi:check-circle"
+                        class="w-16 h-16 text-green-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="text-center mb-8">
+                    <h3 class="text-3xl font-bold text-slate-800 mb-2">
+                      ¡Cita Confirmada!
+                    </h3>
+                    <p class="text-slate-500 text-lg">
+                      Su cita ha sido agendada correctamente
+                    </p>
+                    <div
+                      class="inline-block bg-primary/10 text-primary font-medium px-4 py-2 rounded-full text-base mt-3"
+                    >
+                      ID de cita: #{{ appointmentId }}
+                    </div>
+                  </div>
+
+                  <div
+                    class="bg-white rounded-xl border-2 border-slate-200 overflow-hidden shadow-md divide-y-2 divide-slate-100"
+                  >
+                    <div class="p-5 bg-slate-50">
+                      <h4 class="font-semibold text-slate-800 text-lg">
+                        Detalles de la cita
+                      </h4>
+                    </div>
+
+                    <div class="p-5 flex justify-between items-center">
+                      <span class="text-slate-500 flex items-center">
+                        <Icon
+                          icon="mdi:calendar"
+                          class="mr-3 text-primary w-6 h-6"
+                        />
+                        Fecha:
+                      </span>
+                      <span class="font-medium text-slate-800 text-lg">{{
+                        formatDate(formData.date)
+                      }}</span>
+                    </div>
+
+                    <div class="p-5 flex justify-between items-center">
+                      <span class="text-slate-500 flex items-center">
+                        <Icon
+                          icon="mdi:clock"
+                          class="mr-3 text-primary w-6 h-6"
+                        />
+                        Hora:
+                      </span>
+                      <span class="font-medium text-slate-800 text-lg">{{
+                        formData.time
+                      }}</span>
+                    </div>
+
+                    <div class="p-5 flex justify-between items-center">
+                      <span class="text-slate-500 flex items-center">
+                        <Icon
+                          icon="mdi:doctor"
+                          class="mr-3 text-primary w-6 h-6"
+                        />
+                        Médico:
+                      </span>
+                      <span class="font-medium text-slate-800 text-lg">{{
+                        getDoctorName(formData.doctor)
+                      }}</span>
+                    </div>
+
+                    <div class="p-5 flex justify-between items-center">
+                      <span class="text-slate-500 flex items-center">
+                        <Icon
+                          icon="mdi:hospital-building"
+                          class="mr-3 text-primary w-6 h-6"
+                        />
+                        Centro médico:
+                      </span>
+                      <span class="font-medium text-slate-800 text-lg"
+                        >Oncoclinic Bolivia</span
+                      >
+                    </div>
+                  </div>
+
+                  <div
+                    class="bg-white rounded-xl border-2 border-slate-200 overflow-hidden shadow-md divide-y-2 divide-slate-100"
+                  >
+                    <div class="p-5 bg-slate-50">
+                      <h4 class="font-semibold text-slate-800 text-lg">
+                        Información del paciente
+                      </h4>
+                    </div>
+
+                    <div class="p-5 flex justify-between items-center">
+                      <span class="text-slate-500 flex items-center">
+                        <Icon
+                          icon="mdi:account"
+                          class="mr-3 text-primary w-6 h-6"
+                        />
+                        Nombre:
+                      </span>
+                      <span class="font-medium text-slate-800 text-lg"
+                        >{{ formData.firstName }} {{ formData.lastName }}</span
+                      >
+                    </div>
+
+                    <div class="p-5 flex justify-between items-center">
+                      <span class="text-slate-500 flex items-center">
+                        <Icon
+                          icon="mdi:email"
+                          class="mr-3 text-primary w-6 h-6"
+                        />
+                        Email:
+                      </span>
+                      <span class="font-medium text-slate-800 text-lg">{{
+                        formData.email
+                      }}</span>
+                    </div>
+
+                    <div class="p-5 flex justify-between items-center">
+                      <span class="text-slate-500 flex items-center">
+                        <Icon
+                          icon="mdi:phone"
+                          class="mr-3 text-primary w-6 h-6"
+                        />
+                        Teléfono:
+                      </span>
+                      <span class="font-medium text-slate-800 text-lg"
+                        >{{ formData.countryCode }} {{ formData.phone }}</span
+                      >
+                    </div>
+                  </div>
+
+                  <div class="space-y-4 mt-8">
+                    <h4
+                      class="font-medium text-slate-700 flex items-center text-lg"
+                    >
+                      <Icon
+                        icon="mdi:calendar-plus"
+                        class="mr-2 text-primary w-6 h-6"
+                      />
+                      Añadir al calendario
+                    </h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <button
+                        class="flex flex-col items-center justify-center p-5 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors hover:border-primary group shadow-sm"
+                      >
+                        <Icon
+                          icon="mdi:google"
+                          class="w-10 h-10 text-[#4285F4] group-hover:scale-110 transition-transform"
+                        />
+                        <span
+                          class="text-base mt-2 group-hover:text-primary transition-colors"
+                          >Google</span
+                        >
+                      </button>
+                      <button
+                        class="flex flex-col items-center justify-center p-5 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors hover:border-primary group shadow-sm"
+                      >
+                        <Icon
+                          icon="mdi:microsoft-outlook"
+                          class="w-10 h-10 text-[#0078D4] group-hover:scale-110 transition-transform"
+                        />
+                        <span
+                          class="text-base mt-2 group-hover:text-primary transition-colors"
+                          >Outlook</span
+                        >
+                      </button>
+                      <button
+                        class="flex flex-col items-center justify-center p-5 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors hover:border-primary group shadow-sm"
+                      >
+                        <Icon
+                          icon="mdi:yahoo"
+                          class="w-10 h-10 text-[#6001D2] group-hover:scale-110 transition-transform"
+                        />
+                        <span
+                          class="text-base mt-2 group-hover:text-primary transition-colors"
+                          >Yahoo</span
+                        >
+                      </button>
+                      <button
+                        class="flex flex-col items-center justify-center p-5 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors hover:border-primary group shadow-sm"
+                      >
+                        <Icon
+                          icon="mdi:apple"
+                          class="w-10 h-10 text-[#000000] group-hover:scale-110 transition-transform"
+                        />
+                        <span
+                          class="text-base mt-2 group-hover:text-primary transition-colors"
+                          >Apple</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
+              <!-- Pie del paso -->
               <div
-                class="mt-4 bg-gray-50 rounded-lg p-4 border border-gray-200"
+                class="p-6 md:p-8 border-t-2 border-slate-200 bg-slate-50 flex justify-between items-center"
               >
-                <div class="flex items-start">
+                <div class="text-sm text-slate-500 flex items-center">
                   <Icon
-                    icon="mdi:shield-check"
-                    class="text-green-500 w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+                    icon="mdi:shield-lock"
+                    class="w-5 h-5 mr-2 text-primary"
                   />
-                  <p class="text-sm text-gray-600">
-                    Sus datos personales están protegidos y solo serán
-                    utilizados para gestionar su cita médica.
-                  </p>
+                  Conexión segura
                 </div>
+                <button
+                  v-if="currentStep < steps.length - 1"
+                  @click="nextStep"
+                  class="px-8 py-3 bg-primary text-white rounded-xl hover:bg-primary-dark transition-colors flex items-center shadow-md text-base font-medium"
+                >
+                  Continuar
+                  <Icon icon="mdi:arrow-right" class="ml-2 w-5 h-5" />
+                </button>
+                <button
+                  v-else
+                  @click="finishBooking"
+                  class="px-8 py-3 bg-primary text-white rounded-xl hover:bg-primary-dark transition-colors flex items-center shadow-md text-base font-medium"
+                >
+                  Finalizar
+                  <Icon icon="mdi:check" class="ml-2 w-5 h-5" />
+                </button>
               </div>
             </div>
-
-            <!-- Paso 4: Confirmación -->
-            <div v-else-if="currentStep === 3" class="space-y-6">
-              <div class="flex justify-center mb-6">
-                <div
-                  class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center"
-                >
-                  <Icon
-                    icon="mdi:check-circle"
-                    class="w-12 h-12 text-green-500"
-                  />
-                </div>
-              </div>
-
-              <h3 class="text-2xl font-semibold text-center text-gray-800">
-                ¡Enhorabuena!
-              </h3>
-              <p class="text-center text-gray-500">
-                ID de cita #{{ appointmentId }}
-              </p>
-
-              <div
-                class="bg-gray-50 rounded-lg p-5 space-y-3 border border-gray-200"
-              >
-                <div
-                  class="flex justify-between items-center pb-2 border-b border-gray-200"
-                >
-                  <span class="text-gray-500 flex items-center">
-                    <Icon icon="mdi:calendar" class="mr-2 text-primary" />
-                    Fecha:
-                  </span>
-                  <span class="font-medium">{{
-                    formatDate(formData.date)
-                  }}</span>
-                </div>
-                <div
-                  class="flex justify-between items-center pb-2 border-b border-gray-200"
-                >
-                  <span class="text-gray-500 flex items-center">
-                    <Icon icon="mdi:clock" class="mr-2 text-primary" />
-                    Hora local:
-                  </span>
-                  <span class="font-medium">{{ formData.time }}</span>
-                </div>
-                <div
-                  class="flex justify-between items-center pb-2 border-b border-gray-200"
-                >
-                  <span class="text-gray-500 flex items-center">
-                    <Icon icon="mdi:doctor" class="mr-2 text-primary" />
-                    Servicio:
-                  </span>
-                  <span class="font-medium">{{
-                    getDoctorName(formData.doctor)
-                  }}</span>
-                </div>
-                <div
-                  class="flex justify-between items-center pb-2 border-b border-gray-200"
-                >
-                  <span class="text-gray-500 flex items-center">
-                    <Icon
-                      icon="mdi:hospital-building"
-                      class="mr-2 text-primary"
-                    />
-                    Empleado:
-                  </span>
-                  <span class="font-medium">Oncoclinic Bolivia</span>
-                </div>
-                <div class="pt-2"></div>
-                <div
-                  class="flex justify-between items-center pb-2 border-b border-gray-200"
-                >
-                  <span class="text-gray-500 flex items-center">
-                    <Icon icon="mdi:account" class="mr-2 text-primary" />
-                    Tu nombre:
-                  </span>
-                  <span class="font-medium"
-                    >{{ formData.firstName }} {{ formData.lastName }}</span
-                  >
-                </div>
-                <div
-                  class="flex justify-between items-center pb-2 border-b border-gray-200"
-                >
-                  <span class="text-gray-500 flex items-center">
-                    <Icon icon="mdi:email" class="mr-2 text-primary" />
-                    Correo electrónico:
-                  </span>
-                  <span class="font-medium">{{ formData.email }}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-500 flex items-center">
-                    <Icon icon="mdi:phone" class="mr-2 text-primary" />
-                    Número de teléfono:
-                  </span>
-                  <span class="font-medium"
-                    >{{ formData.countryCode }} {{ formData.phone }}</span
-                  >
-                </div>
-              </div>
-
-              <div class="space-y-3 mt-4">
-                <h4 class="font-medium text-gray-700 flex items-center">
-                  <Icon icon="mdi:calendar-plus" class="mr-2 text-primary" />
-                  Añadir al calendario
-                </h4>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <button
-                    class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors hover:border-primary group"
-                  >
-                    <Icon
-                      icon="mdi:google"
-                      class="w-8 h-8 text-[#4285F4] group-hover:scale-110 transition-transform"
-                    />
-                    <span
-                      class="text-sm mt-2 group-hover:text-primary transition-colors"
-                      >Google</span
-                    >
-                  </button>
-                  <button
-                    class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors hover:border-primary group"
-                  >
-                    <Icon
-                      icon="mdi:microsoft-outlook"
-                      class="w-8 h-8 text-[#0078D4] group-hover:scale-110 transition-transform"
-                    />
-                    <span
-                      class="text-sm mt-2 group-hover:text-primary transition-colors"
-                      >Outlook</span
-                    >
-                  </button>
-                  <button
-                    class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors hover:border-primary group"
-                  >
-                    <Icon
-                      icon="mdi:yahoo"
-                      class="w-8 h-8 text-[#6001D2] group-hover:scale-110 transition-transform"
-                    />
-                    <span
-                      class="text-sm mt-2 group-hover:text-primary transition-colors"
-                      >Yahoo</span
-                    >
-                  </button>
-                  <button
-                    class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors hover:border-primary group"
-                  >
-                    <Icon
-                      icon="mdi:apple"
-                      class="w-8 h-8 text-[#000000] group-hover:scale-110 transition-transform"
-                    />
-                    <span
-                      class="text-sm mt-2 group-hover:text-primary transition-colors"
-                      >Apple</span
-                    >
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Pie del paso -->
-          <div
-            class="p-4 border-t bg-gray-50 flex justify-between items-center"
-          >
-            <div class="text-sm text-gray-500 flex items-center">
-              <Icon icon="mdi:shield-lock" class="w-4 h-4 mr-1 text-primary" />
-              Conexión segura
-            </div>
-            <button
-              v-if="currentStep < steps.length - 1"
-              @click="nextStep"
-              class="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors flex items-center"
-            >
-              Continuar
-              <Icon icon="mdi:arrow-right" class="ml-1 w-5 h-5" />
-            </button>
-            <button
-              v-else
-              @click="finishBooking"
-              class="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors flex items-center"
-            >
-              Terminar
-              <Icon icon="mdi:check" class="ml-1 w-5 h-5" />
-            </button>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   </div>
 </template>
@@ -635,16 +789,19 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { Icon } from "@iconify/vue";
+import personnel from "~/mocks/doctors";
 
 // Tipos
 interface Step {
   label: string;
   icon: string;
+  description: string;
 }
 
 interface Doctor {
   id: number;
   name: string;
+  specialty: string;
 }
 
 interface CalendarDay {
@@ -667,7 +824,8 @@ interface FormData {
 
 // Estado
 const currentStep = ref(0);
-const appointmentId = ref(Math.floor(Math.random() * 1000) + 1000);
+const appointmentId = ref(Math.floor(Math.random() * 9000) + 1000);
+const mobileMenuOpen = ref(false);
 const formData = ref<FormData>({
   doctor: null,
   date: null,
@@ -688,19 +846,30 @@ const errors = ref({
 });
 
 // Datos de ejemplo
-const doctors = ref<Doctor[]>([
-  { id: 1, name: "Dr. Daniel Eduardo Mercado Rodrigo" },
-  { id: 2, name: "Dra. María Fernanda López Sánchez" },
-  { id: 3, name: "Dr. Carlos Alberto Ramírez Torres" },
-  { id: 4, name: "Dra. Ana Lucía Morales Vega" },
-]);
+const doctors = ref<Doctor[]>(personnel);
 
 // Pasos del formulario
 const steps = ref<Step[]>([
-  { label: "Médicos", icon: "mdi:doctor" },
-  { label: "Fecha y Hora", icon: "mdi:calendar-clock" },
-  { label: "Tu Información", icon: "mdi:account-details" },
-  { label: "Confirmación", icon: "mdi:check-circle" },
+  {
+    label: "Médicos",
+    icon: "mdi:doctor",
+    description: "Seleccione el especialista para su consulta",
+  },
+  {
+    label: "Fecha y Hora",
+    icon: "mdi:calendar-clock",
+    description: "Elija el día y horario que prefiera",
+  },
+  {
+    label: "Información",
+    icon: "mdi:account-details",
+    description: "Complete sus datos personales",
+  },
+  {
+    label: "Confirmación",
+    icon: "mdi:check-circle",
+    description: "Revise y confirme su cita",
+  },
 ]);
 
 // Calendario
@@ -723,14 +892,14 @@ const months = [
 ];
 const years = [2025, 2026, 2027];
 const availableTimes = [
-  "9:00 a. m.",
-  "10:00 a. m.",
-  "11:00 a. m.",
-  "12:00 p. m.",
-  "2:00 p. m.",
-  "3:00 p. m.",
-  "4:00 p. m.",
-  "5:00 p. m.",
+  "9:00 a.m.",
+  "10:00 a.m.",
+  "11:00 a.m.",
+  "12:00 p.m.",
+  "2:00 p.m.",
+  "3:00 p.m.",
+  "4:00 p.m.",
+  "5:00 p.m.",
 ];
 
 // Métodos
@@ -739,6 +908,8 @@ const nextStep = () => {
     currentStep.value++;
     // Scroll al inicio cuando cambia de paso
     window.scrollTo({ top: 0, behavior: "smooth" });
+    // Cerrar menú móvil si está abierto
+    mobileMenuOpen.value = false;
   }
 };
 
@@ -773,13 +944,7 @@ const validateCurrentStep = () => {
       errors.value.firstName = "Por favor, ingrese su nombre";
       isValid = false;
     }
-    if (!formData.value.email) {
-      errors.value.email = "Por favor, ingrese su correo electrónico";
-      isValid = false;
-    } else if (!validateEmail(formData.value.email)) {
-      errors.value.email = "Por favor, ingrese un correo electrónico válido";
-      isValid = false;
-    }
+
     if (!formData.value.phone) {
       errors.value.phone = "Por favor, ingrese su número de teléfono";
       isValid = false;
@@ -787,11 +952,6 @@ const validateCurrentStep = () => {
   }
 
   return isValid;
-};
-
-const validateEmail = (email: string) => {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
 };
 
 const previousMonth = () => {
@@ -830,6 +990,15 @@ const isSelectedDate = (day: CalendarDay) => {
   );
 };
 
+const isToday = (day: CalendarDay) => {
+  const today = new Date();
+  return (
+    day.day === today.getDate() &&
+    day.month === today.getMonth() &&
+    day.year === today.getFullYear()
+  );
+};
+
 const formatDate = (date: Date | null) => {
   if (!date) return "";
 
@@ -851,6 +1020,17 @@ const getDoctorName = (doctorId: number | null) => {
 const finishBooking = () => {
   // Aquí iría la lógica para enviar los datos al servidor
   alert("¡Cita reservada con éxito!");
+  currentStep.value = 0;
+  formData.value = {
+    doctor: null,
+    date: null,
+    time: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    countryCode: "+591",
+    phone: "",
+  };
 };
 
 // Calendario computado
@@ -967,6 +1147,11 @@ onMounted(() => {
   color: var(--primary);
 }
 
+/* Bordes más gruesos */
+.border-3 {
+  border-width: 3px;
+}
+
 /* Animaciones y transiciones */
 .transition-all {
   transition-property: all;
@@ -984,5 +1169,53 @@ onMounted(() => {
   transition-property: transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 200ms;
+}
+
+/* Estilos personalizados para mejorar la experiencia */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Mejoras de accesibilidad */
+button:focus,
+input:focus,
+select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Animaciones sutiles */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Corrección para inputs */
+input,
+select {
+  height: auto;
+  line-height: 1.5;
+}
+
+/* Mejora de sombras */
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Mejora de bordes redondeados */
+.rounded-xl {
+  border-radius: 0.75rem;
 }
 </style>

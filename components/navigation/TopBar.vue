@@ -291,7 +291,7 @@
           <!-- Action Buttons -->
           <div class="hidden items-center lg:flex lg:gap-1 xl:gap-2">
             <UButton
-              to="#"
+              to="/citas"
               variant="outline"
               class="relative font-medium transition-colors duration-200 hover:text-primary rounded-full lg:text-xs lg:px-3 lg:py-1 xl:text-sm xl:px-4 xl:py-1.5 2xl:text-sm 2xl:px-5 2xl:py-2"
             >
@@ -490,7 +490,7 @@
           <!-- Mobile Action Buttons -->
           <div class="mt-8 grid grid-cols-1 gap-3">
             <NuxtLink
-              to="#"
+              to="/citas"
               class="w-full rounded-lg bg-gray-100 px-4 py-3.5 text-center font-medium hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center"
             >
               <Icon name="lucide:calendar" class="h-4 w-4 mr-2" />
