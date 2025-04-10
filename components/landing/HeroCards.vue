@@ -118,7 +118,7 @@
             <div class="mr-3 rounded-full bg-blue-100 p-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-blue-600"
+                class="h-5 w-5 text-primary-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -136,7 +136,8 @@
                 Tratamiento personalizado
               </h3>
               <p class="text-sm text-gray-600">
-                El tratamiento se adapta a ti y a tu tipo de cáncer
+                Nuestros tratamientos se adaptan a ti y a tu tipo de cáncer,
+                preocurando siempre tu salud.
               </p>
             </div>
           </div>
@@ -144,7 +145,7 @@
             <div class="mr-3 rounded-full bg-blue-100 p-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-blue-600"
+                class="h-5 w-5 text-primary-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -162,8 +163,8 @@
                 Diagnóstico molecular avanzado
               </h3>
               <p class="text-sm text-gray-600">
-                Se utilizan pruebas especiales (como la secuenciación genética)
-                para identificar alteraciones específicas en el cáncer
+                Se utilizan pruebas como la secuenciación genética) para
+                identificar alteraciones específicas en el cáncer
               </p>
             </div>
           </div>

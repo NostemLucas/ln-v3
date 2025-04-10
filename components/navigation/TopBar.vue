@@ -57,8 +57,10 @@
                 v-else-if="item.url"
                 variant="link"
                 :to="item.url || '#'"
-                class="relative font-medium transition-colors duration-200 hover:text-primary text-gray-800 tracking-wide lg:text-xs lg:px-1.5 lg:py-1 xl:text-sm xl:px-2 xl:py-1 2xl:text-base 2xl:px-3 2xl:py-2"
-                :class="{ 'text-primary': isActiveRoute(item.url) }"
+                class="relative font-medium transition-colors duration-200 hover:text-primary-300 text-gray-800 tracking-wide lg:text-xs lg:px-1.5 lg:py-1 xl:text-sm xl:px-2 xl:py-1 2xl:text-base 2xl:px-3 2xl:py-2"
+                :class="{
+                  'text-primary-400 font-semibold': isActiveRoute(item.url),
+                }"
               >
                 {{ item.label }}
                 <!--        <span
@@ -94,7 +96,7 @@
               <!-- Overlay para submenús  -->
               <div
                 v-if="(item.subItems || item.columns) && activeMenus[index]"
-                class="fixed left-0 right-0 bottom-0 top-[5rem] w-screen h-screen bg-black/30 backdrop-blur-sm z-40 transition-all duration-300"
+                class="fixed left-0 right-0 bottom-0 top-[5rem] w-screen h-screen bg-black/30 backdrop-blur-sm z-40 transition-all duration-1000"
                 @mouseenter="closeAllMenus"
               />
 

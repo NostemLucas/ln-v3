@@ -9,9 +9,9 @@
       <!-- Encabezado de sección con estilo consistente -->
       <div class="mx-auto mb-16 max-w-3xl text-center">
         <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">
-          Diagnósticos De Precisión
+          Diagnósticos <span class="text-primary-300">De Precisión</span>
         </h2>
-        <div class="mx-auto mb-6 h-1 w-20 bg-blue-600"></div>
+        <div class="mx-auto mb-6 h-1 w-20 bg-primary-300"></div>
         <p class="leading-relaxed text-gray-600">
           En OncoClinic implementamos protocolos diagnósticos de vanguardia,
           apoyados en tecnología de última generación y evidencia científica
