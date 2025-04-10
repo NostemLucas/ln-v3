@@ -477,21 +477,383 @@
                   v-if="
                     ['title', 'subtitle', 'text'].includes(selectedBlock.type)
                   "
-                  class="mb-4"
                 >
-                  <label class="block text-sm font-medium text-gray-700 mb-1">
-                    Contenido
-                  </label>
-                  <textarea
-                    :value="selectedBlock.content || ''"
-                    class="w-full p-2 border rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
-                    :rows="selectedBlock.type === 'text' ? 5 : 2"
-                    @input="
-                      updateBlockContent(
-                        ($event.target as HTMLTextAreaElement).value
-                      )
-                    "
-                  ></textarea>
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                      Contenido
+                    </label>
+                    <div class="relative">
+                      <!-- Editor de texto enriquecido -->
+                      <div
+                        ref="richTextEditor"
+                        class="rich-text-editor w-full p-2 border rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none min-h-[100px]"
+                        :class="{
+                          'min-h-[200px]': selectedBlock.type === 'text',
+                        }"
+                        contenteditable="true"
+                        @input="handleRichTextInput"
+                        @mouseup="checkTextSelection"
+                        @keyup="checkTextSelection"
+                        v-html="selectedBlock.content || ''"
+                      ></div>
+
+                      <!-- Barra de herramientas flotante para selección de texto -->
+                      <div
+                        v-if="showFloatingToolbar"
+                        class="floating-toolbar absolute bg-white shadow-md rounded-md border p-1 flex items-center gap-1 z-20"
+                        :style="floatingToolbarStyle"
+                      >
+                        <button
+                          @click="applyFormatToSelection('bold')"
+                          class="p-1 hover:bg-gray-100 rounded"
+                          :class="{ 'bg-gray-200': isFormatActive('bold') }"
+                          title="Negrita"
+                        >
+                          <Icon name="lucide:bold" class="h-4 w-4" />
+                        </button>
+                        <button
+                          @click="applyFormatToSelection('italic')"
+                          class="p-1 hover:bg-gray-100 rounded"
+                          :class="{ 'bg-gray-200': isFormatActive('italic') }"
+                          title="Cursiva"
+                        >
+                          <Icon name="lucide:italic" class="h-4 w-4" />
+                        </button>
+                        <button
+                          @click="applyFormatToSelection('underline')"
+                          class="p-1 hover:bg-gray-100 rounded"
+                          :class="{
+                            'bg-gray-200': isFormatActive('underline'),
+                          }"
+                          title="Subrayado"
+                        >
+                          <Icon name="lucide:underline" class="h-4 w-4" />
+                        </button>
+                        <div class="w-px h-4 bg-gray-300 mx-1"></div>
+                        <button
+                          @click="applyFormatToSelection('color')"
+                          class="p-1 hover:bg-gray-100 rounded relative"
+                          title="Color de texto"
+                        >
+                          <Icon name="lucide:palette" class="h-4 w-4" />
+                          <input
+                            type="color"
+                            class="absolute inset-0 opacity-0 cursor-pointer"
+                            @input="applyColorToSelection($event)"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Opciones de formato de texto para todo el bloque -->
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                      Formato de bloque completo
+                    </label>
+                    <div class="flex flex-wrap gap-2">
+                      <button
+                        @click="toggleTextFormat('bold')"
+                        class="p-1.5 border rounded-md hover:bg-gray-100"
+                        :class="{
+                          'bg-gray-100 ring-2 ring-emerald-500':
+                            selectedBlock.textProps?.bold,
+                        }"
+                        title="Negrita"
+                      >
+                        <Icon name="lucide:bold" class="h-4 w-4" />
+                      </button>
+                      <button
+                        @click="toggleTextFormat('italic')"
+                        class="p-1.5 border rounded-md hover:bg-gray-100"
+                        :class="{
+                          'bg-gray-100 ring-2 ring-emerald-500':
+                            selectedBlock.textProps?.italic,
+                        }"
+                        title="Cursiva"
+                      >
+                        <Icon name="lucide:italic" class="h-4 w-4" />
+                      </button>
+                      <button
+                        @click="toggleTextFormat('underline')"
+                        class="p-1.5 border rounded-md hover:bg-gray-100"
+                        :class="{
+                          'bg-gray-100 ring-2 ring-emerald-500':
+                            selectedBlock.textProps?.underline,
+                        }"
+                        title="Subrayado"
+                      >
+                        <Icon name="lucide:underline" class="h-4 w-4" />
+                      </button>
+                      <div class="flex-1"></div>
+                      <button
+                        @click="showColorPicker = !showColorPicker"
+                        class="p-1.5 border rounded-md hover:bg-gray-100 relative"
+                        title="Color de texto"
+                      >
+                        <Icon name="lucide:palette" class="h-4 w-4" />
+                        <div
+                          v-if="selectedBlock.textProps?.color"
+                          class="absolute bottom-0 right-0 w-2 h-2 rounded-full"
+                          :style="{
+                            backgroundColor: selectedBlock.textProps.color,
+                          }"
+                        ></div>
+                      </button>
+                    </div>
+
+                    <!-- Selector de color -->
+                    <div
+                      v-if="showColorPicker"
+                      class="mt-2 p-2 border rounded-md bg-white shadow-md"
+                    >
+                      <div class="grid grid-cols-8 gap-1">
+                        <button
+                          v-for="color in textColors"
+                          :key="color.value"
+                          @click="updateTextColor(color.value)"
+                          class="w-6 h-6 rounded-full border"
+                          :style="{ backgroundColor: color.value }"
+                          :title="color.name"
+                        ></button>
+                      </div>
+                      <div class="mt-2 flex items-center gap-2">
+                        <input
+                          type="text"
+                          v-model="customColor"
+                          class="flex-1 p-1 text-xs border rounded"
+                          placeholder="#RRGGBB"
+                        />
+                        <button
+                          @click="updateTextColor(customColor)"
+                          class="px-2 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200"
+                        >
+                          Aplicar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Alineación de texto -->
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                      Alineación
+                    </label>
+                    <div class="flex gap-1">
+                      <button
+                        @click="updateTextAlignment('left')"
+                        class="flex-1 p-1.5 border rounded-md hover:bg-gray-100"
+                        :class="{
+                          'bg-gray-100 ring-2 ring-emerald-500':
+                            !selectedBlock.textProps?.alignment ||
+                            selectedBlock.textProps?.alignment === 'left',
+                        }"
+                      >
+                        <Icon
+                          name="lucide:align-left"
+                          class="h-4 w-4 mx-auto"
+                        />
+                      </button>
+                      <button
+                        @click="updateTextAlignment('center')"
+                        class="flex-1 p-1.5 border rounded-md hover:bg-gray-100"
+                        :class="{
+                          'bg-gray-100 ring-2 ring-emerald-500':
+                            selectedBlock.textProps?.alignment === 'center',
+                        }"
+                      >
+                        <Icon
+                          name="lucide:align-center"
+                          class="h-4 w-4 mx-auto"
+                        />
+                      </button>
+                      <button
+                        @click="updateTextAlignment('right')"
+                        class="flex-1 p-1.5 border rounded-md hover:bg-gray-100"
+                        :class="{
+                          'bg-gray-100 ring-2 ring-emerald-500':
+                            selectedBlock.textProps?.alignment === 'right',
+                        }"
+                      >
+                        <Icon
+                          name="lucide:align-right"
+                          class="h-4 w-4 mx-auto"
+                        />
+                      </button>
+                      <button
+                        @click="updateTextAlignment('justify')"
+                        class="flex-1 p-1.5 border rounded-md hover:bg-gray-100"
+                        :class="{
+                          'bg-gray-100 ring-2 ring-emerald-500':
+                            selectedBlock.textProps?.alignment === 'justify',
+                        }"
+                      >
+                        <Icon
+                          name="lucide:align-justify"
+                          class="h-4 w-4 mx-auto"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Propiedades de divisor -->
+                <div v-if="selectedBlock.type === 'divider'">
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                      Estilo del divisor
+                    </label>
+                    <select
+                      :value="selectedBlock.dividerProps?.style || 'solid'"
+                      class="w-full p-2 border rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                      @change="
+                        updateDividerProps({
+                          style: ($event.target as HTMLSelectElement)
+                            .value as DividerStyle,
+                        })
+                      "
+                    >
+                      <option value="solid">Sólido</option>
+                      <option value="dashed">Discontinuo</option>
+                      <option value="dotted">Punteado</option>
+                      <option value="double">Doble</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                      Grosor (px)
+                    </label>
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      :value="selectedBlock.dividerProps?.thickness || 1"
+                      class="w-full accent-emerald-600"
+                      @input="
+                        updateDividerProps({
+                          thickness: parseInt(
+                            ($event.target as HTMLInputElement).value
+                          ),
+                        })
+                      "
+                    />
+                    <div
+                      class="flex justify-between text-xs text-gray-500 mt-1"
+                    >
+                      <span>1px</span>
+                      <span>5px</span>
+                      <span>10px</span>
+                    </div>
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                      Color
+                    </label>
+                    <div class="grid grid-cols-8 gap-1">
+                      <button
+                        v-for="color in dividerColors"
+                        :key="color.value"
+                        @click="updateDividerProps({ color: color.value })"
+                        class="w-6 h-6 rounded-full border"
+                        :style="{ backgroundColor: color.value }"
+                        :title="color.name"
+                      ></button>
+                    </div>
+                    <div class="mt-2 flex items-center gap-2">
+                      <input
+                        type="text"
+                        v-model="customDividerColor"
+                        class="flex-1 p-1 text-xs border rounded"
+                        placeholder="#RRGGBB"
+                      />
+                      <button
+                        @click="
+                          updateDividerProps({ color: customDividerColor })
+                        "
+                        class="px-2 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200"
+                      >
+                        Aplicar
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                      Ancho (%)
+                    </label>
+                    <input
+                      type="range"
+                      min="10"
+                      max="100"
+                      step="5"
+                      :value="selectedBlock.dividerProps?.width || 100"
+                      class="w-full accent-emerald-600"
+                      @input="
+                        updateDividerProps({
+                          width: parseInt(
+                            ($event.target as HTMLInputElement).value
+                          ),
+                        })
+                      "
+                    />
+                    <div
+                      class="flex justify-between text-xs text-gray-500 mt-1"
+                    >
+                      <span>10%</span>
+                      <span>50%</span>
+                      <span>100%</span>
+                    </div>
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                      Alineación
+                    </label>
+                    <div class="flex gap-1">
+                      <button
+                        @click="updateDividerProps({ alignment: 'left' })"
+                        class="flex-1 p-1.5 border rounded-md hover:bg-gray-100"
+                        :class="{
+                          'bg-gray-100 ring-2 ring-emerald-500':
+                            !selectedBlock.dividerProps?.alignment ||
+                            selectedBlock.dividerProps?.alignment === 'left',
+                        }"
+                      >
+                        <Icon
+                          name="lucide:align-left"
+                          class="h-4 w-4 mx-auto"
+                        />
+                      </button>
+                      <button
+                        @click="updateDividerProps({ alignment: 'center' })"
+                        class="flex-1 p-1.5 border rounded-md hover:bg-gray-100"
+                        :class="{
+                          'bg-gray-100 ring-2 ring-emerald-500':
+                            selectedBlock.dividerProps?.alignment === 'center',
+                        }"
+                      >
+                        <Icon
+                          name="lucide:align-center"
+                          class="h-4 w-4 mx-auto"
+                        />
+                      </button>
+                      <button
+                        @click="updateDividerProps({ alignment: 'right' })"
+                        class="flex-1 p-1.5 border rounded-md hover:bg-gray-100"
+                        :class="{
+                          'bg-gray-100 ring-2 ring-emerald-500':
+                            selectedBlock.dividerProps?.alignment === 'right',
+                        }"
+                      >
+                        <Icon
+                          name="lucide:align-right"
+                          class="h-4 w-4 mx-auto"
+                        />
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- Propiedades de imagen -->
@@ -640,7 +1002,7 @@
 
                   <div class="mb-4">
                     <label
-                      class="text-sm font-medium text-gray-700 mb-1 flex justify-between"
+                      class="block text-sm font-medium text-gray-700 mb-1 flex justify-between"
                     >
                       <span>Elementos de la lista</span>
                       <button
@@ -739,7 +1101,8 @@
                       class="w-full p-2 border rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                       @change="
                         updateQuoteProps({
-                          style: ($event.target as HTMLSelectElement).value,
+                          style: ($event.target as HTMLSelectElement)
+                            .value as QuoteStyle,
                         })
                       "
                     >
@@ -1118,6 +1481,8 @@ type ComponentType =
 type ObjectFitType = "cover" | "contain" | "fill" | "none";
 type ListType = "bullet" | "numbered" | "check";
 type QuoteStyle = "default" | "blockquote" | "pullquote";
+type DividerStyle = "solid" | "dashed" | "dotted" | "double";
+type TextAlignment = "left" | "center" | "right" | "justify";
 
 interface Template {
   id: string;
@@ -1163,6 +1528,22 @@ interface TableProperties {
   data: string[][];
 }
 
+interface TextProperties {
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  color?: string;
+  alignment?: TextAlignment;
+}
+
+interface DividerProperties {
+  style: DividerStyle;
+  thickness: number;
+  color: string;
+  width: number;
+  alignment: TextAlignment;
+}
+
 interface ContentBlock {
   id: string;
   type: ComponentType;
@@ -1174,6 +1555,8 @@ interface ContentBlock {
   quoteProps?: QuoteProperties;
   codeProps?: CodeProperties;
   tableProps?: TableProperties;
+  textProps?: TextProperties;
+  dividerProps?: DividerProperties;
   // GridStack properties
   x: number;
   y: number;
@@ -1184,6 +1567,11 @@ interface ContentBlock {
 interface ComponentDefinition {
   type: string;
   label: string;
+}
+
+interface ColorOption {
+  name: string;
+  value: string;
 }
 
 // State
@@ -1224,6 +1612,58 @@ const previewGridContainer = ref<HTMLElement | null>(null);
 const gridStack = ref<any>(null);
 const previewGridStack = ref<any>(null);
 const previewMode = ref<"desktop" | "tablet" | "mobile">("desktop");
+const showColorPicker = ref(false);
+const customColor = ref("");
+const customDividerColor = ref("");
+
+// Rich text editor refs and state
+const richTextEditor = ref<HTMLElement | null>(null);
+const showFloatingToolbar = ref(false);
+const floatingToolbarStyle = ref({
+  top: "0px",
+  left: "0px",
+});
+const currentSelection = ref<Selection | null>(null);
+const currentRange = ref<Range | null>(null);
+
+// Colores predefinidos para texto
+const textColors: ColorOption[] = [
+  { name: "Negro", value: "#000000" },
+  { name: "Gris oscuro", value: "#333333" },
+  { name: "Gris", value: "#666666" },
+  { name: "Gris claro", value: "#999999" },
+  { name: "Rojo", value: "#e53e3e" },
+  { name: "Naranja", value: "#ed8936" },
+  { name: "Amarillo", value: "#ecc94b" },
+  { name: "Verde", value: "#38a169" },
+  { name: "Verde azulado", value: "#38b2ac" },
+  { name: "Azul", value: "#3182ce" },
+  { name: "Índigo", value: "#5a67d8" },
+  { name: "Púrpura", value: "#805ad5" },
+  { name: "Rosa", value: "#d53f8c" },
+  { name: "Esmeralda", value: "#10b981" },
+  { name: "Blanco", value: "#ffffff" },
+  { name: "Transparente", value: "transparent" },
+];
+
+// Colores predefinidos para divisores
+const dividerColors: ColorOption[] = [
+  { name: "Negro", value: "#000000" },
+  { name: "Gris oscuro", value: "#333333" },
+  { name: "Gris", value: "#666666" },
+  { name: "Gris claro", value: "#999999" },
+  { name: "Gris más claro", value: "#e5e5e5" },
+  { name: "Rojo", value: "#e53e3e" },
+  { name: "Naranja", value: "#ed8936" },
+  { name: "Amarillo", value: "#ecc94b" },
+  { name: "Verde", value: "#38a169" },
+  { name: "Verde azulado", value: "#38b2ac" },
+  { name: "Azul", value: "#3182ce" },
+  { name: "Índigo", value: "#5a67d8" },
+  { name: "Púrpura", value: "#805ad5" },
+  { name: "Rosa", value: "#d53f8c" },
+  { name: "Esmeralda", value: "#10b981" },
+];
 
 // Computed para obtener el bloque seleccionado
 const selectedBlock = computed(() => {
@@ -1394,21 +1834,61 @@ const renderBlock = (block: ContentBlock) => {
 
   content += '<div class="p-3 h-full">';
 
+  // Aplicar propiedades de texto
+  const textStyles = block.textProps
+    ? `${block.textProps.bold ? "font-bold" : ""} 
+     ${block.textProps.italic ? "italic" : ""} 
+     ${block.textProps.underline ? "underline" : ""} 
+     ${block.textProps.color ? `color: ${block.textProps.color};` : ""} 
+     ${block.textProps.alignment ? `text-${block.textProps.alignment}` : ""}`
+    : "";
+
   // Contenido según el tipo de bloque
   if (block.type === "title") {
-    content += `<div class="block-content font-bold text-2xl md:text-3xl outline-none w-full min-h-[40px]" contenteditable>${
-      block.content || "Ingrese título aquí"
-    }</div>`;
+    content += `<div class="block-content rich-text-content font-bold text-2xl md:text-3xl outline-none w-full min-h-[40px] ${textStyles}" contenteditable="false" style="${
+      block.textProps?.color ? `color: ${block.textProps.color};` : ""
+    }">${block.content || "Ingrese título aquí"}</div>`;
   } else if (block.type === "subtitle") {
-    content += `<div class="block-content font-medium text-xl md:text-2xl outline-none w-full min-h-[36px]" contenteditable>${
-      block.content || "Ingrese subtítulo aquí"
-    }</div>`;
+    content += `<div class="block-content rich-text-content font-medium text-xl md:text-2xl outline-none w-full min-h-[36px] ${textStyles}" contenteditable="false" style="${
+      block.textProps?.color ? `color: ${block.textProps.color};` : ""
+    }">${block.content || "Ingrese subtítulo aquí"}</div>`;
   } else if (block.type === "text") {
-    content += `<div class="block-content text-base outline-none w-full min-h-[100px]" contenteditable>${
-      block.content || "Ingrese texto aquí"
-    }</div>`;
+    content += `<div class="block-content rich-text-content text-base outline-none w-full min-h-[100px] ${textStyles}" contenteditable="false" style="${
+      block.textProps?.color ? `color: ${block.textProps.color};` : ""
+    }">${block.content || "Ingrese texto aquí"}</div>`;
   } else if (block.type === "divider") {
-    content += `<hr class="w-full border-t" />`;
+    const dividerProps = block.dividerProps || {
+      style: "solid" as DividerStyle,
+      thickness: 1,
+      color: "#e5e5e5",
+      width: 100,
+      alignment: "center" as TextAlignment,
+    };
+
+    const dividerAlignment =
+      dividerProps.alignment === "left"
+        ? "mr-auto"
+        : dividerProps.alignment === "right"
+        ? "ml-auto"
+        : "mx-auto";
+
+    content += `
+      <div class="flex ${
+        dividerAlignment === "mx-auto"
+          ? "justify-center"
+          : dividerAlignment === "ml-auto"
+          ? "justify-end"
+          : "justify-start"
+      }">
+        <hr class="${dividerAlignment}" style="
+          border: 0;
+          border-top-style: ${dividerProps.style};
+          border-top-width: ${dividerProps.thickness}px;
+          border-top-color: ${dividerProps.color};
+          width: ${dividerProps.width}%;
+        " />
+      </div>
+    `;
   } else if (block.type === "image") {
     content += `
     <div class="w-full h-full relative">
@@ -1651,21 +2131,61 @@ const renderPreviewBlock = (block: ContentBlock) => {
   // Crear el contenido HTML del bloque para la vista previa (sin controles de edición)
   let content = '<div class="p-3 h-full">';
 
+  // Aplicar propiedades de texto
+  const textStyles = block.textProps
+    ? `${block.textProps.bold ? "font-bold" : ""} 
+     ${block.textProps.italic ? "italic" : ""} 
+     ${block.textProps.underline ? "underline" : ""} 
+     ${block.textProps.color ? `color: ${block.textProps.color};` : ""} 
+     ${block.textProps.alignment ? `text-${block.textProps.alignment}` : ""}`
+    : "";
+
   // Contenido según el tipo de bloque
   if (block.type === "title") {
-    content += `<div class="font-bold text-2xl md:text-3xl w-full">${
-      block.content || "Título"
-    }</div>`;
+    content += `<div class="font-bold text-2xl md:text-3xl w-full ${textStyles}" style="${
+      block.textProps?.color ? `color: ${block.textProps.color};` : ""
+    }">${block.content || "Título"}</div>`;
   } else if (block.type === "subtitle") {
-    content += `<div class="font-medium text-xl md:text-2xl w-full">${
-      block.content || "Subtítulo"
-    }</div>`;
+    content += `<div class="font-medium text-xl md:text-2xl w-full ${textStyles}" style="${
+      block.textProps?.color ? `color: ${block.textProps.color};` : ""
+    }">${block.content || "Subtítulo"}</div>`;
   } else if (block.type === "text") {
-    content += `<div class="text-base w-full">${
-      block.content || "Texto"
-    }</div>`;
+    content += `<div class="text-base w-full ${textStyles}" style="${
+      block.textProps?.color ? `color: ${block.textProps.color};` : ""
+    }">${block.content || "Texto"}</div>`;
   } else if (block.type === "divider") {
-    content += `<hr class="w-full border-t" />`;
+    const dividerProps = block.dividerProps || {
+      style: "solid" as DividerStyle,
+      thickness: 1,
+      color: "#e5e5e5",
+      width: 100,
+      alignment: "center" as TextAlignment,
+    };
+
+    const dividerAlignment =
+      dividerProps.alignment === "left"
+        ? "mr-auto"
+        : dividerProps.alignment === "right"
+        ? "ml-auto"
+        : "mx-auto";
+
+    content += `
+      <div class="flex ${
+        dividerAlignment === "mx-auto"
+          ? "justify-center"
+          : dividerAlignment === "ml-auto"
+          ? "justify-end"
+          : "justify-start"
+      }">
+        <hr class="${dividerAlignment}" style="
+          border: 0;
+          border-top-style: ${dividerProps.style};
+          border-top-width: ${dividerProps.thickness}px;
+          border-top-color: ${dividerProps.color};
+          width: ${dividerProps.width}%;
+        " />
+      </div>
+    `;
   } else if (block.type === "image") {
     content += `
     <div class="w-full h-full">
@@ -1906,9 +2426,9 @@ const setupBlockEventListeners = (blockId: string) => {
   // Contenido editable
   const contentEl = gridItem.querySelector(".block-content");
   if (contentEl) {
-    contentEl.addEventListener("blur", (e) => {
-      const content = (e.target as HTMLElement).textContent || "";
-      updateBlockContent2(blockId, content);
+    contentEl.addEventListener("click", (e) => {
+      e.stopPropagation();
+      selectBlock(blockId);
     });
   }
 
@@ -1943,6 +2463,103 @@ const renderBlocks = () => {
   });
 };
 
+// Rich Text Editor Functions
+const handleRichTextInput = (e: Event) => {
+  if (!selectedBlock.value || !selectedBlockId.value) return;
+
+  // Actualizar el contenido del bloque con el HTML del editor
+  const content = (e.target as HTMLElement).innerHTML;
+  updateBlockContent(content);
+};
+
+const checkTextSelection = () => {
+  if (!richTextEditor.value) return;
+
+  const selection = window.getSelection();
+  if (!selection || selection.rangeCount === 0) {
+    // No hay selección, ocultar la barra de herramientas
+    showFloatingToolbar.value = false;
+    return;
+  }
+
+  const range = selection.getRangeAt(0);
+
+  // Verificar si la selección está dentro del editor
+  if (!richTextEditor.value.contains(range.commonAncestorContainer)) {
+    showFloatingToolbar.value = false;
+    return;
+  }
+
+  // Verificar si hay texto seleccionado
+  if (selection.toString().trim() === "") {
+    showFloatingToolbar.value = false;
+    return;
+  }
+
+  // Guardar la selección actual para usarla más tarde
+  currentSelection.value = selection;
+  currentRange.value = range;
+
+  // Mostrar la barra de herramientas flotante
+  showFloatingToolbar.value = true;
+
+  // Posicionar la barra de herramientas encima de la selección
+  const rect = range.getBoundingClientRect();
+  const editorRect = richTextEditor.value.getBoundingClientRect();
+
+  floatingToolbarStyle.value = {
+    top: `${rect.top - editorRect.top - 40}px`,
+    left: `${rect.left - editorRect.left + rect.width / 2 - 50}px`,
+  };
+};
+
+const applyFormatToSelection = (
+  format: "bold" | "italic" | "underline" | "color"
+) => {
+  if (!currentSelection.value || !currentRange.value) return;
+
+  // Restaurar la selección
+  const selection = window.getSelection();
+  if (selection) {
+    selection.removeAllRanges();
+    selection.addRange(currentRange.value);
+  }
+
+  // Aplicar el formato
+  document.execCommand(format, false);
+
+  // Actualizar el contenido del bloque
+  if (richTextEditor.value && selectedBlock.value) {
+    updateBlockContent(richTextEditor.value.innerHTML);
+  }
+};
+
+const applyColorToSelection = (e: Event) => {
+  if (!currentSelection.value || !currentRange.value) return;
+
+  // Obtener el color seleccionado
+  const color = (e.target as HTMLInputElement).value;
+
+  // Restaurar la selección
+  const selection = window.getSelection();
+  if (selection) {
+    selection.removeAllRanges();
+    selection.addRange(currentRange.value);
+  }
+
+  // Aplicar el color
+  document.execCommand("foreColor", false, color);
+
+  // Actualizar el contenido del bloque
+  if (richTextEditor.value && selectedBlock.value) {
+    updateBlockContent(richTextEditor.value.innerHTML);
+  }
+};
+
+const isFormatActive = (format: string): boolean => {
+  return document.queryCommandState(format);
+};
+
 // Actions
 const selectTemplate = (templateId: string) => {
   selectedTemplate.value = templateId;
@@ -1950,6 +2567,8 @@ const selectTemplate = (templateId: string) => {
 
 const selectBlock = (blockId: string) => {
   selectedBlockId.value = blockId;
+  showColorPicker.value = false;
+  showFloatingToolbar.value = false;
 
   // Re-renderizar los bloques para mostrar/ocultar controles
   renderBlocks();
@@ -2012,6 +2631,29 @@ const addComponent = (componentType: ComponentType) => {
         }
       : undefined;
 
+  // Default text properties
+  const textProps = ["title", "subtitle", "text"].includes(componentType)
+    ? {
+        bold: false,
+        italic: false,
+        underline: false,
+        color: undefined,
+        alignment: "left" as const,
+      }
+    : undefined;
+
+  // Default divider properties
+  const dividerProps =
+    componentType === "divider"
+      ? {
+          style: "solid" as const,
+          thickness: 1,
+          color: "#e5e5e5",
+          width: 100,
+          alignment: "center" as const,
+        }
+      : undefined;
+
   // Determine default width and height based on component type
   const defaultWidth = 12; // Full width by default
   let defaultHeight = 2; // Default height
@@ -2065,6 +2707,8 @@ const addComponent = (componentType: ComponentType) => {
     quoteProps,
     codeProps,
     tableProps,
+    textProps,
+    dividerProps,
     x: 0,
     y: maxY,
     width: defaultWidth,
@@ -2144,6 +2788,112 @@ const updateSelectedBlockSize = () => {
         h: selectedBlock.value.height,
       });
     }
+  }
+};
+
+// Métodos para actualizar propiedades de texto
+const toggleTextFormat = (format: "bold" | "italic" | "underline") => {
+  if (!selectedBlock.value || !selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  const currentTextProps = blocks.value[blockIndex].textProps || {
+    bold: false,
+    italic: false,
+    underline: false,
+    alignment: "left" as TextAlignment,
+  };
+
+  blocks.value[blockIndex] = {
+    ...blocks.value[blockIndex],
+    textProps: {
+      ...currentTextProps,
+      [format]: !currentTextProps[format],
+    },
+  };
+
+  renderBlock(blocks.value[blockIndex]);
+};
+
+const updateTextColor = (color: string) => {
+  if (!selectedBlock.value || !selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  const currentTextProps = blocks.value[blockIndex].textProps || {
+    bold: false,
+    italic: false,
+    underline: false,
+    alignment: "left" as TextAlignment,
+  };
+
+  blocks.value[blockIndex] = {
+    ...blocks.value[blockIndex],
+    textProps: {
+      ...currentTextProps,
+      color: color,
+    },
+  };
+
+  showColorPicker.value = false;
+  renderBlock(blocks.value[blockIndex]);
+};
+
+const updateTextAlignment = (alignment: TextAlignment) => {
+  if (!selectedBlock.value || !selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  const currentTextProps = blocks.value[blockIndex].textProps || {
+    bold: false,
+    italic: false,
+    underline: false,
+  };
+
+  blocks.value[blockIndex] = {
+    ...blocks.value[blockIndex],
+    textProps: {
+      ...currentTextProps,
+      alignment: alignment,
+    },
+  };
+
+  renderBlock(blocks.value[blockIndex]);
+};
+
+// Métodos para actualizar propiedades de divisor
+const updateDividerProps = (props: Partial<DividerProperties>) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex !== -1 && blocks.value[blockIndex].type === "divider") {
+    blocks.value[blockIndex] = {
+      ...blocks.value[blockIndex],
+      dividerProps: {
+        ...(blocks.value[blockIndex].dividerProps || {
+          style: "solid",
+          thickness: 1,
+          color: "#e5e5e5",
+          width: 100,
+          alignment: "center",
+        }),
+        ...props,
+      },
+    };
+
+    // Re-renderizar el bloque para actualizar la vista
+    renderBlock(blocks.value[blockIndex]);
   }
 };
 
@@ -2674,6 +3424,17 @@ onMounted(() => {
       initGridStack();
       renderBlocks();
     }
+
+    // Cerrar la barra de herramientas flotante cuando se hace clic fuera del editor
+    document.addEventListener("mousedown", (e) => {
+      if (
+        showFloatingToolbar.value &&
+        richTextEditor.value &&
+        !richTextEditor.value.contains(e.target as Node)
+      ) {
+        showFloatingToolbar.value = false;
+      }
+    });
   });
 });
 
@@ -2685,6 +3446,9 @@ onUnmounted(() => {
   if (previewGridStack.value) {
     previewGridStack.value.destroy();
   }
+
+  // Eliminar event listeners
+  document.removeEventListener("mousedown", () => {});
 });
 </script>
 
@@ -2767,5 +3531,15 @@ onUnmounted(() => {
 .grid-stack > .grid-stack-item > .grid-stack-item-content {
   inset: 0;
   overflow: hidden;
+}
+
+/* Estilos para el editor de texto enriquecido */
+.rich-text-editor {
+  min-height: 100px;
+  white-space: pre-wrap;
+}
+
+.floating-toolbar {
+  transform: translateX(-50%);
 }
 </style>

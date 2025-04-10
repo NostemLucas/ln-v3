@@ -613,55 +613,140 @@
             />
           </div>
         </div>
-
-        <!-- Propiedades de columnas -->
-        <div v-if="selectedBlock.type === 'columns'">
+        <div v-if="selectedBlock.type === 'video'">
           <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">
-              Número de columnas
+              Proveedor de video
             </label>
             <select
-              :value="selectedBlock.columns || 2"
+              :value="selectedBlock.videoProps?.provider || 'youtube'"
               class="w-full p-2 border rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
               @change="
-                $emit(
-                  'update-columns-count',
-                  selectedBlock.id,
-                  parseInt(($event.target as HTMLSelectElement).value)
-                )
+                $emit('update-video-props', {
+                  provider: ($event.target as HTMLSelectElement).value as
+                    | 'youtube'
+                    | 'vimeo'
+                    | 'dailymotion',
+                })
               "
             >
-              <option value="2">2 columnas</option>
-              <option value="3">3 columnas</option>
-              <option value="4">4 columnas</option>
-              <option value="6">6 columnas</option>
+              <option value="youtube">YouTube</option>
+              <option value="vimeo">Vimeo</option>
+              <option value="dailymotion">Dailymotion</option>
             </select>
           </div>
 
-          <div
-            v-for="(content, index) in selectedBlock.columnContent || []"
-            :key="index"
-            class="mb-4"
-          >
+          <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">
-              Contenido columna {{ index + 1 }}
+              ID del video
             </label>
-            <textarea
-              :value="content || ''"
+            <input
+              type="text"
+              :value="selectedBlock.videoProps?.videoId || ''"
               class="w-full p-2 border rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
-              rows="3"
+              placeholder="Ej: dQw4w9WgXcQ (YouTube)"
               @input="
-                $emit(
-                  'update-column-content',
-                  selectedBlock.id,
-                  index,
-                  ($event.target as HTMLTextAreaElement).value
-                )
+                $emit('update-video-props', {
+                  videoId: ($event.target as HTMLInputElement).value,
+                })
               "
-            ></textarea>
+            />
+            <p class="text-xs text-gray-500 mt-1">
+              <template v-if="selectedBlock.videoProps?.provider === 'youtube'">
+                ID de YouTube (ej: dQw4w9WgXcQ de
+                https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+              </template>
+              <template
+                v-else-if="selectedBlock.videoProps?.provider === 'vimeo'"
+              >
+                ID de Vimeo (ej: 123456789 de https://vimeo.com/123456789)
+              </template>
+              <template v-else>
+                ID de Dailymotion (ej: x1234abc de
+                https://www.dailymotion.com/video/x1234abc)
+              </template>
+            </p>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Título del video
+            </label>
+            <input
+              type="text"
+              :value="selectedBlock.videoProps?.title || ''"
+              class="w-full p-2 border rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+              placeholder="Título descriptivo del video"
+              @input="
+                $emit('update-video-props', {
+                  title: ($event.target as HTMLInputElement).value,
+                })
+              "
+            />
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Relación de aspecto
+            </label>
+            <select
+              :value="selectedBlock.videoProps?.aspectRatio || '16:9'"
+              class="w-full p-2 border rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+              @change="
+                $emit('update-video-props', {
+                  aspectRatio: ($event.target as HTMLSelectElement).value as
+                    | '16:9'
+                    | '4:3'
+                    | '1:1',
+                })
+              "
+            >
+              <option value="16:9">16:9 (Panorámico)</option>
+              <option value="4:3">4:3 (Estándar)</option>
+              <option value="1:1">1:1 (Cuadrado)</option>
+            </select>
+          </div>
+
+          <div class="mb-4 flex items-center">
+            <input
+              type="checkbox"
+              :checked="selectedBlock.videoProps?.autoplay || false"
+              class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
+              @change="
+                $emit('update-video-props', {
+                  autoplay: ($event.target as HTMLInputElement).checked,
+                })
+              "
+              id="autoplay-checkbox"
+            />
+            <label
+              for="autoplay-checkbox"
+              class="ml-2 block text-sm text-gray-700"
+            >
+              Reproducción automática
+            </label>
+          </div>
+
+          <div class="mb-4 flex items-center">
+            <input
+              type="checkbox"
+              :checked="selectedBlock.videoProps?.controls || true"
+              class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
+              @change="
+                $emit('update-video-props', {
+                  controls: ($event.target as HTMLInputElement).checked,
+                })
+              "
+              id="controls-checkbox"
+            />
+            <label
+              for="controls-checkbox"
+              class="ml-2 block text-sm text-gray-700"
+            >
+              Mostrar controles
+            </label>
           </div>
         </div>
-
         <!-- Propiedades de lista -->
         <div v-if="selectedBlock.type === 'list'">
           <div class="mb-4">
@@ -987,6 +1072,7 @@ defineEmits([
   "update-text-alignment",
   "update-divider-props",
   "update-image-props",
+  "update-video-props",
   "update-columns-count",
   "update-column-content",
   "update-list-props",
