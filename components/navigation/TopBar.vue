@@ -625,7 +625,7 @@ const navigationItems: NavigationItem[] = [
         links: [
           {
             label: "Transplante de Medula Osea",
-            url: "/tratamientos/transplante-medula-osea",
+            url: "/tratamientos/trasplante-medula-osea",
           },
           { label: "Inmunoterapia", url: "/tratamientos/inmunoterapia" },
           { label: "Quimioterapia", url: "/tratamientos/quimioterapia" },

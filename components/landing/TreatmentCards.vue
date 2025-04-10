@@ -139,7 +139,7 @@ const treatments = ref([
       "Reemplaza células madre dañadas por células sanas, para tratar enfermedades.",
     image:
       "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    url: "/tratamientos/transplante-medula-osea",
+    url: "/tratamientos/trasplante-medula-osea",
   },
   {
     title: "Inmunoterapia",

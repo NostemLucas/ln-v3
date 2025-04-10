@@ -2,49 +2,11 @@
   <div class="bg-gradient-to-b from-slate-50 to-white">
     <div class="container mx-auto px-4 py-16 md:px-6 lg:py-20">
       <!-- Breadcrumb -->
-      <nav class="mb-8 flex" aria-label="Breadcrumb">
-        <ol class="inline-flex items-center space-x-1 md:space-x-3">
-          <li class="inline-flex items-center">
-            <router-link
-              to="/"
-              class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-teal-600"
-            >
-              <Icon name="lucide:home" class="mr-2 h-4 w-4" />
-              Inicio
-            </router-link>
-          </li>
-          <li>
-            <div class="flex items-center">
-              <Icon
-                name="lucide:chevron-right"
-                class="h-4 w-4 text-slate-400"
-              />
-              <router-link
-                to="/tratamientos"
-                class="ml-1 text-sm font-medium text-slate-700 hover:text-teal-600 md:ml-2"
-              >
-                Tratamientos
-              </router-link>
-            </div>
-          </li>
-          <li aria-current="page">
-            <div class="flex items-center">
-              <Icon
-                name="lucide:chevron-right"
-                class="h-4 w-4 text-slate-400"
-              />
-              <span class="ml-1 text-sm font-medium text-slate-500 md:ml-2">
-                Trasplante De Médula Ósea
-              </span>
-            </div>
-          </li>
-        </ol>
-      </nav>
-
+      <Breadcumb />
       <!-- Treatment Header -->
       <div class="mb-12">
         <span
-          class="mb-2 inline-block rounded-full bg-teal-100 px-3 py-1 text-sm font-medium text-teal-800"
+          class="inline-block rounded-full bg-teal-100 px-3 py-1 my-6 text-sm font-medium text-teal-800"
         >
           Tratamiento Especializado
         </span>
@@ -202,6 +164,7 @@
 <script setup lang="ts">
 import AccordionItem from "@/components/ui/AccordionItem.vue";
 import TreatmentCard from "@/components/ui/TreatmentCard.vue";
+import Breadcumb from "~/components/navigation/Breadcumb.vue";
 
 const activeAccordion = ref<string | null>(null);
 
