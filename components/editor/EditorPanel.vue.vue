@@ -1,58 +1,37 @@
 <template>
-  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+  <div
+    class="bg-white rounded-lg max-w-5xl w-full max-h-[90vh] overflow-auto shadow-xl"
+  >
     <div
-      class="bg-white rounded-lg max-w-5xl w-full max-h-[90vh] overflow-auto shadow-xl"
+      class="sticky top-0 bg-white border-b border-gray-200 p-4 flex justify-between items-center z-10"
     >
-      <div
-        class="sticky top-0 bg-white border-b border-gray-200 p-4 flex justify-between items-center z-10"
-      >
-        <h2 class="text-xl font-bold flex items-center gap-2">
-          <Icon name="lucide:eye" class="h-5 w-5 text-emerald-600" />
-          Vista Previa
-        </h2>
-        <div class="flex items-center gap-2">
-          <select
-            v-model="previewMode"
-            class="text-sm border rounded-md p-1.5 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
-          >
-            <option value="desktop">Escritorio</option>
-            <option value="tablet">Tablet</option>
-            <option value="mobile">Móvil</option>
-          </select>
-          <button
-            @click="$emit('close')"
-            class="text-gray-500 hover:text-gray-700"
-          >
-            <Icon name="lucide:x" class="h-5 w-5" />
-          </button>
-        </div>
-      </div>
+      <h2 class="text-xl font-bold flex items-center gap-2">
+        <Icon name="lucide:eye" class="h-5 w-5 text-emerald-600" />
+        Vista Previa
+      </h2>
+    </div>
 
-      <!-- Contenedor para la vista previa -->
-      <div class="p-6">
-        <!-- Simulador de dispositivo -->
-        <div class="flex justify-center">
-          <div
-            class="bg-white border shadow-md overflow-auto transition-all duration-300"
-            :class="{
-              'w-full': previewMode === 'desktop',
-              'w-[768px]': previewMode === 'tablet',
-              'w-[375px]': previewMode === 'mobile',
-            }"
-          >
-            <!-- Banner de la plantilla -->
-            <TemplateHeader
-              v-if="selectedTemplate && selectedTemplate !== 'none'"
-              :selected-template="selectedTemplate"
-              :fixed-fields="fixedFields"
-            />
+    <!-- Contenedor para la vista previa -->
+    <div class="p-6">
+      <!-- Simulador de dispositivo -->
+      <div class="flex justify-center">
+        <div
+          class="bg-white shadow-md overflow-auto transition-all duration-300"
+          :class="{
+            'w-full': previewMode === 'desktop',
+            'w-[768px]': previewMode === 'tablet',
+            'w-[375px]': previewMode === 'mobile',
+          }"
+        >
+          <!-- Banner de la plantilla -->
+          <TemplateHeader
+            v-if="selectedTemplate && selectedTemplate !== 'none'"
+            :selected-template="selectedTemplate"
+            :fixed-fields="fixedFields"
+          />
 
-            <!-- Contenedor para la vista previa de GridStack -->
-            <div
-              ref="previewGridContainer"
-              class="grid-stack preview-grid"
-            ></div>
-          </div>
+          <!-- Contenedor para la vista previa de GridStack -->
+          <div ref="previewGridContainer" class="grid-stack preview-grid" />
         </div>
       </div>
     </div>
@@ -80,8 +59,6 @@ const props = defineProps({
   },
 });
 
-defineEmits(["close"]);
-
 const previewMode = ref("desktop");
 const previewGridContainer = ref<HTMLElement | null>(null);
 const previewGridStack = ref<any>(null);
@@ -102,10 +79,10 @@ const initPreviewGridStack = () => {
       cellHeight: 50,
       margin: 10,
       float: false,
-      animate: false,
-      staticGrid: true, // Solo lectura
-      disableResize: true,
-      disableDrag: true,
+      animate: true,
+      resizable: {
+        handles: "e,se,s,sw,w",
+      },
     },
     previewGridContainer.value
   );
@@ -129,8 +106,7 @@ const renderPreviewBlock = (block: ContentBlock) => {
   newItem.setAttribute("gs-w", block.width.toString());
   newItem.setAttribute("gs-h", block.height.toString());
   newItem.className = "grid-stack-item";
-  newItem.innerHTML = `<div class="grid-stack-item-content border rounded-md bg-white shadow-sm">${content}</div>`;
-
+  newItem.innerHTML = `<div class="grid-stack-item-content border rounded-md bg-white shadow-sm hover:shadow-md transition-shadow relative group">${content}</div>`;
   previewGridStack.value.addWidget(newItem);
 };
 
@@ -157,6 +133,18 @@ onUnmounted(() => {
     previewGridStack.value.destroy();
   }
 });
+
+watch(
+  () => props.blocks,
+  () => {
+    if (previewGridStack.value) {
+      renderPreviewBlocks();
+    } else {
+      initPreviewGridStack();
+    }
+  },
+  { deep: true, immediate: true }
+);
 </script>
 
 <style scoped>

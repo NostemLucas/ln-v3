@@ -4,7 +4,7 @@ export type ComponentType =
   | "text"
   | "divider"
   | "image"
-  | "columns"
+  | "video"
   | "list"
   | "quote"
   | "code"
@@ -34,7 +34,7 @@ export interface FixedFields {
 export interface ImageProperties {
   alt: string;
   objectFit: ObjectFitType;
-  height: number; // percentage of container
+  height: number;
   caption?: string;
 }
 
@@ -76,15 +76,22 @@ export interface DividerProperties {
   alignment: TextAlignment;
 }
 
+export interface VideoProperties {
+  provider: "youtube" | "vimeo" | "dailymotion";
+  videoId: string;
+  title: string;
+  aspectRatio: "16:9" | "4:3" | "1:1";
+  autoplay: boolean;
+  controls: boolean;
+}
 export interface ContentBlock {
   id: string;
   type: ComponentType;
   content?: string;
-  columns?: number;
-  columnContent?: string[];
   imageProps?: ImageProperties;
   listProps?: ListProperties;
   quoteProps?: QuoteProperties;
+  videoProps?: VideoProperties;
   codeProps?: CodeProperties;
   tableProps?: TableProperties;
   textProps?: TextProperties;
@@ -104,4 +111,10 @@ export interface ComponentDefinition {
 export interface TitleProperties {
   alignment?: TextAlignment;
   fontSize?: number;
+}
+
+export interface ImageItem {
+  url: string;
+  alt?: string;
+  date: Date;
 }

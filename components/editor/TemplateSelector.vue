@@ -4,7 +4,7 @@
       <Icon name="lucide:layout-template" class="h-5 w-5 text-emerald-600" />
       Plantillas
     </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4">
       <!-- Opción sin plantilla -->
       <div
         class="border rounded-md p-3 cursor-pointer hover:border-emerald-500 transition-colors"

@@ -1,0 +1,452 @@
+{
+  "users": [
+    {
+      "id": "4600",
+      "date": "2024-03-11T15:30:00",
+      "email": "james.anderson@example.com",
+      "amount": 59
+    },
+    {
+      "id": "4599",
+      "date": "2024-03-11T10:10:00",
+      "email": "mia.white@example.com",
+      "amount": 27
+    },
+    {
+      "id": "4598",
+      "date": "2024-03-11T08:50:00",
+      "email": "william.brown@example.com",
+      "amount": 31
+    },
+    {
+      "id": "4597",
+      "date": "2024-03-10T19:45:00",
+      "email": "emma.davis@example.com",
+      "amount": 52
+    },
+    {
+      "id": "4596",
+      "date": "2024-03-10T15:55:00",
+      "email": "ethan.harris@example.com",
+      "amount": 639
+    },
+    {
+      "id": "4595",
+      "date": "2024-03-10T13:20:00",
+      "email": "sophia.miller@example.com",
+      "amount": 428
+    },
+    {
+      "id": "4594",
+      "date": "2024-03-10T11:05:00",
+      "email": "noah.wilson@example.com",
+      "amount": 673
+    },
+    {
+      "id": "4593",
+      "date": "2024-03-09T22:15:00",
+      "email": "olivia.jones@example.com",
+      "amount": 382
+    },
+    {
+      "id": "4592",
+      "date": "2024-03-09T20:30:00",
+      "email": "liam.taylor@example.com",
+      "amount": 547
+    },
+    {
+      "id": "4591",
+      "date": "2024-03-09T18:45:00",
+      "email": "ava.thomas@example.com",
+      "amount": 291
+    },
+    {
+      "id": "4590",
+      "date": "2024-03-09T16:20:00",
+      "email": "lucas.martin@example.com",
+      "amount": 624
+    },
+    {
+      "id": "4589",
+      "date": "2024-03-09T14:10:00",
+      "email": "isabella.clark@example.com",
+      "amount": 438
+    },
+    {
+      "id": "4588",
+      "date": "2024-03-09T12:05:00",
+      "email": "mason.rodriguez@example.com",
+      "amount": 583
+    },
+    {
+      "id": "4587",
+      "date": "2024-03-09T10:30:00",
+      "email": "sophia.lee@example.com",
+      "amount": 347
+    },
+    {
+      "id": "4586",
+      "date": "2024-03-09T08:15:00",
+      "email": "ethan.walker@example.com",
+      "amount": 692
+    },
+    {
+      "id": "4585",
+      "date": "2024-03-08T23:40:00",
+      "email": "amelia.hall@example.com",
+      "amount": 419
+    },
+    {
+      "id": "4584",
+      "date": "2024-03-08T21:25:00",
+      "email": "oliver.young@example.com",
+      "amount": 563
+    },
+    {
+      "id": "4583",
+      "date": "2024-03-08T19:50:00",
+      "email": "aria.king@example.com",
+      "amount": 328
+    },
+    {
+      "id": "4582",
+      "date": "2024-03-08T17:35:00",
+      "email": "henry.wright@example.com",
+      "amount": 647
+    },
+    {
+      "id": "4581",
+      "date": "2024-03-08T15:20:00",
+      "email": "luna.lopez@example.com",
+      "amount": 482
+    }
+  ],
+  "blogs": [
+    {
+      "id": 21,
+      "author": "Ana Torres",
+      "estado": "Publicado",
+      "fecha": 1712781012345,
+      "descripcion": "Noticia de ejemplo número 1",
+      "banner": "https://placehold.co/600x400?text=Banner+1",
+      "content": {}
+    },
+    {
+      "id": 22,
+      "author": "Carlos Pérez",
+      "estado": "Borrador",
+      "fecha": 1711689018456,
+      "descripcion": "Noticia de ejemplo número 2",
+      "banner": "https://placehold.co/600x400?text=Banner+2",
+      "content": {}
+    },
+    {
+      "id": 23,
+      "author": "Valeria Ruiz",
+      "estado": "Publicado",
+      "fecha": 1710893219567,
+      "descripcion": "Noticia de ejemplo número 3",
+      "banner": "https://placehold.co/600x400?text=Banner+3",
+      "content": {}
+    },
+    {
+      "id": 24,
+      "author": "Juan Ríos",
+      "estado": "Archivado",
+      "fecha": 1709987654321,
+      "descripcion": "Noticia de ejemplo número 4",
+      "banner": "https://placehold.co/600x400?text=Banner+4",
+      "content": {}
+    },
+    {
+      "id": 25,
+      "author": "Usuario de Prueba",
+      "estado": "Publicado",
+      "fecha": 1709012345678,
+      "descripcion": "Noticia de ejemplo número 5",
+      "banner": "https://placehold.co/600x400?text=Banner+5",
+      "content": {}
+    },
+    {
+      "id": "2ad0",
+      "author": "Usuario de Prueba",
+      "estado": "Publicado",
+      "fecha": 1744403513540,
+      "descripcion": "Ejemplo de noticia",
+      "banner": "https://placehold.co/600x400",
+      "content": {
+        "fixedFields": {
+          "title": "",
+          "author": "",
+          "bannerImage": "",
+          "date": "",
+          "category": "",
+          "summary": ""
+        },
+        "blocks": [
+          {
+            "id": "block-1744403511728-8k15l7w6z",
+            "type": "subtitle",
+            "content": "",
+            "textProps": {
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "alignment": "left"
+            },
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
+          },
+          {
+            "id": "block-1744403512175-n4lj58106",
+            "type": "text",
+            "content": "",
+            "textProps": {
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "alignment": "left"
+            },
+            "x": 0,
+            "y": 2,
+            "width": 12,
+            "height": 3
+          },
+          {
+            "id": "block-1744403512513-cmx6q1fa6",
+            "type": "divider",
+            "content": "",
+            "dividerProps": {
+              "style": "solid",
+              "thickness": 1,
+              "color": "#e5e5e5",
+              "width": 100,
+              "alignment": "center"
+            },
+            "x": 0,
+            "y": 5,
+            "width": 12,
+            "height": 1
+          },
+          {
+            "id": "block-1744403512689-k649oeft9",
+            "type": "video",
+            "content": "",
+            "x": 0,
+            "y": 6,
+            "width": 12,
+            "height": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "644c",
+      "author": "Usuario de Prueba",
+      "estado": "Publicado",
+      "fecha": 1744403535690,
+      "descripcion": "Ejemplo de noticia",
+      "banner": "https://placehold.co/600x400",
+      "content": {
+        "fixedFields": {
+          "title": "",
+          "author": "",
+          "bannerImage": "",
+          "date": "",
+          "category": "",
+          "summary": ""
+        },
+        "blocks": [
+          {
+            "id": "block-1744403534363-nx9qzfl4o",
+            "type": "text",
+            "content": "",
+            "textProps": {
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "alignment": "left"
+            },
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 3
+          },
+          {
+            "id": "block-1744403534603-snphk69gg",
+            "type": "image",
+            "content": "",
+            "imageProps": {
+              "alt": "Imagen descriptiva",
+              "objectFit": "cover",
+              "height": 100
+            },
+            "x": 0,
+            "y": 3,
+            "width": 12,
+            "height": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "c71b",
+      "author": "Usuario de Prueba",
+      "estado": "Publicado",
+      "fecha": 1744403535948,
+      "descripcion": "Ejemplo de noticia",
+      "banner": "https://placehold.co/600x400",
+      "content": {
+        "fixedFields": {
+          "title": "",
+          "author": "",
+          "bannerImage": "",
+          "date": "",
+          "category": "",
+          "summary": ""
+        },
+        "blocks": [
+          {
+            "id": "block-1744403534363-nx9qzfl4o",
+            "type": "text",
+            "content": "",
+            "textProps": {
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "alignment": "left"
+            },
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 3
+          },
+          {
+            "id": "block-1744403534603-snphk69gg",
+            "type": "image",
+            "content": "",
+            "imageProps": {
+              "alt": "Imagen descriptiva",
+              "objectFit": "cover",
+              "height": 100
+            },
+            "x": 0,
+            "y": 3,
+            "width": 12,
+            "height": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "ba90",
+      "author": "Usuario de Prueba",
+      "estado": "Publicado",
+      "fecha": 1744403541940,
+      "descripcion": "Ejemplo de noticia",
+      "banner": "https://placehold.co/600x400",
+      "content": {
+        "fixedFields": {
+          "title": "",
+          "author": "",
+          "bannerImage": "",
+          "date": "",
+          "category": "",
+          "summary": ""
+        },
+        "blocks": [
+          {
+            "id": "block-1744403539908-rqtm0p53f",
+            "type": "video",
+            "content": "",
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 4
+          },
+          {
+            "id": "block-1744403540339-edew1fvfn",
+            "type": "video",
+            "content": "",
+            "x": 0,
+            "y": 4,
+            "width": 12,
+            "height": 4
+          },
+          {
+            "id": "block-1744403540564-280q3p116",
+            "type": "image",
+            "content": "",
+            "imageProps": {
+              "alt": "Imagen descriptiva",
+              "objectFit": "cover",
+              "height": 100
+            },
+            "x": 0,
+            "y": 8,
+            "width": 12,
+            "height": 6
+          },
+          {
+            "id": "block-1744403540734-g7jqt636d",
+            "type": "image",
+            "content": "",
+            "imageProps": {
+              "alt": "Imagen descriptiva",
+              "objectFit": "cover",
+              "height": 100
+            },
+            "x": 0,
+            "y": 14,
+            "width": 12,
+            "height": 6
+          },
+          {
+            "id": "block-1744403540901-sqp1kyl8f",
+            "type": "image",
+            "content": "",
+            "imageProps": {
+              "alt": "Imagen descriptiva",
+              "objectFit": "cover",
+              "height": 100
+            },
+            "x": 0,
+            "y": 20,
+            "width": 12,
+            "height": 6
+          },
+          {
+            "id": "block-1744403541100-2qwyit7sb",
+            "type": "image",
+            "content": "",
+            "imageProps": {
+              "alt": "Imagen descriptiva",
+              "objectFit": "cover",
+              "height": 100
+            },
+            "x": 0,
+            "y": 26,
+            "width": 12,
+            "height": 6
+          },
+          {
+            "id": "block-1744403541253-r0kp2cnau",
+            "type": "image",
+            "content": "",
+            "imageProps": {
+              "alt": "Imagen descriptiva",
+              "objectFit": "cover",
+              "height": 100
+            },
+            "x": 0,
+            "y": 32,
+            "width": 12,
+            "height": 6
+          }
+        ]
+      }
+    }
+  ]
+}

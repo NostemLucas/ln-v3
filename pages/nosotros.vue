@@ -1,22 +1,24 @@
 <template>
   <div class="overflow-x-hidden">
     <!-- Sección Principal: Quiénes Somos -->
-    <section class="bg-white py-16">
+    <section class="bg-white py-6">
       <div class="container mx-auto px-4 md:px-8">
-        <div class="grid items-start gap-12 lg:grid-cols-12">
+        <div
+          class="grid grid-cols-2 gap-12 lg:grid-cols-12 px-20 items-stretch"
+        >
           <!-- Text Content - Expanded -->
-          <div class="lg:col-span-8 xl:col-span-8">
+          <div class="lg:col-span-8 xl:col-span-8 flex flex-col justify-center">
             <div class="mb-8">
-              <div class="mb-4 h-1 w-20 bg-blue-600"></div>
               <h1 class="text-3xl font-bold text-gray-900 md:text-4xl">
-                ¿Quiénes somos?
+                ¿Quiénes <span class="text-primary-300">somos? </span>
               </h1>
+              <div class="mt-4 h-1 w-24 rounded-full bg-primary-300"></div>
             </div>
 
             <div class="space-y-4 leading-relaxed text-gray-700">
               <p>
                 En
-                <span class="font-semibold text-blue-700">Oncoclinic</span>
+                <span class="font-semibold text-primary-300">Oncoclinic</span>
                 trabajamos con compromiso y pasión para liderar la lucha contra
                 el cáncer, promoviendo la investigación, la educación y la
                 concienciación sobre esta enfermedad.
@@ -52,10 +54,10 @@
               </p>
 
               <blockquote
-                class="my-4 border-l-4 border-blue-600 pl-4 text-xl text-blue-700 italic"
+                class="my-4 border-l-4 border-primary-400 pl-4 text-xl text-primary-400 italic"
               >
-                "Donde quiera que se ama el arte de la medicina se ama también a
-                la humanidad."
+                "La oncología es el arte de navegar entre lo imposible y lo
+                inevitable, con la esperanza como brújula"
                 <p class="mt-2 text-right text-base text-gray-600">- Platón</p>
               </blockquote>
             </div>
@@ -63,16 +65,14 @@
 
           <!-- Image Section - Compact -->
           <div class="group relative lg:col-span-4 xl:col-span-4">
-            <div class="h-[700px] overflow-hidden rounded-xl shadow-lg">
-              <img
-                src="/landing/monalisa.jpg"
-                alt="Imagen institucional"
-                class="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-              />
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-blue-900/40 to-transparent opacity-30"
-              ></div>
-            </div>
+            <NuxtImg
+              src="/landing/monalisa.jpg"
+              alt="Imagen institucional"
+              class="h-full w-full object-cover object-center rounded-md shadow"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-primary-900/60 to-transparent opacity-40"
+            />
           </div>
         </div>
       </div>
@@ -81,7 +81,7 @@
     <section class="bg-gray-50 py-16">
       <div class="container mx-auto px-4 md:px-8">
         <div class="mb-12 text-center">
-          <div class="mx-auto mb-2 h-1 w-16 bg-blue-600"></div>
+          <div class="mx-auto mb-2 h-1 w-24 bg-primary-300 rounded-full"></div>
           <h2 class="text-3xl font-bold text-gray-900">Nuestra Filosofía</h2>
           <p class="mt-4 text-gray-600">
             Conoce los principios que guían nuestro trabajo diario
@@ -90,19 +90,20 @@
 
         <!-- Tabs de navegación -->
         <div class="mb-10 flex flex-wrap justify-center gap-4">
-          <button
+          <UButton
             v-for="tab in tabs"
             :key="tab.id"
             @click="activeTab = tab.id"
-            class="rounded-full px-8 py-3 text-sm font-medium transition-all duration-300"
+            size="lg"
+            class="rounded-full px-12 py-3 font-medium transition-all duration-300"
             :class="
               activeTab === tab.id
-                ? 'bg-blue-600 text-white shadow-lg'
-                : 'border border-blue-200 bg-white text-blue-600 hover:bg-blue-50'
+                ? 'bg-primary-300 text-white shadow-lg'
+                : 'bg-primary-600 text-white hover:bg-primary-600/60'
             "
           >
             {{ tab.label }}
-          </button>
+          </UButton>
         </div>
 
         <!-- Contenido de los tabs (sin card, con diseño más limpio) -->
@@ -114,7 +115,7 @@
               class="flex flex-col items-center"
             >
               <div
-                class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 text-blue-600"
+                class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary-100 text-primary-600"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -129,14 +130,12 @@
                   <circle cx="12" cy="12" r="2"></circle>
                 </svg>
               </div>
-              <h3 class="mb-6 text-center text-2xl font-bold text-gray-900">
+              <h3 class="text-center text-2xl font-bold text-gray-900">
                 Nuestra Misión
               </h3>
 
               <!-- Card de misión mejorada -->
-              <div
-                class="bg-white rounded-xl shadow-lg p-8 border-t-4 border-blue-600 max-w-3xl hover:shadow-xl transition-all duration-300"
-              >
+              <div class="rounded-xl p-6 max-w-3xl transition-all duration-300">
                 <p class="text-lg leading-relaxed text-gray-700 p-2">
                   Brindar una atención integral y humanizada en la prevención,
                   diagnóstico, tratamiento y seguimiento de pacientes con
@@ -152,7 +151,7 @@
               class="flex flex-col items-center"
             >
               <div
-                class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 text-blue-600"
+                class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary-100 text-primary-600"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -173,15 +172,15 @@
                 <div
                   v-for="(vision, index) in visions"
                   :key="index"
-                  class="bg-white rounded-xl p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border-t-4 border-blue-500"
+                  class="bg-white rounded-xl p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border-t-4 border-primary-500"
                 >
                   <div class="flex items-center gap-3 mb-4">
                     <div
-                      class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold"
+                      class="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold"
                     >
                       V{{ index + 1 }}
                     </div>
-                    <h4 class="font-semibold text-blue-700 text-lg">
+                    <h4 class="font-semibold text-primary-700 text-lg">
                       {{ vision.title }}
                     </h4>
                   </div>
@@ -196,7 +195,7 @@
               class="flex flex-col items-center"
             >
               <div
-                class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 text-blue-600"
+                class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary-100 text-primary-600"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -220,19 +219,21 @@
                 <div
                   v-for="(value, index) in valuesList"
                   :key="index"
-                  class="bg-gradient-to-br from-white to-blue-50 rounded-xl p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-blue-100 relative overflow-hidden"
+                  class="bg-gradient-to-br from-white to-primary-50 rounded-xl p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-primary-100 relative overflow-hidden"
                 >
                   <div
-                    class="absolute top-0 right-0 w-16 h-16 bg-blue-500 opacity-10 rounded-bl-full"
+                    class="absolute top-0 right-0 w-16 h-16 bg-primary-500 opacity-10 rounded-bl-full"
                   ></div>
 
                   <div class="flex items-center gap-3 mb-4">
                     <div
-                      class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm"
+                      class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold text-sm"
                     >
                       {{ value.id.charAt(0) }}
                     </div>
-                    <h4 class="font-semibold text-blue-700">{{ value.id }}</h4>
+                    <h4 class="font-semibold text-primary-700">
+                      {{ value.id }}
+                    </h4>
                   </div>
 
                   <h5 class="font-medium text-gray-800 mb-3 text-lg">
@@ -240,8 +241,8 @@
                   </h5>
                   <p class="text-gray-600">{{ value.description }}</p>
 
-                  <div class="mt-4 pt-4 border-t border-blue-100">
-                    <div class="flex items-center text-sm text-blue-500">
+                  <div class="mt-4 pt-4 border-t border-primary-100">
+                    <div class="flex items-center text-sm text-primary-500">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="h-4 w-4 mr-1"
@@ -263,11 +264,11 @@
       </div>
     </section>
 
-    <!-- Sección de Cita (a 100vw) -->
-    <section class="relative w-screen bg-blue-600 py-16 text-white">
+    <!-- Sección de Cita  -->
+    <section class="relative w-screen bg-primary-600 py-16 text-white">
       <div
-        class="absolute top-0 left-0 h-full w-full bg-blue-700 opacity-10 mix-blend-overlay"
-      ></div>
+        class="absolute top-0 left-0 h-full w-full bg-primary-700 opacity-10 mix-blend-overlay"
+      />
       <div class="relative z-10 container mx-auto px-4">
         <div class="mx-auto max-w-3xl text-center">
           <svg
@@ -285,10 +286,10 @@
             />
           </svg>
           <blockquote class="mb-6 text-2xl font-light italic md:text-3xl">
-            "Soñar, querer que el arte se una al de la medicina es una tentativa
-            a la humanidad."
+            "Nada en la vida debe ser temido, solo comprendido. Ahora es el
+            momento de entender más para temer menos."
           </blockquote>
-          <p class="text-xl font-semibold pb-10">- Renoir</p>
+          <p class="text-xl font-semibold pb-10">- Marie Curie</p>
         </div>
       </div>
     </section>

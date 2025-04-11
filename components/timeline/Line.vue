@@ -3,8 +3,9 @@
   <section class="py-16 bg-gray-50">
     <div class="container mx-auto px-4 md:px-8">
       <div class="mb-12 text-center">
-        <div class="mx-auto mb-2 h-1 w-16 bg-blue-600"></div>
         <h2 class="text-3xl font-bold text-gray-900">Nuestra Historia</h2>
+
+        <div class="mx-auto mt-2 h-1 w-16 rounded bg-primary-300" />
         <p class="mt-4 text-gray-600">
           Conoce nuestra trayectoria y línea de crecimiento a lo largo del
           tiempo
@@ -12,7 +13,7 @@
       </div>
 
       <!-- Indicador de desplazamiento -->
-      <div class="flex justify-center mb-6 items-center gap-2 text-gray-500">
+      <div class="flex justify-center mb-4 items-center gap-2 text-gray-500">
         <span class="text-sm">Arrastra para explorar</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +141,7 @@
 const timelineItems = [
   {
     year: "2017",
-    title: "Inicio y Primer Trasplante",
+    title: "Nuestros Inicios",
     content:
       "Nace Oncoclinic en la Clínica FIDES de El Alto, marcando un hito con la realización del primer trasplante de médula ósea autólogo en Bolivia.",
   },
@@ -152,7 +153,7 @@ const timelineItems = [
   },
   {
     year: "2019",
-    title: "Expansión a La Paz",
+    title: "Nos Expandimos a La Paz",
     content:
       "Se expande el alcance con la apertura de Oncoclinic en la ciudad de La Paz, ampliando el acceso a tratamientos oncológicos especializados.",
   },
@@ -209,7 +210,7 @@ const colors = [
 ];
 </script>
 
-<style>
+<style scoped>
 /* Animación para el ícono de flecha */
 @keyframes bounce-x {
   0%,

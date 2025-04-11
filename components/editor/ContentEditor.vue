@@ -3,12 +3,39 @@
     <!-- Layout principal con panel lateral y área de contenido -->
     <div class="flex h-screen overflow-hidden">
       <!-- Panel lateral izquierdo con componentes -->
-      <ComponentsSidebar
-        :available-components="availableComponents"
-        @add-component="addComponent"
-        @export-content="exportContent"
-        @show-preview="showPreview = true"
-      />
+      <div class="w-72 border-r border-gray-200 h-full shadow-sm">
+        <div class="p-4 border-b border-gray-200 bg-gray-50">
+          <h2
+            class="text-lg font-semibold text-gray-800 flex items-center gap-2"
+          >
+            <Icon
+              name="lucide:layout-template"
+              class="h-5 w-5 text-emerald-600"
+            />
+            Constructor de Contenido
+          </h2>
+        </div>
+        <UTabs
+          :items="items"
+          variant="link"
+          class="gap-4 w-full"
+          :ui="{
+            trigger: 'flex-1',
+          }"
+        >
+          <template #components>
+            <ComponentsSidebar
+              :available-components="availableComponents"
+              @add-component="addComponent"
+              @export-content="exportContent"
+              @show-preview="showPreview = true"
+            />
+          </template>
+          <template #galery>
+            <SidebarImage @select-image="insertImageFromLibrary" />
+          </template>
+        </UTabs>
+      </div>
 
       <!-- Área principal de contenido -->
       <div class="flex-1 flex flex-col h-full overflow-hidden">
@@ -21,83 +48,105 @@
         <!-- Área de trabajo con scroll y panel de propiedades -->
         <div class="flex-1 flex overflow-hidden">
           <!-- Área de trabajo principal -->
+
           <div class="flex-1 overflow-y-auto p-6 bg-gray-50">
             <!-- Selección de plantilla -->
-            <TemplateSelector
-              :templates="templates"
-              :selected-template="selectedTemplate"
-              @select-template="selectTemplate"
-            />
-
-            <!-- Campos fijos de la plantilla (si hay una plantilla seleccionada) -->
-            <TemplateFields
-              v-if="selectedTemplate && selectedTemplate !== 'none'"
-              v-model:fixed-fields="fixedFields"
-            />
 
             <!-- Área de construcción de contenido -->
             <div
               class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6"
             >
-              <!-- Template Header (si hay una plantilla seleccionada) -->
-              <TemplateHeader
-                v-if="selectedTemplate && selectedTemplate !== 'none'"
-                :selected-template="selectedTemplate"
-                :fixed-fields="fixedFields"
-              />
-
               <!-- Content Grid with GridStack -->
-              <div class="p-6 editor-area" ref="contentGridRef">
-                <div
-                  v-if="!hasBlocks"
-                  class="min-h-[300px] border-2 border-dashed border-gray-200 rounded-md flex items-center justify-center"
-                >
-                  <div class="text-center">
-                    <Icon
-                      name="lucide:layout"
-                      class="h-12 w-12 text-gray-300 mx-auto mb-2"
-                    />
-                    <p class="text-gray-400">
-                      Haga clic en los componentes para añadirlos al contenido
-                    </p>
+              <div class="p-6 grid grid-cols-2 gap-4">
+                <div class="w-full flex flex-col">
+                  <TemplateHeader
+                    v-if="selectedTemplate && selectedTemplate !== 'none'"
+                    :selected-template="selectedTemplate"
+                    :fixed-fields="fixedFields"
+                  />
+                  <div
+                    v-if="!hasBlocks"
+                    class="min-h-[300px] border-2 border-dashed border-gray-200 rounded-md flex items-center justify-center"
+                  >
+                    <div class="text-center">
+                      <Icon
+                        name="lucide:layout"
+                        class="h-12 w-12 text-gray-300 mx-auto mb-2"
+                      />
+                      <p class="text-gray-400">
+                        Haga clic en los componentes para añadirlos al contenido
+                      </p>
+                    </div>
+                  </div>
+                  <div v-else>
+                    <div ref="gridStackContainer" class="grid-stack" />
                   </div>
                 </div>
-                <div v-else>
-                  <div ref="gridStackContainer" class="grid-stack"></div>
-                </div>
+
+                <PreviewPanel
+                  :blocks="blocks"
+                  :selected-template="selectedTemplate"
+                  :fixed-fields="fixedFields"
+                />
               </div>
             </div>
           </div>
 
-          <!-- Panel de propiedades (aparece cuando hay un bloque seleccionado) -->
-          <BlockProperties
-            v-if="selectedBlockId"
-            :selected-block="selectedBlock"
-            @close="selectedBlockId = null"
-            @duplicate="duplicateBlock"
-            @remove="removeBlock"
-            @update-block-width="updateBlockWidth"
-            @update-block-height="updateBlockHeight"
-            @update-block-content="updateBlockContent"
-            @toggle-text-format="toggleTextFormat"
-            @update-text-color="updateTextColor"
-            @update-text-alignment="updateTextAlignment"
-            @update-divider-props="updateDividerProps"
-            @update-image-props="updateImageProps"
-            @update-columns-count="updateColumnsCount"
-            @update-column-content="updateColumnContent"
-            @update-list-props="updateListProps"
-            @update-list-item="updateListItem"
-            @add-list-item="addListItem"
-            @remove-list-item="removeListItem"
-            @update-quote-props="updateQuoteProps"
-            @update-code-props="updateCodeProps"
-            @update-table-props="updateTableProps"
-            @update-table-header="updateTableHeader"
-            @update-table-cell="updateTableCell"
-            @add-table-row="addTableRow"
-            @add-table-column="addTableColumn"
-          />
+          <div
+            class="w-80 bg-white border-l border-gray-200 overflow-y-auto shadow-sm"
+          >
+            <UTabs
+              :items="configurations"
+              variant="link"
+              class="gap-4 w-full"
+              :ui="{
+                trigger: 'flex-1',
+              }"
+            >
+              <template #properties>
+                <BlockProperties
+                  v-if="selectedBlockId"
+                  :selected-block="selectedBlock"
+                  @close="selectedBlockId = null"
+                  @duplicate="duplicateBlock"
+                  @remove="removeBlock"
+                  @update-block-width="updateBlockWidth"
+                  @update-block-height="updateBlockHeight"
+                  @update-block-content="updateBlockContent"
+                  @toggle-text-format="toggleTextFormat"
+                  @update-text-color="updateTextColor"
+                  @update-text-alignment="updateTextAlignment"
+                  @update-divider-props="updateDividerProps"
+                  @update-image-props="updateImageProps"
+                  @update-video-props="updateVideoProps"
+                  @update-list-props="updateListProps"
+                  @update-list-item="updateListItem"
+                  @add-list-item="addListItem"
+                  @remove-list-item="removeListItem"
+                  @update-quote-props="updateQuoteProps"
+                  @update-code-props="updateCodeProps"
+                  @update-table-props="updateTableProps"
+                  @update-table-header="updateTableHeader"
+                  @update-table-cell="updateTableCell"
+                  @add-table-row="addTableRow"
+                  @add-table-column="addTableColumn"
+                />
+              </template>
+              <template #templates>
+                <TemplateSelector
+                  :templates="templates"
+                  :selected-template="selectedTemplate"
+                  @select-template="selectTemplate"
+                />
+
+                <!-- Campos fijos de la plantilla (si hay una plantilla seleccionada) -->
+                <TemplateFields
+                  v-if="selectedTemplate && selectedTemplate !== 'none'"
+                  v-model:fixed-fields="fixedFields"
+                />
+              </template>
+            </UTabs>
+          </div>
         </div>
       </div>
     </div>
@@ -120,10 +169,11 @@ import { GridStack } from "gridstack";
 import ComponentsSidebar from "./ComponentSidebar.vue";
 import EditorHeader from "./EditorHeader.vue";
 import TemplateSelector from "./TemplateSelector.vue";
-import TemplateFields from "./TemplateFields.vue";
-import TemplateHeader from "./TemplateHeader.vue";
+import TemplateFields from "./panels/TemplateFields.vue";
+import TemplateHeader from "./panels/TemplateHeader.vue";
 import BlockProperties from "./BlockProperties.vue";
 import PreviewModal from "./PreviewModal.vue";
+import SidebarImage from "./SidebarImage.vue";
 import type {
   ComponentType,
   Template,
@@ -131,35 +181,62 @@ import type {
   ContentBlock,
   ComponentDefinition,
   TextAlignment,
-  DividerStyle,
-} from "@/types/content-builder";
-import type {
   CodeProperties,
   DividerProperties,
   ImageProperties,
   ListProperties,
+  VideoProperties,
   QuoteProperties,
   TableProperties,
-} from "~/types/content-builder";
+  ImageItem,
+} from "@/types/content-builder";
+import type { TabsItem } from "@nuxt/ui";
+import PreviewPanel from "./PreviewPanel.vue";
 
 // State
 const templates = ref<Template[]>([
   {
     id: "banner",
     name: "Banner Header",
-    thumbnail: "/placeholder.svg?height=100&width=200",
+    thumbnail: "https://placehold.co/600x400/png",
   },
   {
     id: "feature",
     name: "Feature Article",
-    thumbnail: "/placeholder.svg?height=100&width=200",
+    thumbnail: "https://placehold.co/600x400/png",
   },
   {
     id: "minimal",
     name: "Minimal",
-    thumbnail: "/placeholder.svg?height=100&width=200",
+    thumbnail: "https://placehold.co/600x400/png",
   },
 ]);
+
+const items = [
+  {
+    label: "Componentes",
+    icon: "i-lucide-layout-grid",
+    slot: "components",
+  },
+  {
+    label: "Galeria",
+    icon: "i-lucide-image",
+    slot: "galery",
+  },
+] satisfies TabsItem[];
+
+const configurations = [
+  {
+    label: "Propiedades",
+    icon: "i-lucide-layout-grid",
+    slot: "properties",
+  },
+  {
+    label: "Plantillas",
+    icon: "i-lucide-image",
+    slot: "templates",
+  },
+] satisfies TabsItem[];
 
 const selectedTemplate = ref<string | undefined>(undefined);
 const fixedFields = ref<FixedFields>({
@@ -174,7 +251,6 @@ const fixedFields = ref<FixedFields>({
 const blocks = ref<ContentBlock[]>([]);
 const showPreview = ref(false);
 const selectedBlockId = ref<string | null>(null);
-const contentGridRef = ref<HTMLElement | null>(null);
 const gridStackContainer = ref<HTMLElement | null>(null);
 const gridStack = ref<any>(null);
 
@@ -194,8 +270,8 @@ const availableComponents: ComponentDefinition[] = [
   { type: "subtitle", label: "Subtítulo" },
   { type: "text", label: "Texto" },
   { type: "divider", label: "Divisor" },
+  { type: "video", label: "Video" },
   { type: "image", label: "Imagen" },
-  { type: "columns", label: "Columnas" },
   { type: "list", label: "Lista" },
   { type: "quote", label: "Cita" },
   { type: "code", label: "Código" },
@@ -212,7 +288,7 @@ const initGridStack = () => {
       column: 12,
       cellHeight: 50,
       margin: 10,
-      float: true,
+      float: false,
       animate: true,
       resizable: {
         handles: "e,se,s,sw,w",
@@ -271,262 +347,7 @@ const renderBlock = (block: ContentBlock) => {
   if (!gridStack.value) return;
 
   // Crear el contenido HTML del bloque
-  let content = "";
-
-  // Controles del bloque
-  content += `
-  <div class="absolute right-2 top-0 flex space-x-1 bg-white shadow-sm rounded-md p-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-    <button class="duplicate-btn p-1 hover:bg-gray-100 rounded" title="Duplicar">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-    </button>
-    <button class="remove-btn p-1 hover:bg-gray-100 rounded text-red-500" title="Eliminar">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
-    </button>
-  </div>
-`;
-
-  content += '<div class="p-3 h-full">';
-
-  // Aplicar propiedades de texto
-  const textStyles = block.textProps
-    ? `${block.textProps.bold ? "font-bold" : ""} 
-     ${block.textProps.italic ? "italic" : ""} 
-     ${block.textProps.underline ? "underline" : ""} 
-     ${block.textProps.color ? `color: ${block.textProps.color};` : ""} 
-     ${block.textProps.alignment ? `text-${block.textProps.alignment}` : ""}`
-    : "";
-
-  // Contenido según el tipo de bloque
-  if (block.type === "title") {
-    content += `<div class="block-content font-bold text-2xl md:text-3xl outline-none w-full min-h-[40px] ${textStyles}" contenteditable style="${
-      block.textProps?.color ? `color: ${block.textProps.color};` : ""
-    }">${block.content || "Ingrese título aquí"}</div>`;
-  } else if (block.type === "subtitle") {
-    content += `<div class="block-content font-medium text-xl md:text-2xl outline-none w-full min-h-[36px] ${textStyles}" contenteditable style="${
-      block.textProps?.color ? `color: ${block.textProps.color};` : ""
-    }">${block.content || "Ingrese subtítulo aquí"}</div>`;
-  } else if (block.type === "text") {
-    content += `<div class="block-content text-base outline-none w-full min-h-[100px] ${textStyles}" contenteditable style="${
-      block.textProps?.color ? `color: ${block.textProps.color};` : ""
-    }">${block.content || "Ingrese texto aquí"}</div>`;
-  } else if (block.type === "divider") {
-    const dividerProps = block.dividerProps || {
-      style: "solid" as DividerStyle,
-      thickness: 1,
-      color: "#e5e5e5",
-      width: 100,
-      alignment: "center" as TextAlignment,
-    };
-
-    const dividerAlignment =
-      dividerProps.alignment === "left"
-        ? "mr-auto"
-        : dividerProps.alignment === "right"
-        ? "ml-auto"
-        : "mx-auto";
-
-    content += `
-      <div class="flex ${
-        dividerAlignment === "mx-auto"
-          ? "justify-center"
-          : dividerAlignment === "ml-auto"
-          ? "justify-end"
-          : "justify-start"
-      }">
-        <hr class="${dividerAlignment}" style="
-          border: 0;
-          border-top-style: ${dividerProps.style};
-          border-top-width: ${dividerProps.thickness}px;
-          border-top-color: ${dividerProps.color};
-          width: ${dividerProps.width}%;
-        " />
-      </div>
-    `;
-  } else if (block.type === "image") {
-    content += `
-    <div class="w-full h-full relative">
-      <img
-        src="${block.content || "/placeholder.svg?height=300&width=600"}"
-        alt="${block.imageProps?.alt || "Imagen descriptiva"}"
-        class="w-full h-full rounded-md"
-        style="object-fit: ${block.imageProps?.objectFit || "cover"}"
-      />
-      ${
-        block.imageProps?.caption
-          ? `<p class="text-sm text-gray-500 mt-2 text-center">${block.imageProps.caption}</p>`
-          : ""
-      }
-    </div>
-  `;
-  } else if (block.type === "columns") {
-    content += `
-    <div class="w-full grid h-full" style="grid-template-columns: repeat(${
-      block.columns || 2
-    }, 1fr); gap: 1rem;">
-  `;
-
-    const columnCount = block.columns || 2;
-    for (let i = 0; i < columnCount; i++) {
-      content += `
-      <div class="border border-dashed border-gray-200 p-2 min-h-[100px]">
-        <div class="column-content outline-none h-full" data-column-index="${i}" contenteditable>
-          ${
-            block.columnContent && block.columnContent[i]
-              ? block.columnContent[i]
-              : `Contenido columna ${i + 1}`
-          }
-        </div>
-      </div>
-    `;
-    }
-
-    content += "</div>";
-  } else if (block.type === "list") {
-    const listType = block.listProps?.type || "bullet";
-
-    if (listType === "bullet") {
-      content += '<ul class="list-disc pl-5 space-y-1">';
-      (block.listProps?.items || ["Elemento 1", "Elemento 2"]).forEach(
-        (item) => {
-          content += `<li>${item}</li>`;
-        }
-      );
-      content += "</ul>";
-    } else if (listType === "numbered") {
-      content += '<ol class="list-decimal pl-5 space-y-1">';
-      (block.listProps?.items || ["Elemento 1", "Elemento 2"]).forEach(
-        (item) => {
-          content += `<li>${item}</li>`;
-        }
-      );
-      content += "</ol>";
-    } else if (listType === "check") {
-      content += '<ul class="space-y-1">';
-      (block.listProps?.items || ["Elemento 1", "Elemento 2"]).forEach(
-        (item) => {
-          content += `
-          <li class="flex items-start">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-500 mr-2 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-            <span>${item}</span>
-          </li>
-        `;
-        }
-      );
-      content += "</ul>";
-    }
-  } else if (block.type === "quote") {
-    const quoteStyle = block.quoteProps?.style || "default";
-
-    if (quoteStyle === "default") {
-      content += `
-        <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-700">
-          <p>${block.content || "Ingrese texto de la cita aquí"}</p>
-          ${
-            block.quoteProps?.author
-              ? `<footer class="mt-2 text-sm">— ${block.quoteProps.author}${
-                  block.quoteProps.source
-                    ? `, <cite>${block.quoteProps.source}</cite>`
-                    : ""
-                }</footer>`
-              : ""
-          }
-        </blockquote>
-      `;
-    } else if (quoteStyle === "blockquote") {
-      content += `
-        <blockquote class="bg-gray-50 p-4 rounded-md border-l-4 border-emerald-500">
-          <p class="text-lg">${
-            block.content || "Ingrese texto de la cita aquí"
-          }</p>
-          ${
-            block.quoteProps?.author
-              ? `<footer class="mt-2 text-sm font-medium">— ${
-                  block.quoteProps.author
-                }${
-                  block.quoteProps.source
-                    ? `, <cite>${block.quoteProps.source}</cite>`
-                    : ""
-                }</footer>`
-              : ""
-          }
-        </blockquote>
-      `;
-    } else if (quoteStyle === "pullquote") {
-      content += `
-        <div class="relative">
-          <div class="text-6xl text-emerald-200 absolute -top-4 left-0">"</div>
-          <blockquote class="text-xl font-medium text-center px-8 py-4">
-            <p>${block.content || "Ingrese texto de la cita aquí"}</p>
-            ${
-              block.quoteProps?.author
-                ? `<footer class="mt-4 text-sm font-normal text-gray-500">— ${
-                    block.quoteProps.author
-                  }${
-                    block.quoteProps.source
-                      ? `, <cite>${block.quoteProps.source}</cite>`
-                      : ""
-                  }</footer>`
-                : ""
-            }
-          </blockquote>
-          <div class="text-6xl text-emerald-200 absolute -bottom-10 right-0">"</div>
-        </div>
-      `;
-    }
-  } else if (block.type === "code") {
-    const language = block.codeProps?.language || "javascript";
-    content += `
-      <div class="bg-gray-50 rounded-md overflow-hidden">
-        <div class="bg-gray-200 px-4 py-1 text-xs font-mono flex justify-between items-center">
-          <span>${language}</span>
-        </div>
-        <pre class="p-4 overflow-x-auto font-mono text-sm whitespace-pre-wrap">${
-          block.content || "// Ingrese código aquí"
-        }</pre>
-      </div>
-    `;
-  } else if (block.type === "table") {
-    const rows = block.tableProps?.rows || 2;
-    const columns = block.tableProps?.columns || 2;
-    const headers =
-      block.tableProps?.headers || Array(columns).fill("Encabezado");
-    const data =
-      block.tableProps?.data || Array(rows).fill(Array(columns).fill("Celda"));
-
-    content += `
-      <div class="overflow-x-auto">
-        <table class="min-w-full border-collapse border border-gray-300">
-          <thead>
-            <tr class="bg-gray-100">
-              ${headers
-                .map(
-                  (header) =>
-                    `<th class="border border-gray-300 px-4 py-2 text-left">${header}</th>`
-                )
-                .join("")}
-            </tr>
-          </thead>
-          <tbody>
-            ${data
-              .map(
-                (row) =>
-                  `<tr>
-                ${row
-                  .map(
-                    (cell: any) =>
-                      `<td class="border border-gray-300 px-4 py-2">${cell}</td>`
-                  )
-                  .join("")}
-              </tr>`
-              )
-              .join("")}
-          </tbody>
-        </table>
-      </div>
-    `;
-  }
-
-  content += "</div>";
+  const content = renderBlockContent(block, false);
 
   // Crear o actualizar el elemento en el grid
   const existingItem = gridStack.value.el.querySelector(
@@ -568,6 +389,7 @@ const renderBlock = (block: ContentBlock) => {
       newItem.classList.add("ring-2", "ring-emerald-500");
     }
 
+    // Estilos para obtener el fecto de borde
     newItem.innerHTML = `<div class="grid-stack-item-content border rounded-md bg-white shadow-sm hover:shadow-md transition-shadow relative group">${content}</div>`;
 
     gridStack.value.addWidget(newItem);
@@ -603,32 +425,6 @@ const setupBlockEventListeners = (blockId: string) => {
       removeBlock(blockId);
     });
   }
-
-  // Contenido editable
-  const contentEl = gridItem.querySelector(".block-content");
-  if (contentEl) {
-    contentEl.addEventListener("blur", (e) => {
-      const content = (e.target as HTMLElement).textContent || "";
-      updateBlockContent2(blockId, content);
-    });
-  }
-
-  // Campos específicos para columnas
-  if (blocks.value.find((b) => b.id === blockId)?.type === "columns") {
-    const columnContents = gridItem.querySelectorAll(".column-content");
-    columnContents.forEach((el) => {
-      el.addEventListener("blur", (e) => {
-        const columnIndex = parseInt(
-          (e.target as HTMLElement).getAttribute("data-column-index") || "0"
-        );
-        updateColumnContent(
-          blockId,
-          columnIndex,
-          (e.target as HTMLElement).textContent || ""
-        );
-      });
-    });
-  }
 };
 
 // Renderizar todos los bloques
@@ -636,7 +432,7 @@ const renderBlocks = () => {
   if (!gridStack.value) return;
 
   // Limpiar el grid
-  gridStack.value.removeAll();
+  /*   gridStack.value.removeAll(); */
 
   // Renderizar cada bloque
   blocks.value.forEach((block) => {
@@ -660,8 +456,7 @@ const addComponent = (componentType: ComponentType) => {
   // Generate a unique ID for the block
   const blockId = `block-${Date.now()}-${Math.random()
     .toString(36)
-    .substr(2, 9)}`;
-
+    .slice(2, 11)}`;
   // Default image properties
   const imageProps =
     componentType === "image"
@@ -754,7 +549,7 @@ const addComponent = (componentType: ComponentType) => {
     case "image":
       defaultHeight = 6;
       break;
-    case "columns":
+    case "video":
       defaultHeight = 4;
       break;
     case "list":
@@ -782,8 +577,6 @@ const addComponent = (componentType: ComponentType) => {
     id: blockId,
     type: componentType,
     content: "",
-    columns: componentType === "columns" ? 2 : undefined,
-    columnContent: componentType === "columns" ? ["", ""] : undefined,
     imageProps,
     listProps,
     quoteProps,
@@ -798,6 +591,21 @@ const addComponent = (componentType: ComponentType) => {
   };
 
   // Add the block to our blocks array
+  /*   blocks.value.push(newBlock);
+
+  // Render the new block
+  if (gridStack.value) {
+    renderBlock(newBlock);
+  } else {
+    // Initialize GridStack if it doesn't exist yet
+    nextTick(() => {
+      initGridStack();
+      renderBlocks();
+    });
+  }
+
+  // Select the new block
+  selectedBlockId.value = blockId; */
   blocks.value.push(newBlock);
 
   // Render the new block
@@ -815,6 +623,28 @@ const addComponent = (componentType: ComponentType) => {
   selectedBlockId.value = blockId;
 };
 
+const insertImageFromLibrary = (image: ImageItem) => {
+  // Crear un nuevo bloque de imagen con la imagen seleccionada
+  addComponent("image");
+
+  // Obtener el último bloque añadido (que debería ser la imagen)
+  const lastBlock = blocks.value[blocks.value.length - 1];
+  if (lastBlock && lastBlock.type === "image") {
+    // Actualizar la URL de la imagen
+    lastBlock.content = image.url;
+    if (image.alt) {
+      lastBlock.imageProps = {
+        ...lastBlock.imageProps,
+        alt: image.alt,
+        objectFit: "contain",
+        height: 100,
+      };
+    }
+
+    // Renderizar el bloque actualizado
+    renderBlock(lastBlock);
+  }
+};
 // Métodos para actualizar propiedades del bloque seleccionado
 const updateBlockWidth = (width: number) => {
   if (!selectedBlock.value || !selectedBlockId.value) return;
@@ -835,19 +665,6 @@ const updateBlockContent = (content: string) => {
 
   selectedBlock.value.content = content;
   updateSelectedBlockContent();
-};
-
-const updateBlockContent2 = (blockId: string, content: string) => {
-  const blockIndex = blocks.value.findIndex((b) => b.id === blockId);
-  if (blockIndex !== -1) {
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      content,
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
 };
 
 const updateSelectedBlockContent = () => {
@@ -978,54 +795,6 @@ const updateDividerProps = (props: Partial<DividerProperties>) => {
   }
 };
 
-const updateColumnContent = (
-  blockId: string,
-  columnIndex: number,
-  content: string
-) => {
-  const blockIndex = blocks.value.findIndex((b) => b.id === blockId);
-  if (blockIndex !== -1 && blocks.value[blockIndex].columnContent) {
-    const columnContent = [...blocks.value[blockIndex].columnContent!];
-    columnContent[columnIndex] = content;
-
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      columnContent,
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const updateColumnsCount = (blockId: string, columnsCount: number) => {
-  const blockIndex = blocks.value.findIndex((b) => b.id === blockId);
-  if (blockIndex !== -1) {
-    // Preserve existing column content and add empty strings for new columns
-    const existingContent = blocks.value[blockIndex].columnContent || [];
-    const newColumnContent = [...existingContent];
-
-    // Add empty content for new columns
-    while (newColumnContent.length < columnsCount) {
-      newColumnContent.push("");
-    }
-
-    // Trim if reducing columns
-    if (newColumnContent.length > columnsCount) {
-      newColumnContent.length = columnsCount;
-    }
-
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      columns: columnsCount,
-      columnContent: newColumnContent,
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
 const updateImageProps = (props: Partial<ImageProperties>) => {
   if (!selectedBlockId.value) return;
 
@@ -1050,6 +819,32 @@ const updateImageProps = (props: Partial<ImageProperties>) => {
   }
 };
 
+const updateVideoProps = (props: Partial<VideoProperties>) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex !== -1 && blocks.value[blockIndex].type === "video") {
+    blocks.value[blockIndex] = {
+      ...blocks.value[blockIndex],
+      videoProps: {
+        ...(blocks.value[blockIndex].videoProps || {
+          provider: "youtube",
+          videoId: "",
+          title: "Video embebido",
+          aspectRatio: "16:9",
+          autoplay: false,
+          controls: true,
+        }),
+        ...props,
+      },
+    };
+
+    // Re-renderizar el bloque para actualizar la vista
+    renderBlock(blocks.value[blockIndex]);
+  }
+};
 const updateListProps = (props: Partial<ListProperties>) => {
   if (!selectedBlockId.value) return;
 
@@ -1419,6 +1214,17 @@ const removeBlock = (blockId: string) => {
   if (selectedBlockId.value === blockId) {
     selectedBlockId.value = null;
   }
+
+  // Reinicializar GridStack si eliminamos el último bloque
+  if (blocks.value.length === 0) {
+    nextTick(() => {
+      if (gridStack.value) {
+        gridStack.value.destroy();
+        gridStack.value = null;
+      }
+      // El área vacía se mostrará automáticamente gracias al v-if en el template
+    });
+  }
 };
 
 const duplicateBlock = (blockId: string) => {
@@ -1430,7 +1236,7 @@ const duplicateBlock = (blockId: string) => {
   // Create a new block ID
   const newBlockId = `block-${Date.now()}-${Math.random()
     .toString(36)
-    .substr(2, 9)}`;
+    .slice(2, 9)}`;
 
   // Clone the block
   const newBlock: ContentBlock = JSON.parse(JSON.stringify(block));
@@ -1456,14 +1262,20 @@ const clearAllBlocks = () => {
   }
 };
 
-const exportContent = () => {
+const exportContent = (event: Event) => {
   // Solo exportar el JSON para que GridStack lo renderice
   const exportData = {
     template: selectedTemplate.value,
     fixedFields: fixedFields.value,
     blocks: blocks.value,
   };
-
+  const metaData = {
+    author: "Usuario de Prueba",
+    estado: "Publicado",
+    fecha: Date.now(),
+    descripcion: "Ejemplo de noticia",
+    banner: "https://placehold.co/600x400",
+  };
   // Create a JSON blob and download it
   const blob = new Blob([JSON.stringify(exportData, null, 2)], {
     type: "application/json",
@@ -1476,14 +1288,46 @@ const exportContent = () => {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+  exportDb(event, { ...metaData, content: exportData });
 };
 
+const exportDb = async (event: Event, exportData: any) => {
+  try {
+    const {
+      data,
+      status: fetchStatus,
+      error: fetchError,
+    } = await useFetch("http://localhost:3000/blogs", {
+      method: "POST",
+      body: exportData,
+      headers: { "Content-Type": "application/json" },
+      transform: (data) => {
+        return data;
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+// Observar cambios en los bloques para re-renderizar
 // Observar cambios en los bloques para re-renderizar
 watch(
   blocks,
   () => {
-    if (gridStack.value) {
-      renderBlocks();
+    if (blocks.value.length > 0) {
+      if (gridStack.value) {
+        renderBlocks();
+      } else {
+        nextTick(() => {
+          initGridStack();
+          renderBlocks();
+        });
+      }
+    } else {
+      // No hay bloques, asegurémonos de que el área vacía se muestre
+      if (gridStack.value) {
+        gridStack.value.removeAll();
+      }
     }
   },
   { deep: true }
@@ -1506,72 +1350,3 @@ onUnmounted(() => {
   }
 });
 </script>
-
-<style scoped>
-[contenteditable] {
-  outline: none;
-}
-
-.grid-stack {
-  background: #f9fafb;
-  min-height: 300px;
-}
-
-.grid-stack-item-content {
-  overflow-y: auto;
-  padding: 0;
-}
-
-.grid-stack-placeholder > .placeholder-content {
-  background-color: #f0fdf4;
-  border: 1px dashed #10b981;
-}
-
-.grid-stack-item.ui-draggable-dragging,
-.grid-stack-item.ui-resizable-resizing {
-  opacity: 0.8;
-  z-index: 100;
-}
-
-.grid-stack-item.ring-2 {
-  z-index: 10;
-}
-
-/* Estilos específicos para elementos pequeños como divisores */
-.grid-stack-item[gs-id^="block"][gs-h="1"] {
-  min-height: 50px !important;
-}
-
-/* Estilos para la vista previa */
-.preview-grid .grid-stack-item {
-  cursor: default;
-}
-
-/* Estilos para distinguir entre editor y preview */
-.editor-area {
-  position: relative;
-}
-
-.editor-area::before {
-  content: "EDITOR";
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #f3f4f6;
-  color: #6b7280;
-  font-size: 0.75rem;
-  padding: 2px 6px;
-  border-radius: 0 0 0 4px;
-  z-index: 5;
-}
-
-/* Fix for content shifting when resizing */
-.grid-stack > .grid-stack-item {
-  min-width: 0;
-}
-
-.grid-stack > .grid-stack-item > .grid-stack-item-content {
-  inset: 0;
-  overflow: hidden;
-}
-</style>

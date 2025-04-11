@@ -144,6 +144,7 @@
             <!-- Action buttons -->
             <div class="space-y-3">
               <button
+                type="button"
                 @click="login"
                 :disabled="!isFormValid"
                 :class="[
@@ -499,11 +500,7 @@ const togglePasswordVisibility = () => {
 };
 
 // Form submission
-const login = () => {
-  if (!isFormValid.value) {
-    return;
-  }
-
+const login = async () => {
   // Submit login form (in a real app, you would call an API here)
   console.log("Login submitted", {
     email: email.value,
@@ -512,7 +509,9 @@ const login = () => {
   });
 
   // Show success message or redirect
-  alert("Inicio de sesión exitoso");
+  if (email.value === "admin@gmail.com" && password.value === "admin") {
+    await navigateTo("/admin");
+  }
 };
 
 // Carousel functionality

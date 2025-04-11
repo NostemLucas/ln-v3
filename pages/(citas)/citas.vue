@@ -92,7 +92,7 @@
         <div
           class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm lg:top-0"
         >
-          <div class="container mx-auto px-4 py-5">
+          <div class="container mx-auto px-4 py-1">
             <div class="flex items-center justify-between max-w-3xl mx-auto">
               <div
                 v-for="(step, index) in steps"
@@ -138,7 +138,7 @@
         </div>
 
         <!-- Contenido del paso actual -->
-        <div class="container mx-auto px-4 py-8">
+        <div class="container mx-auto px-4 py-3">
           <div class="max-w-3xl mx-auto">
             <!-- Título del paso actual -->
             <div class="mb-6">
@@ -171,12 +171,12 @@
                     <label class="block text-base font-medium text-slate-700">
                       Seleccione un médico <span class="text-primary">*</span>
                     </label>
-                    <div class="space-y-4">
+                    <div class="space-y-2">
                       <div
                         v-for="doctor in doctors"
                         :key="doctor.id"
                         @click="formData.doctor = doctor.id"
-                        class="flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-200"
+                        class="flex items-center px-4 py-1 border-2 rounded-xl cursor-pointer transition-all duration-200"
                         :class="{
                           'border-primary bg-primary/5 shadow-sm':
                             formData.doctor === doctor.id,
@@ -250,7 +250,7 @@
                 </div>
 
                 <!-- Paso 2: Selección de fecha y hora -->
-                <div v-else-if="currentStep === 1" class="space-y-8">
+                <div v-else-if="currentStep === 1" class="space-y-4">
                   <!-- Selector de mes y año -->
                   <div
                     class="flex flex-wrap justify-between items-center gap-3"
@@ -1109,49 +1109,7 @@ onMounted(() => {
 });
 </script>
 
-<style>
-:root {
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-}
-
-.text-primary {
-  color: var(--primary);
-}
-
-.bg-primary {
-  background-color: var(--primary);
-}
-
-.border-primary {
-  border-color: var(--primary);
-}
-
-.hover\:bg-primary-dark:hover {
-  background-color: var(--primary-dark);
-}
-
-.hover\:border-primary:hover {
-  border-color: var(--primary);
-}
-
-.focus\:border-primary:focus {
-  border-color: var(--primary);
-}
-
-.focus\:ring-primary:focus {
-  --tw-ring-color: var(--primary);
-}
-
-.group-hover\:text-primary:hover {
-  color: var(--primary);
-}
-
-/* Bordes más gruesos */
-.border-3 {
-  border-width: 3px;
-}
-
+<style scoped>
 /* Animaciones y transiciones */
 .transition-all {
   transition-property: all;

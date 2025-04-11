@@ -2,7 +2,7 @@
   <!-- Banner Template -->
   <div v-if="selectedTemplate === 'banner'" class="relative">
     <img
-      :src="fixedFields.bannerImage || '/placeholder.svg?height=400&width=1200'"
+      :src="fixedFields.bannerImage || 'https://placehold.co/1920x1800/png'"
       alt="Banner"
       class="w-full h-64 object-cover"
     />
@@ -59,9 +59,7 @@
         {{ fixedFields.summary || "Resumen del artículo..." }}
       </p>
       <img
-        :src="
-          fixedFields.bannerImage || '/placeholder.svg?height=400&width=1200'
-        "
+        :src="fixedFields.bannerImage || 'https://placehold.co/1920x1800/png'"
         alt="Banner"
         class="w-full h-64 object-cover rounded-md mb-6"
       />
@@ -91,9 +89,7 @@
         Por {{ fixedFields.author || "Nombre del autor" }}
       </p>
       <img
-        :src="
-          fixedFields.bannerImage || '/placeholder.svg?height=400&width=1200'
-        "
+        :src="fixedFields.bannerImage || 'https://placehold.co/1920x1800/png'"
         alt="Banner"
         class="w-full h-64 object-cover rounded-md mb-6"
       />
