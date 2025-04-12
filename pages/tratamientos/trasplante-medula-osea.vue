@@ -1,22 +1,52 @@
 <template>
   <div class="bg-gradient-to-b from-slate-50 to-white">
-    <div class="container mx-auto px-4 py-16 md:px-6 lg:py-20">
-      <!-- Breadcrumb -->
-      <Breadcumb />
-      <!-- Treatment Header -->
-      <div class="mb-12">
-        <span
-          class="inline-block rounded-full bg-teal-100 px-3 py-1 my-6 text-sm font-medium text-teal-800"
-        >
-          Tratamiento Especializado
-        </span>
+    <div
+      class="bg-primary-500 bg-linear-120 from-primary-400 via-primary-500 to-primary-900 h-80"
+    >
+      <div
+        class="flex flex-col justify-center items-start h-full container mx-auto px-4 md:p-0 gap-4"
+      >
+        <!-- Breadcrumb -->
+        <Breadcumb />
+        <!-- Treatment Header -->
+        <UBadge
+          variant="solid"
+          size="xl"
+          label="Tratamiento Especializado"
+          class="rounded-full bg-teal-200 font-semibold text-slate-800 my-3"
+        />
         <h1
-          class="mb-4 text-3xl font-bold text-slate-800 md:text-4xl lg:text-5xl"
+          class="mb-4 text-3xl font-bold text-slate-100 md:text-4xl lg:text-5xl text-shadow-xs text-shadow-black font-horsham tracking-wider"
         >
           Trasplante De Médula Ósea
         </h1>
+        <div class="flex justify-start items-center gap-2">
+          <UButton
+            class="text-slate-50 w-auto"
+            variant="link"
+            size="md"
+            label="Solicita una cita"
+            icon="lucide:calendar"
+            :ui="{
+              label: 'mt-1 tracking-wide ',
+              base: 'hover:text-emerald-200',
+            }"
+          />
+          <UButton
+            class="text-slate-50 w-auto"
+            variant="link"
+            size="md"
+            label="Nuestros Profesionales"
+            icon="lucide:user"
+            :ui="{
+              label: 'mt-1 tracking-wide ',
+              base: 'hover:text-emerald-200',
+            }"
+          />
+        </div>
       </div>
-
+    </div>
+    <div class="container mx-auto px-4 py-16 md:px-6 lg:py-20">
       <!-- Main Content -->
       <div class="grid gap-12 lg:grid-cols-2">
         <!-- Left Column: Description and Accordions -->

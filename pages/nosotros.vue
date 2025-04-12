@@ -1,7 +1,7 @@
 <template>
   <div class="overflow-x-hidden">
     <!-- Sección Principal: Quiénes Somos -->
-    <section class="bg-white py-6">
+    <section class="bg-white pt-20">
       <div class="container mx-auto px-4 md:px-8">
         <div
           class="grid grid-cols-2 gap-12 lg:grid-cols-12 px-20 items-stretch"
