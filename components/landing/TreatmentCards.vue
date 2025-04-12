@@ -16,8 +16,8 @@
           vanguardia y atención personalizada
         </p>
         <div class="mt-4">
-          <a
-            href="#"
+          <NuxtLink
+            to="/tratamientos"
             class="inline-flex items-center text-primary-500 font-medium transition-all duration-300 hover:text-blue-800 group"
           >
             <span>Ver Todos los Tratamientos</span>
@@ -34,7 +34,7 @@
                 clip-rule="evenodd"
               />
             </svg>
-          </a>
+          </NuxtLink>
         </div>
       </div>
 
@@ -89,7 +89,7 @@
 
               <!-- Descripción con mejor legibilidad -->
               <p
-                class="line-clamp-3 max-w-prose text-sm font-light text-gray-100 group-hover:text-white"
+                class="line-clamp-3 max-w-prose text-sm font-light text-gray-100 group-hover:text-white leading-relaxed min-h-[4.5rem]"
               >
                 {{ treatment.description }}
               </p>
@@ -101,23 +101,15 @@
                 <UButton
                   variant="solid"
                   type="button"
+                  draggable="false"
                   :to="treatment.url"
-                  class="rounded-full bg-white px-5 py-2 text-sm font-medium text-blue-900 transition-all duration-300 hover:bg-blue-50 hover:shadow-lg flex items-center w-40"
-                >
-                  <span>Conocer más</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4 ml-1"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </UButton>
+                  label="Conocer más"
+                  :ui="{
+                    label: 'mt-1',
+                  }"
+                  trailing-icon="lucide:arrow-right"
+                  class="rounded-full bg-white px-5 py-2 text-sm font-medium text-blue-900 transition-all duration-300 hover:bg-blue-200 hover:shadow-lg flex items-center w-40"
+                />
               </div>
             </div>
           </div>
@@ -168,7 +160,7 @@ const treatments = ref([
   {
     title: "Terapia Biológica",
     description:
-      "Tratamiento que utiliza sustancias naturales o modificadas genéticamente para interferir en los procesos que favorecen el crecimiento y propagación del cáncer.",
+      "Estimula el sistema inmunologico y bloquea los procesos que las células cancerosas n ecesitan para crecer.",
     image:
       "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     url: "/tratamientos/terapia-biologica",

@@ -76,14 +76,14 @@
 
         <div class="flex flex-wrap items-center gap-4">
           <UButton
-            class="rounded-full px-10 py-4 font-black ring-4"
+            class="rounded-full px-10 py-4 font-black ring-4 ring-primary-500"
             to="/nosotros"
             trailing-icon="i-lucide-arrow-right"
             variant="outline"
           >
             Ver Más
           </UButton>
-          <a
+          <NuxtLink
             href="tel:+59174846264"
             class="inline-flex items-center tracking-widest text-slate-700"
           >
@@ -93,7 +93,7 @@
               class="mr-2 h-6 w-6 text-red-500 md:h-7 md:w-7"
             />
             <span class="font-bold mr-2">(+591)</span> 74846264
-          </a>
+          </NuxtLink>
         </div>
 
         <!-- Services section -->

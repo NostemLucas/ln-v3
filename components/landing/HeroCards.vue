@@ -24,12 +24,12 @@
         </p>
 
         <div
-          class="mb-6 rounded-lg border-l-4 border-primary-500 bg-blue-50 p-4"
+          class="mb-6 rounded-br-lg rounded-tr-lg border-l-4 border-primary-500 bg-blue-50 p-4"
         >
-          <p class="mb-2 font-semibold text-gray-800">
+          <p class="mb-2 font-semibold text-gray-700">
             Pioneros en el Trasplante de Médula Osea en Bolivia
           </p>
-          <p class="mb-2 text-gray-700">
+          <p class="mb-2 text-gray-600">
             Oncoclinic marcó un hito en la historia de la medicina boliviana al
             realizar por primera vez el trasplante autólogo en 2017 y el
             trasplante alogénico en adultos en 2023
@@ -40,7 +40,7 @@
             to="/tratamientos"
             class="inline-flex items-center font-medium text-primary-600 hover:underline"
           >
-            Informarse sobre las especialidades más destacadas
+            Conozca más sobre el trasplante de médula ósea
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="ml-1 h-4 w-4"
@@ -73,7 +73,7 @@
       </div>
       <div class="relative overflow-hidden lg:w-2/5">
         <div
-          class="absolute inset-0 z-10 rounded-lg bg-gradient-to-r from-blue-500/20 to-transparent"
+          class="absolute inset-0 z-10 rounded-lg bg-gradient-to-r from-blue-500/40 via-blue-300/40 to-transparent"
         />
         <NuxtImg
           src="/landing/close-up.jpg"
@@ -132,12 +132,11 @@
               </svg>
             </div>
             <div>
-              <h3 class="font-medium text-gray-900">
+              <h3 class="font-bold tracking-wider text-gray-600">
                 Tratamiento personalizado
               </h3>
               <p class="text-sm text-gray-600">
-                Nuestros tratamientos se adaptan a ti y a tu tipo de cáncer,
-                preocurando siempre tu salud.
+                Nuestros tratamientos se adaptan a ti y a tu tipo de cáncer.
               </p>
             </div>
           </div>
@@ -159,11 +158,11 @@
               </svg>
             </div>
             <div>
-              <h3 class="font-medium text-gray-900">
+              <h3 class="font-bold tracking-wide text-gray-600">
                 Diagnóstico molecular avanzado
               </h3>
               <p class="text-sm text-gray-600">
-                Se utilizan pruebas como la secuenciación genética) para
+                Se utilizan pruebas como la secuenciación genética para
                 identificar alteraciones específicas en el cáncer
               </p>
             </div>
