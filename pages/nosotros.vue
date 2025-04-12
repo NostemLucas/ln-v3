@@ -1,7 +1,7 @@
 <template>
   <div class="overflow-x-hidden">
     <!-- Sección Principal: Quiénes Somos -->
-    <section class="bg-white pt-20">
+    <section class="bg-white py-20">
       <div class="container mx-auto px-4 md:px-8">
         <div
           class="grid grid-cols-2 gap-12 lg:grid-cols-12 px-20 items-stretch"
@@ -58,7 +58,6 @@
               >
                 "La oncología es el arte de navegar entre lo imposible y lo
                 inevitable, con la esperanza como brújula"
-                <p class="mt-2 text-right text-base text-gray-600">- Platón</p>
               </blockquote>
             </div>
           </div>
@@ -289,7 +288,7 @@
             "Nada en la vida debe ser temido, solo comprendido. Ahora es el
             momento de entender más para temer menos."
           </blockquote>
-          <p class="text-xl font-semibold pb-10">- Marie Curie</p>
+          <p class="text-xl font-semibold pb-10">Marie Curie</p>
         </div>
       </div>
     </section>
