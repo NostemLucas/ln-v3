@@ -1,7 +1,7 @@
 <template>
   <div class="bg-gradient-to-b from-slate-50 to-white">
     <HeaderNavigation title="Transplante de Medula Osea" />
-    <div class="container mx-auto px-4 py-16 md:px-6 lg:py-20 text-justify">
+    <div class="container mx-auto px-8 py-10 md:px-6 lg:py-16 text-justify">
       <!-- Main Content -->
       <div class="grid gap-12 lg:grid-cols-2">
         <!-- Left Column: Description and Accordions -->
@@ -56,49 +56,32 @@
 
         <!-- Right Column: Image and Types -->
         <div>
-          <div class="overflow-hidden rounded-xl shadow-lg">
-            <img
+          <div class="overflow-hidden rounded-xl shadow-lg relative">
+            <NuxtImg
               src="/treatments/medula.jpeg"
               alt="Trasplante de Médula Ósea"
-              class="h-full w-full object-cover object-center"
+              class="h-full w-full object-cover object-center relative"
+            />
+            <span
+              class="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"
             />
           </div>
 
-          <div class="mt-4 rounded-xl p-6">
+          <div class="mt-8 md:mt-4 rounded-xl">
             <div class="px-6 py-3 border border-slate-300 rounded-2xl">
               <UAccordion :items="itemsCare" collapsible v-model="active" />
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Related Treatments -->
-      <div class="mt-16">
-        <h2 class="mb-8 text-2xl font-bold text-slate-800">
-          Otros tratamientos relacionados
-        </h2>
-        <div class="grid gap-8 md:grid-cols-2">
-          <TreatmentCard
-            title="Inmunoterapia"
-            description="Tratamiento que utiliza el sistema inmunitario para combatir el cáncer."
-            image="/treatments/inmunoterapia.jpg"
-            link="/tratamientos/inmunoterapia"
-          />
-          <TreatmentCard
-            title="Quimioterapia"
-            description="Uso de fármacos para destruir las células cancerosas."
-            image="/treatments/quimio.jpg"
-            link="/tratamientos/quimioterapia"
-          />
-        </div>
-      </div>
     </div>
+    <FooterTreatments />
   </div>
 </template>
 
 <script setup lang="ts">
-import TreatmentCard from "@/components/ui/TreatmentCard.vue";
 import type { AccordionItem } from "@nuxt/ui";
+import FooterTreatments from "~/components/navigation/FooterTreatments.vue";
 import HeaderNavigation from "~/components/navigation/HeaderNavigation.vue";
 
 const itemsHistory: AccordionItem[] = [
