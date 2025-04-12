@@ -1,106 +1,56 @@
 <template>
   <div class="bg-gradient-to-b from-slate-50 to-white">
-    <div
-      class="bg-primary-500 bg-linear-120 from-primary-400 via-primary-500 to-primary-900 h-80"
-    >
-      <div
-        class="flex flex-col justify-center items-start h-full container mx-auto px-4 md:p-0 gap-4"
-      >
-        <!-- Breadcrumb -->
-        <Breadcumb />
-        <!-- Treatment Header -->
-        <UBadge
-          variant="solid"
-          size="xl"
-          label="Tratamiento Especializado"
-          class="rounded-full bg-teal-200 font-semibold text-slate-800 my-3"
-        />
-        <h1
-          class="mb-4 text-3xl font-bold text-slate-100 md:text-4xl lg:text-5xl text-shadow-xs text-shadow-black font-horsham tracking-wider"
-        >
-          Trasplante De Médula Ósea
-        </h1>
-        <div class="flex justify-start items-center gap-2">
-          <UButton
-            class="text-slate-50 w-auto"
-            variant="link"
-            size="md"
-            label="Solicita una cita"
-            icon="lucide:calendar"
-            :ui="{
-              label: 'mt-1 tracking-wide ',
-              base: 'hover:text-emerald-200',
-            }"
-          />
-          <UButton
-            class="text-slate-50 w-auto"
-            variant="link"
-            size="md"
-            label="Nuestros Profesionales"
-            icon="lucide:user"
-            :ui="{
-              label: 'mt-1 tracking-wide ',
-              base: 'hover:text-emerald-200',
-            }"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="container mx-auto px-4 py-16 md:px-6 lg:py-20">
+    <HeaderNavigation title="Transplante de Medula Osea" />
+    <div class="container mx-auto px-4 py-16 md:px-6 lg:py-20 text-justify">
       <!-- Main Content -->
       <div class="grid gap-12 lg:grid-cols-2">
         <!-- Left Column: Description and Accordions -->
         <div>
-          <div class="prose prose-slate max-w-none">
-            <p class="text-lg">
-              Un trasplante de médula ósea es un procedimiento médico que
-              reemplaza la médula ósea por células sanas. Las células de
-              reemplazo pueden provenir del propio paciente o de un donante.
+          <div class="prose prose-slate max-w-none flex flex-col gap-6">
+            <p class="text-md">
+              Este tratamiento reemplaza células dañadas o enfermas por células
+              madre sanas, que ayudan a regenerar la médula ósea y a restaurar
+              la producción normal de células sanguíneas.
             </p>
             <p>
-              La médula ósea es el tejido esponjoso que se encuentra dentro de
-              los huesos y que consideramos verdadero de células madre
-              hematopoyéticas. El trasplante se puede utilizar para tratar
-              ciertos tipos de cáncer, como la leucemia o el linfoma, o
-              enfermedades que afectan la producción de células de la sangre que
-              fabrica la médula ósea.
+              Desde el 2017, nuestro equipo ha sido pionero en Bolivia en el
+              desarrollo de nuevas técnicas en trasplantes de médula ósea y
+              procedimientos con células madre.
             </p>
-          </div>
+            <p class="text-lg font-semibold">
+              ¿Porqué elegir oncoclinic para un transplante de medula osea?
+            </p>
+            <p>
+              Cuando se enfrenta a un cáncer de la sangre o un trastorno de la
+              médula ósea, elegir dónde recibir atención médica puede ser una
+              decisión que salve su vida. El Programa de Trasplante de Médula
+              Ósea & Terapias Celulares de Oncoclinic, es resultado de un
+              trabajo en conjunto de la Global Bone Marrow Trasnplantation de la
+              universidad de Chicago Illinois, Estados Unidos, que ofrece
+              terapias avanzadas de un equipo de expertos clínicos
+            </p>
+            <p>
+              Entendemos que someterse a un trasplante de médula ósea puede ser
+              un proceso abrumador. Nuestro equipo lo guiará en cada paso del
+              tratamiento, desde el diagnóstico hasta el trasplante y la
+              recuperación. Algunos aspectos destacados de nuestro programa
+              incluyen:
+            </p>
 
-          <!-- Accordions -->
-          <div class="mt-8 space-y-4">
-            <AccordionItem
-              id="celulas-madre"
-              title="¿Qué son las células madre?"
-              :active="activeAccordion === 'celulas-madre'"
-              @toggle="toggleAccordion"
-            >
-              <p>
-                Las células madre son células especiales que pueden reproducirse
-                a sí mismas y convertirse en distintos tipos de células que el
-                cuerpo necesita. Hay varios tipos de células madre y se
-                encuentran en diferentes partes del cuerpo, incluyendo la médula
-                ósea, la sangre y el cordón umbilical.
-              </p>
-            </AccordionItem>
+            <p class="text-lg font-semibold">Historia de Innovación</p>
 
-            <AccordionItem
-              id="como-funciona"
-              title="¿Cómo funciona un trasplante de células madre/médula ósea?"
-              :active="activeAccordion === 'como-funciona'"
-              @toggle="toggleAccordion"
+            <p>
+              Realizamos uno de los primeros trasplantes exitosos de Bolivia en
+              el 2017, marcando un hito en la medicina de nuestro país. Nuestros
+              especialistas incorporan las últimas investigaciones y terapias en
+              sus protocolos, asegurando que siempre reciba las opciones más
+              actualizadas.
+            </p>
+            <div
+              class="border border-slate-400 px-6 py-3 rounded-2xl bg-slate-200"
             >
-              <p>
-                En general, este proceso conlleva recolectar las células madre
-                del donante, la eliminación de tratamientos de preparación para
-                el cuerpo para el receptor, la infusión de células y la
-                monitorización posterior del recuperación.
-              </p>
-              <p class="mt-2">
-                A menudo, se puede utilizar el trasplante en el que las células
-                que provienen directa el paciente de trasplante (autólogo).
-              </p>
-            </AccordionItem>
+              <UAccordion :items="itemsHistory" />
+            </div>
           </div>
         </div>
 
@@ -114,54 +64,9 @@
             />
           </div>
 
-          <div class="mt-8 rounded-xl bg-white p-6 shadow-md">
-            <h3 class="mb-4 text-xl font-semibold text-slate-800">
-              ¿Qué tipos de trasplante de células madre existen?
-            </h3>
-
-            <div class="space-y-4">
-              <AccordionItem
-                id="trasplante1"
-                title="Trasplante Alogénico"
-                :active="activeAccordion === 'trasplante1'"
-                @toggle="toggleAccordion"
-              >
-                <p>
-                  El trasplante alogénico utiliza células madre de un donante
-                  compatible, que puede ser un familiar o un donante no
-                  relacionado. Este tipo de trasplante es común para tratar
-                  leucemias y otros trastornos de la sangre.
-                </p>
-              </AccordionItem>
-
-              <AccordionItem
-                id="trasplante2"
-                title="Trasplante Autólogo"
-                :active="activeAccordion === 'trasplante2'"
-                @toggle="toggleAccordion"
-              >
-                <p>
-                  En el trasplante autólogo, se utilizan las propias células
-                  madre del paciente. Estas se recolectan antes de un
-                  tratamiento intensivo como quimioterapia o radioterapia, y
-                  luego se reinfunden para restaurar la función de la médula
-                  ósea.
-                </p>
-              </AccordionItem>
-
-              <AccordionItem
-                id="trasplante3"
-                title="Trasplante de Cordón Umbilical"
-                :active="activeAccordion === 'trasplante3'"
-                @toggle="toggleAccordion"
-              >
-                <p>
-                  Este tipo de trasplante utiliza células madre de la sangre del
-                  cordón umbilical de recién nacidos. Estas células son
-                  inmaduras y pueden adaptarse mejor al receptor, reduciendo el
-                  riesgo de rechazo.
-                </p>
-              </AccordionItem>
+          <div class="mt-4 rounded-xl p-6">
+            <div class="px-6 py-3 border border-slate-300 rounded-2xl">
+              <UAccordion :items="itemsCare" collapsible v-model="active" />
             </div>
           </div>
         </div>
@@ -192,17 +97,56 @@
 </template>
 
 <script setup lang="ts">
-import AccordionItem from "@/components/ui/AccordionItem.vue";
 import TreatmentCard from "@/components/ui/TreatmentCard.vue";
-import Breadcumb from "~/components/navigation/Breadcumb.vue";
+import type { AccordionItem } from "@nuxt/ui";
+import HeaderNavigation from "~/components/navigation/HeaderNavigation.vue";
 
-const activeAccordion = ref<string | null>(null);
+const itemsHistory: AccordionItem[] = [
+  {
+    label: "2017 - Primer Trasplante de Médula Ósea Autólogo en Bolivia",
+    icon: "i-lucide-heart-pulse",
+    content:
+      "Fuimos la primera clínica en Bolivia en realizar un trasplante de médula ósea autólogo.",
+  },
+  {
+    label:
+      "2023 - Primer Trasplante de Médula Ósea Alogénico en Adultos en Bolivia",
+    icon: "i-lucide-heart",
+    content:
+      "Realizamos con éxito el primer trasplante de médula ósea alogénico en pacientes adultos en Bolivia.",
+  },
+];
 
-const toggleAccordion = (id: string) => {
-  if (activeAccordion.value === id) {
-    activeAccordion.value = null;
-  } else {
-    activeAccordion.value = id;
-  }
-};
+const itemsCare = [
+  {
+    label: "Acceso a Tratamientos Innovadores",
+    icon: "i-lucide-flask-conical",
+    content: `
+Como centro médico de referencia, ofrecemos una amplia gama de tratamientos para enfermedades oncohematológicas. Participamos en estudios internacionales como COBALT, que demostró el uso de sangre de cordón umbilical como fuente de células madre para trasplantes. Además, fuimos pioneros en EE. UU. en aplicar terapias CAR-T para tratar DLBCL y LLA.
+    `,
+  },
+  {
+    label: "Enfoque Colaborativo",
+    icon: "i-lucide-users",
+    content: `
+Nuestro equipo está conformado por especialistas en oncología, oncohematología, secuenciación genómica y enfermedades infecciosas. Todos trabajan en conjunto para diseñar planes personalizados que optimizan los resultados para cada paciente.
+    `,
+  },
+  {
+    label: "Cuidado Integral",
+    icon: "i-lucide-hospital",
+    content: `
+Acompañamos al paciente desde el diagnóstico hasta la recuperación post-trasplante. Contamos con hospitalización tradicional y también atención en nuestro Day Hospital, que brinda tratamiento de alta complejidad en un entorno ambulatorio.
+    `,
+  },
+] satisfies AccordionItem[];
+
+const active = ref("0");
+
+// Note: This is for demonstration purposes only. Don't do this at home.
+onMounted(() => {
+  setInterval(() => {
+    active.value = String((Number(active.value) + 1) % itemsCare.length);
+  }, 8000);
+});
 </script>
