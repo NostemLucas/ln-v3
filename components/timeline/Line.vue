@@ -35,12 +35,11 @@
       <div class="mx-auto max-w-6xl relative">
         <!-- Contenedor con scroll horizontal personalizado -->
         <div
-          ref="scrollContainer"
           class="timeline-scroll-container overflow-x-auto pb-8 flex justify-start cursor-grab"
           v-dragscroll
         >
           <!-- Barra de timeline continua que ocupa todo el ancho -->
-          <div class="absolute top-[282px] h-9 left-0 right-0 w-max">
+          <div class="absolute top-[288px] h-6 left-0 right-0 w-max">
             <div class="h-full w-full flex">
               <template
                 v-for="(item, index) in timelineItems"
@@ -69,17 +68,20 @@
           >
             <div
               class="timeline-item flex-shrink-0 w-64 mx-4 h-[600px] flex justify-center items-center relative z-10"
+              :draggable="false"
             >
               <!-- Triángulos en la barra de timeline -->
               <div
                 v-if="index % 2 !== 0"
                 class="absolute bottom-[294px] left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[40px] border-r-[40px] border-b-[40px] border-transparent border-b-red-500 z-20"
                 :style="{ borderBottomColor: colors[index % colors.length] }"
+                draggable="false"
               />
               <div
                 v-else
                 class="absolute top-[294px] left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[40px] border-r-[40px] border-t-[40px] border-transparent border-t-red-500 z-20"
                 :style="{ borderTopColor: colors[index % colors.length] }"
+                :draggable="false"
               />
 
               <div
@@ -87,6 +89,7 @@
                 :style="{
                   flexDirection: index % 2 === 0 ? 'column' : 'column-reverse',
                 }"
+                :draggable="false"
               >
                 <!-- Año - Tamaño fijo -->
                 <div

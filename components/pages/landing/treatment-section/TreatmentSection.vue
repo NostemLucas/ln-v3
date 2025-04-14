@@ -16,8 +16,8 @@
           vanguardia y atención personalizada
         </p>
         <div class="mt-4">
-          <a
-            href="#"
+          <NuxtLink
+            to="/tratamientos"
             class="inline-flex items-center text-primary-500 font-medium transition-all duration-300 hover:text-blue-800 group"
           >
             <span>Ver Todos los Tratamientos</span>
@@ -34,7 +34,7 @@
                 clip-rule="evenodd"
               />
             </svg>
-          </a>
+          </NuxtLink>
         </div>
       </div>
 
@@ -91,7 +91,7 @@ const treatments = ref([
   {
     title: "Terapia Biológica",
     description:
-      "Tratamiento que utiliza sustancias naturales o modificadas genéticamente para interferir en los procesos que favorecen el crecimiento y propagación del cáncer.",
+      "Estimula el sistema inmunologico y bloquea los procesos que las células cancerosas n ecesitan para crecer.",
     image:
       "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     url: "/tratamientos/terapia-biologica",
