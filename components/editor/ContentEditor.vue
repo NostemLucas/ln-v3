@@ -4,37 +4,12 @@
     <div class="flex h-screen overflow-hidden">
       <!-- Panel lateral izquierdo con componentes -->
       <div class="w-72 border-r border-gray-200 h-full shadow-sm">
-        <div class="p-4 border-b border-gray-200 bg-gray-50">
-          <h2
-            class="text-lg font-semibold text-gray-800 flex items-center gap-2"
-          >
-            <Icon
-              name="lucide:layout-template"
-              class="h-5 w-5 text-emerald-600"
-            />
-            Constructor de Contenido
-          </h2>
-        </div>
-        <UTabs
-          :items="items"
-          variant="link"
-          class="gap-4 w-full"
-          :ui="{
-            trigger: 'flex-1',
-          }"
-        >
-          <template #components>
-            <ComponentsSidebar
-              :available-components="availableComponents"
-              @add-component="addComponent"
-              @export-content="exportContent"
-              @show-preview="showPreview = true"
-            />
-          </template>
-          <template #galery>
-            <SidebarImage @select-image="insertImageFromLibrary" />
-          </template>
-        </UTabs>
+        <ComponentsSidebar
+          :available-components="availableComponents"
+          @add-component="addComponent"
+          @export-content="exportContent"
+          @show-preview="showPreview = true"
+        />
       </div>
 
       <!-- Área principal de contenido -->
@@ -91,62 +66,6 @@
               </div>
             </div>
           </div>
-
-          <div
-            class="w-80 bg-white border-l border-gray-200 overflow-y-auto shadow-sm"
-          >
-            <UTabs
-              :items="configurations"
-              variant="link"
-              class="gap-4 w-full"
-              :ui="{
-                trigger: 'flex-1',
-              }"
-            >
-              <template #properties>
-                <BlockProperties
-                  v-if="selectedBlockId"
-                  :selected-block="selectedBlock"
-                  @close="selectedBlockId = null"
-                  @duplicate="duplicateBlock"
-                  @remove="removeBlock"
-                  @update-block-width="updateBlockWidth"
-                  @update-block-height="updateBlockHeight"
-                  @update-block-content="updateBlockContent"
-                  @toggle-text-format="toggleTextFormat"
-                  @update-text-color="updateTextColor"
-                  @update-text-alignment="updateTextAlignment"
-                  @update-divider-props="updateDividerProps"
-                  @update-image-props="updateImageProps"
-                  @update-video-props="updateVideoProps"
-                  @update-list-props="updateListProps"
-                  @update-list-item="updateListItem"
-                  @add-list-item="addListItem"
-                  @remove-list-item="removeListItem"
-                  @update-quote-props="updateQuoteProps"
-                  @update-code-props="updateCodeProps"
-                  @update-table-props="updateTableProps"
-                  @update-table-header="updateTableHeader"
-                  @update-table-cell="updateTableCell"
-                  @add-table-row="addTableRow"
-                  @add-table-column="addTableColumn"
-                />
-              </template>
-              <template #templates>
-                <TemplateSelector
-                  :templates="templates"
-                  :selected-template="selectedTemplate"
-                  @select-template="selectTemplate"
-                />
-
-                <!-- Campos fijos de la plantilla (si hay una plantilla seleccionada) -->
-                <TemplateFields
-                  v-if="selectedTemplate && selectedTemplate !== 'none'"
-                  v-model:fixed-fields="fixedFields"
-                />
-              </template>
-            </UTabs>
-          </div>
         </div>
       </div>
     </div>
@@ -168,12 +87,8 @@ import "gridstack/dist/gridstack.min.css";
 import { GridStack } from "gridstack";
 import ComponentsSidebar from "./ComponentSidebar.vue";
 import EditorHeader from "./EditorHeader.vue";
-import TemplateSelector from "./TemplateSelector.vue";
-import TemplateFields from "./panels/TemplateFields.vue";
 import TemplateHeader from "./panels/TemplateHeader.vue";
-import BlockProperties from "./BlockProperties.vue";
 import PreviewModal from "./PreviewModal.vue";
-import SidebarImage from "./SidebarImage.vue";
 import type {
   ComponentType,
   Template,
@@ -192,6 +107,10 @@ import type {
 } from "@/types/content-builder";
 import type { TabsItem } from "@nuxt/ui";
 import PreviewPanel from "./PreviewPanel.vue";
+import { Editor, EditorContent } from "@tiptap/vue-3";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import TextAlign from "@tiptap/extension-text-align";
 
 // State
 const templates = ref<Template[]>([
@@ -211,19 +130,6 @@ const templates = ref<Template[]>([
     thumbnail: "https://placehold.co/600x400/png",
   },
 ]);
-
-const items = [
-  {
-    label: "Componentes",
-    icon: "i-lucide-layout-grid",
-    slot: "components",
-  },
-  {
-    label: "Galeria",
-    icon: "i-lucide-image",
-    slot: "galery",
-  },
-] satisfies TabsItem[];
 
 const configurations = [
   {
@@ -297,11 +203,6 @@ const initGridStack = () => {
     gridStackContainer.value
   );
 
-  // Escuchar eventos de cambio
-  gridStack.value.on("change", () => {
-    updateBlocksFromGrid();
-  });
-
   // Escuchar eventos de clic para seleccionar bloques
   gridStackContainer.value.addEventListener("click", (e) => {
     const gridItem = (e.target as HTMLElement).closest(".grid-stack-item");
@@ -311,34 +212,6 @@ const initGridStack = () => {
         selectBlock(blockId);
       }
     }
-  });
-};
-
-// Actualizar los bloques desde el grid
-const updateBlocksFromGrid = () => {
-  if (!gridStack.value) return;
-
-  const gridItems = gridStack.value.getGridItems();
-
-  gridItems.forEach((item: HTMLElement) => {
-    const blockId = item.getAttribute("gs-id");
-    if (!blockId) return;
-
-    const blockIndex = blocks.value.findIndex((b) => b.id === blockId);
-    if (blockIndex === -1) return;
-
-    const x = parseInt(item.getAttribute("gs-x") || "0");
-    const y = parseInt(item.getAttribute("gs-y") || "0");
-    const width = parseInt(item.getAttribute("gs-w") || "12");
-    const height = parseInt(item.getAttribute("gs-h") || "1");
-
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      x,
-      y,
-      width,
-      height,
-    };
   });
 };
 
@@ -393,6 +266,86 @@ const renderBlock = (block: ContentBlock) => {
     newItem.innerHTML = `<div class="grid-stack-item-content border rounded-md bg-white shadow-sm hover:shadow-md transition-shadow relative group">${content}</div>`;
 
     gridStack.value.addWidget(newItem);
+
+    setTimeout(() => {
+      const editorElement = document.getElementById(`editor-${block.id}`);
+      const toolbarElement = document.getElementById(`toolbar-${block.id}`);
+
+      if (editorElement && toolbarElement) {
+        const editor = new Editor({
+          editorProps: {
+            attributes: {
+              class: "prose prose-base  focus:outline-none",
+            },
+          },
+          element: editorElement,
+          extensions: [
+            TextAlign.configure({
+              types: ["heading", "paragraph"],
+            }),
+            Underline.configure({
+              HTMLAttributes: {
+                class: "underline-class",
+              },
+            }),
+            StarterKit.configure({
+              bulletList: {
+                keepMarks: true,
+                keepAttributes: false,
+              },
+              orderedList: {
+                keepMarks: true,
+                keepAttributes: false,
+              },
+            }),
+          ],
+          content: `<p>This is editable rich text in widget #${block.id}. You can <strong>bold</strong>, <em>italicize</em>, or create lists.</p>`,
+          editable: true,
+        });
+
+        toolbarElement.querySelectorAll("button").forEach((button) => {
+          const action = button.getAttribute("data-action");
+          button.addEventListener("click", () => {
+            if (action === "bold") editor.chain().toggleBold().run();
+            if (action === "italic") editor.chain().toggleItalic().run();
+            if (action === "underline") editor.chain().toggleUnderline().run();
+            if (action === "strike") editor.chain().toggleStrike().run();
+
+            // Headings and paragraph
+            if (action === "h1")
+              editor.chain().toggleHeading({ level: 1 }).run();
+            if (action === "h2")
+              editor.chain().toggleHeading({ level: 2 }).run();
+            if (action === "h3")
+              editor.chain().toggleHeading({ level: 3 }).run();
+            if (action === "paragraph") editor.chain().setParagraph().run();
+
+            // Lists and quotes
+            if (action === "bulletList")
+              editor.chain().toggleBulletList().run();
+            if (action === "orderedList")
+              editor.chain().toggleOrderedList().run();
+            if (action === "blockquote")
+              editor.chain().toggleBlockquote().run();
+
+            // Alignment
+            if (action === "alignLeft")
+              editor.chain().focus().setTextAlign("left").run();
+            if (action === "alignCenter")
+              editor.chain().focus().setTextAlign("center").run();
+            if (action === "alignRight")
+              editor.chain().focus().setTextAlign("right").run();
+
+            // History
+            if (action === "undo") editor.chain().undo().run();
+            if (action === "redo") editor.chain().redo().run();
+          });
+        });
+
+        // Stonre the editor instance to prevent garbage collectio
+        // editors.push(editor);
+      }
+    }, 0);
   }
 
   // Agregar event listeners a los botones y campos
@@ -447,9 +400,6 @@ const selectTemplate = (templateId: string) => {
 
 const selectBlock = (blockId: string) => {
   selectedBlockId.value = blockId;
-
-  // Re-renderizar los bloques para mostrar/ocultar controles
-  renderBlocks();
 };
 
 const addComponent = (componentType: ComponentType) => {
