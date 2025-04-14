@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+import personnel from "~/mocks/doctors";
 const props = defineProps({
   autoplay: {
     type: Boolean,
@@ -23,7 +24,9 @@ const hoveredPerson = ref(null);
 const autoplayPaused = ref(false);
 const touchStartX = ref(0);
 const touchEndX = ref(0);
+
 let autoplayInterval = null;
+
 const windowWidth = ref(
   typeof window !== "undefined" ? window.innerWidth : 1024
 );
@@ -33,49 +36,6 @@ const visibleSlides = computed(() => {
   if (windowWidth.value < 768) return 2;
   return 3;
 });
-
-const personnel = ref([
-  {
-    name: "Dr. Ariel Amaru MD PHD",
-    specialty: "ONCOHEMATOLOGO",
-    department: "DEPARTAMENTO DE ONCOLOGIA",
-    description:
-      "Director Médico de Oncoclinic, responsable del área de Trasplante de Células Madre para enfermedades oncohematológicas, como las leucemias, linfomas, mielomas o mielofibrosis.",
-    image: "/doctors/amaru.png",
-  },
-  {
-    name: "Dra. Jimena Yudid Bueno Limachi",
-    specialty: "CIRUGÍA ONCOLÓGICA",
-    department: "DEPARTAMENTO DE ONCOLOGIA",
-    description:
-      "Médico Cirujano Oncóloga, formada en la Facultad de Medicina de la Universidad Mayor de San Andrés, con Especialidad en Cirugía General en el Hospital Obrero No2 y Sub-Especialidad en Cirugía Oncológica.",
-    image: "/doctors/bueno.png",
-  },
-  {
-    name: "Dra. Erika Lourdes Patiño Constancio",
-    specialty: "CIRUGÍA ONCOLÓGICA",
-    department: "Cirugía Oncologica",
-    description:
-      "Médico Cirujano Oncóloga, con formación en la Facultad de Medicina en la Universidad Mayor de San Andrés, con Especialidad en Cirugía General",
-    image: "/doctors/patiño.png",
-  },
-  {
-    name: "Dr. Marcio Denis López Ramirez",
-    specialty: "ONCOLOGÍA CLINICA",
-    department: "DEPARTAMENTO DE ONCOLOGÍA",
-    description:
-      "Oncóloga especializada en cáncer de mama. Pionera en tratamientos personalizados basados en perfiles genéticos de tumores.",
-    image: "/doctors/lopez.png",
-  },
-  {
-    name: "Dr. Daniel Eduardo Mercado Rodrigo",
-    specialty: "ORTOPEDIA ONCOLOGICA",
-    department: "DEPARTAMENTO DE DERMATOLOGÍA",
-    description:
-      "Médico del área de Oncología Quirúrgica, con enfoque en el área de Ortopedia y Traumatología Oncológica.",
-    image: "/doctors/mercado.png",
-  },
-]);
 
 const nextSlide = () => {
   if (currentIndex.value < personnel.value.length - visibleSlides.value) {

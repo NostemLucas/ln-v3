@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     "@nuxt/scripts",
     "@nuxt/test-utils",
     "@nuxt/ui",
+    "@pinia/nuxt",
   ],
   icon: {
     collections: ["lucide", "svg-spinners", "mdi"],

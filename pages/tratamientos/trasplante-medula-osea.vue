@@ -1,20 +1,24 @@
 <template>
-  <div class="bg-gradient-to-b from-slate-50 to-white">
-    <div class="container mx-auto px-4 py-16 md:px-6 lg:py-20">
+  <div class="">
+    <div>
+      
       <!-- Breadcrumb -->
-      <Breadcumb />
-      <!-- Treatment Header -->
-      <div class="mb-12">
-        <span
-          class="inline-block rounded-full bg-teal-100 px-3 py-1 my-6 text-sm font-medium text-teal-800"
-        >
-          Tratamiento Especializado
-        </span>
-        <h1
-          class="mb-4 text-3xl font-bold text-slate-800 md:text-4xl lg:text-5xl"
-        >
-          Trasplante De Médula Ósea
-        </h1>
+      <div class="bg-primary-500 md:container mx-auto">
+        <Breadcumb />
+
+        <!-- Treatment Header -->
+        <div class="mb-12">
+          <span
+            class="inline-block rounded-full bg-teal-100 px-3 py-1 my-6 text-sm font-medium text-teal-800"
+          >
+            Tratamiento Especializado
+          </span>
+          <h1
+            class="mb-4 text-3xl font-bold text-slate-800 md:text-4xl lg:text-5xl"
+          >
+            Trasplante De Médula Ósea
+          </h1>
+        </div>
       </div>
 
       <!-- Main Content -->

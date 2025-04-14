@@ -31,7 +31,7 @@ export function renderBlockContent(
   // Renderizar según el tipo de bloque
   switch (block.type) {
     case "title":
-      content += `<div class="font-bold text-2xl md:text-3xl w-full ${textStyles}" style="${
+      content += `<div class="font-bold text-2xl md:text-3xl w-full  ${textStyles}"  contenteditable style="${
         block.textProps?.color ? `color: ${block.textProps.color};` : ""
       }">${block.content || "Título"}</div>`;
       break;
@@ -41,7 +41,7 @@ export function renderBlockContent(
       }">${block.content || "Subtítulo"}</div>`;
       break;
     case "text":
-      content += `<div class="text-base w-full ${textStyles}" style="${
+      content += `<div class="text-base w-full ${textStyles}" contenteditable style="${
         block.textProps?.color ? `color: ${block.textProps.color};` : ""
       }">${block.content || "Texto"}</div>`;
       break;

@@ -106,7 +106,7 @@ const renderPreviewBlock = (block: ContentBlock) => {
   newItem.className = "grid-stack-item";
   newItem.innerHTML = `<div class="grid-stack-item-content bg-white relative group">${content}</div>`;
 
-  previewGridStack.value.addWidget(newItem);
+  previewGridStack.value.makeWidget(newItem);
 };
 
 // Renderizar todos los bloques en la vista previa
