@@ -3,118 +3,106 @@ export type ComponentType =
   | "subtitle"
   | "text"
   | "divider"
-  | "image"
   | "video"
+  | "image"
   | "list"
   | "quote"
   | "code"
   | "table";
 
-export type ObjectFitType = "cover" | "contain" | "fill" | "none";
-export type ListType = "bullet" | "numbered" | "check";
-export type QuoteStyle = "default" | "blockquote" | "pullquote";
-export type DividerStyle = "solid" | "dashed" | "dotted" | "double";
-export type TextAlignment = "left" | "center" | "right" | "justify";
-
-export interface Template {
+export type Template = {
   id: string;
   name: string;
   thumbnail: string;
-}
+};
 
-export interface FixedFields {
+export type FixedFields = {
   title: string;
   author: string;
   bannerImage: string;
   date: string;
   category: string;
   summary: string;
-}
+};
 
-export interface ImageProperties {
+export type TextAlignment = "left" | "center" | "right";
+
+export type ImageProperties = {
   alt: string;
-  objectFit: ObjectFitType;
+  objectFit: "cover" | "contain" | "fill";
   height: number;
-  caption?: string;
-}
+};
 
-export interface ListProperties {
-  type: ListType;
-  items: string[];
-}
-
-export interface QuoteProperties {
-  author: string;
-  source: string;
-  style: QuoteStyle;
-}
-
-export interface CodeProperties {
-  language: string;
-}
-
-export interface TableProperties {
-  rows: number;
-  columns: number;
-  headers: string[];
-  data: string[][];
-}
-
-export interface TextProperties {
-  bold?: boolean;
-  italic?: boolean;
-  underline?: boolean;
-  color?: string;
-  alignment?: TextAlignment;
-}
-
-export interface DividerProperties {
-  style: DividerStyle;
-  thickness: number;
-  color: string;
-  width: number;
-  alignment: TextAlignment;
-}
-
-export interface VideoProperties {
-  provider: "youtube" | "vimeo" | "dailymotion";
+export type VideoProperties = {
+  provider: "youtube" | "vimeo";
   videoId: string;
   title: string;
   aspectRatio: "16:9" | "4:3" | "1:1";
   autoplay: boolean;
   controls: boolean;
-}
-export interface ContentBlock {
+};
+
+export type ListProperties = {
+  type: "bullet" | "numbered";
+  items: string[];
+};
+
+export type QuoteProperties = {
+  author: string;
+  source: string;
+  style: "default" | "alternative";
+};
+
+export type CodeProperties = {
+  language: string;
+};
+
+export type TableProperties = {
+  rows: number;
+  columns: number;
+  headers: string[];
+  data: string[][];
+};
+
+export type DividerProperties = {
+  style: "solid" | "dashed" | "dotted";
+  thickness: number;
+  color: string;
+  width: number;
+  alignment: "left" | "center" | "right";
+};
+
+export type ContentBlock = {
   id: string;
   type: ComponentType;
-  content?: string;
+  content: string;
   imageProps?: ImageProperties;
   listProps?: ListProperties;
   quoteProps?: QuoteProperties;
-  videoProps?: VideoProperties;
   codeProps?: CodeProperties;
   tableProps?: TableProperties;
-  textProps?: TextProperties;
+  textProps?: {
+    bold: boolean;
+    italic: boolean;
+    underline: boolean;
+    color?: string;
+    alignment?: TextAlignment;
+  };
   dividerProps?: DividerProperties;
-  // GridStack properties
+  videoProps?: VideoProperties;
   x: number;
   y: number;
   width: number;
   height: number;
-}
+};
 
-export interface ComponentDefinition {
-  type: string;
+export type ComponentDefinition = {
+  type: ComponentType;
   label: string;
-}
+};
 
-export interface TitleProperties {
-  alignment?: TextAlignment;
-  fontSize?: number;
-}
-
-export interface ImageItem {
+export type ImageItem = {
+  id: string;
   url: string;
   alt?: string;
-  date: Date;
-}
+};

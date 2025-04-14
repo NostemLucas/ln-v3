@@ -620,6 +620,26 @@
                           <Icon name="lucide:align-justify" class="h-4 w-4" />
                         </button>
                         <span class="w-px h-6 bg-gray-300 mx-1"></span>
+                        <button
+                          @click="
+                            editor
+                              ?.chain()
+                              .focus()
+                              .toggleLink({ href: '' })
+                              .run()
+                          "
+                          :class="{ 'bg-gray-200': editor?.isActive('link') }"
+                          class="p-1 rounded hover:bg-gray-100"
+                        >
+                          <Icon name="lucide:link" class="h-4 w-4" />
+                        </button>
+                        <button
+                          @click="editor?.chain().focus().unsetLink().run()"
+                          :disabled="!editor?.isActive('link')"
+                          class="p-1 rounded hover:bg-gray-100 disabled:opacity-50"
+                        >
+                          <Icon name="lucide:link-2-off" class="h-4 w-4" />
+                        </button>
                       </div>
                       <div class="p-2 min-h-[150px]">
                         <editor-content
@@ -1563,7 +1583,7 @@ import { GridStack } from "gridstack";
 import { Editor, EditorContent, useEditor } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
-
+import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
 
 // Define tipos para evitar errores de TypeScript
@@ -1721,7 +1741,9 @@ const editor = useEditor({
   extensions: [
     StarterKit,
     Underline,
-
+    Link.configure({
+      openOnClick: false,
+    }),
     TextAlign.configure({
       types: ["heading", "paragraph"],
     }),
@@ -1892,6 +1914,7 @@ const initPreviewGridStack = () => {
   );
 
   // Renderizar los bloques en la vista previa
+  renderPreviewBlocks();
 };
 
 // Actualizar los bloques desde el grid
@@ -1922,7 +1945,7 @@ const updateBlocksFromGrid = () => {
   });
 };
 
-// Renderizar un bloque en el grid
+// Modificar la función renderBlock para los bloques de tipo texto
 const renderBlock = (block: ContentBlock) => {
   if (!gridStack.value) return;
 
@@ -1962,11 +1985,53 @@ const renderBlock = (block: ContentBlock) => {
       block.textProps?.color ? `color: ${block.textProps.color};` : ""
     }">${block.content || "Ingrese subtítulo aquí"}</div>`;
   } else if (block.type === "text") {
-    // Para el tipo texto, usamos el contenido HTML generado por TipTap
-    content += `<div class="block-content text-base outline-none w-full min-h-[100px] prose prose-sm max-w-none" data-tiptap-block>${
-      block.content || "Ingrese texto aquí"
-    }</div>`;
+    // Para el tipo texto, creamos un contenedor para el editor TipTap
+    content += `<div class="block-content text-base w-full min-h-[100px]" data-block-id="${
+      block.id
+    }">
+      <div class="tiptap-toolbar bg-gray-50 border-b border-gray-200 p-1 flex flex-wrap gap-1 rounded-t-md">
+        <button class="tiptap-bold p-1 rounded hover:bg-gray-100" title="Negrita">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bold"><path d="M14 12a4 4 0 0 0 0-8H6v8"/><path d="M15 20a4 4 0 0 0 0-8H6v8Z"/></svg>
+        </button>
+        <button class="tiptap-italic p-1 rounded hover:bg-gray-100" title="Cursiva">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-italic"><line x1="19" x2="10" y1="4" y2="4"/><line x1="14" x2="5" y1="20" y2="20"/><line x1="15" x2="9" y1="4" y2="20"/></svg>
+        </button>
+        <button class="tiptap-underline p-1 rounded hover:bg-gray-100" title="Subrayado">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-underline"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="4" x2="20" y1="20" y2="20"/></svg>
+        </button>
+        <span class="w-px h-6 bg-gray-300 mx-1"></span>
+        <button class="tiptap-h3 p-1 rounded hover:bg-gray-100" title="Encabezado">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heading-3"><path d="M4 12h8"/><path d="M4 18V6"/><path d="M12 18V6"/><path d="M17.5 10.5c1.7-1 3.5 0 3.5 1.5a2 2 0 0 1-2 2"/><path d="M17 17.5c2 1.5 4 .3 4-1.5a2 2 0 0 0-2-2"/></svg>
+        </button>
+        <button class="tiptap-bullet-list p-1 rounded hover:bg-gray-100" title="Lista con viñetas">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg>
+        </button>
+        <button class="tiptap-ordered-list p-1 rounded hover:bg-gray-100" title="Lista numerada">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-ordered"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+        </button>
+        <span class="w-px h-6 bg-gray-300 mx-1"></span>
+        <button class="tiptap-align-left p-1 rounded hover:bg-gray-100" title="Alinear a la izquierda">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-left"><line x1="21" x2="3" y1="6" y2="6"/><line x1="15" x2="3" y1="12" y2="12"/><line x1="17" x2="3" y1="18" y2="18"/></svg>
+        </button>
+        <button class="tiptap-align-center p-1 rounded hover:bg-gray-100" title="Centrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-center"><line x1="21" x2="3" y1="6" y2="6"/><line x1="17" x2="7" y1="12" y2="12"/><line x1="19" x2="5" y1="18" y2="18"/></svg>
+        </button>
+        <button class="tiptap-align-right p-1 rounded hover:bg-gray-100" title="Alinear a la derecha">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-right"><line x1="21" x2="3" y1="6" y2="6"/><line x1="21" x2="9" y1="12" y2="12"/><line x1="21" x2="7" y1="18" y2="18"/></svg>
+        </button>
+        <span class="w-px h-6 bg-gray-300 mx-1"></span>
+        <button class="tiptap-link p-1 rounded hover:bg-gray-100" title="Insertar enlace">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </button>
+      </div>
+      <div class="tiptap-editor-container p-2 border border-t-0 rounded-b-md min-h-[150px]">
+        <div class="tiptap-editor prose prose-sm max-w-none">${
+          block.content || "Ingrese texto aquí"
+        }</div>
+      </div>
+    </div>`;
   } else if (block.type === "divider") {
+    // El resto del código para otros tipos de bloques permanece igual...
     const dividerProps = block.dividerProps || {
       style: "solid" as DividerStyle,
       thickness: 1,
@@ -2232,1107 +2297,286 @@ const renderBlock = (block: ContentBlock) => {
 
   // Agregar event listeners a los botones y campos
   setupBlockEventListeners(block.id);
-};
 
-// Renderizar un bloque en la vista previa
-const renderPreviewBlock = (block: ContentBlock) => {
-  if (!previewGridStack.value) return;
-
-  // Crear el contenido HTML del bloque para la vista previa (sin controles de edición)
-  let content = '<div class="p-3 h-full">';
-
-  // Aplicar propiedades de texto
-  const textStyles = block.textProps
-    ? `${block.textProps.bold ? "font-bold" : ""} 
-     ${block.textProps.italic ? "italic" : ""} 
-     ${block.textProps.underline ? "underline" : ""} 
-     ${block.textProps.color ? `color: ${block.textProps.color};` : ""} 
-     ${block.textProps.alignment ? `text-${block.textProps.alignment}` : ""}`
-    : "";
-
-  // Contenido según el tipo de bloque
-  if (block.type === "title") {
-    content += `<div class="font-bold text-2xl md:text-3xl w-full ${textStyles}" style="${
-      block.textProps?.color ? `color: ${block.textProps.color};` : ""
-    }">${block.content || "Título"}</div>`;
-  } else if (block.type === "subtitle") {
-    content += `<div class="font-medium text-xl md:text-2xl w-full ${textStyles}" style="${
-      block.textProps?.color ? `color: ${block.textProps.color};` : ""
-    }">${block.content || "Subtítulo"}</div>`;
-  } else if (block.type === "text") {
-    // Para el tipo texto, usamos el contenido HTML generado por TipTap
-    content += `<div class="prose prose-sm max-w-none">${
-      block.content || "Texto"
-    }</div>`;
-  } else if (block.type === "divider") {
-    const dividerProps = block.dividerProps || {
-      style: "solid" as DividerStyle,
-      thickness: 1,
-      color: "#e5e5e5",
-      width: 100,
-      alignment: "center" as TextAlignment,
-    };
-
-    const dividerAlignment =
-      dividerProps.alignment === "left"
-        ? "mr-auto"
-        : dividerProps.alignment === "right"
-        ? "ml-auto"
-        : "mx-auto";
-
-    content += `
-      <div class="flex ${
-        dividerAlignment === "mx-auto"
-          ? "justify-center"
-          : dividerAlignment === "ml-auto"
-          ? "justify-end"
-          : "justify-start"
-      }">
-        <hr class="${dividerAlignment}" style="
-          border: 0;
-          border-top-style: ${dividerProps.style};
-          border-top-width: ${dividerProps.thickness}px;
-          border-top-color: ${dividerProps.color};
-          width: ${dividerProps.width}%;
-        " />
-      </div>
-    `;
-  } else if (block.type === "image") {
-    content += `
-    <div class="w-full h-full">
-      <img
-        src="${block.content || "/placeholder.svg?height=300&width=600"}"
-        alt="${block.imageProps?.alt || "Imagen descriptiva"}"
-        class="w-full h-full rounded-md"
-        style="object-fit: ${block.imageProps?.objectFit || "cover"}"
-      />
-      ${
-        block.imageProps?.caption
-          ? `<p class="text-sm text-gray-500 mt-2 text-center">${block.imageProps.caption}</p>`
-          : ""
-      }
-    </div>
-  `;
-  } else if (block.type === "columns") {
-    content += `
-    <div class="w-full grid h-full" style="grid-template-columns: repeat(${
-      block.columns || 2
-    }, 1fr); gap: 1rem;">
-  `;
-
-    const columnCount = block.columns || 2;
-    for (let i = 0; i < columnCount; i++) {
-      content += `
-      <div class="p-2">
-        ${
-          block.columnContent && block.columnContent[i]
-            ? block.columnContent[i]
-            : `Contenido columna ${i + 1}`
-        }
-      </div>
-    `;
-    }
-
-    content += "</div>";
-  } else if (block.type === "list") {
-    const listType = block.listProps?.type || "bullet";
-
-    if (listType === "bullet") {
-      content += '<ul class="list-disc pl-5 space-y-1">';
-      (block.listProps?.items || ["Elemento 1", "Elemento 2"]).forEach(
-        (item) => {
-          content += `<li>${item}</li>`;
-        }
-      );
-      content += "</ul>";
-    } else if (listType === "numbered") {
-      content += '<ol class="list-decimal pl-5 space-y-1">';
-      (block.listProps?.items || ["Elemento 1", "Elemento 2"]).forEach(
-        (item) => {
-          content += `<li>${item}</li>`;
-        }
-      );
-      content += "</ol>";
-    } else if (listType === "check") {
-      content += '<ul class="space-y-1">';
-      (block.listProps?.items || ["Elemento 1", "Elemento 2"]).forEach(
-        (item) => {
-          content += `
-          <li class="flex items-start">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-500 mr-2 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-            <span>${item}</span>
-          </li>
-        `;
-        }
-      );
-      content += "</ul>";
-    }
-  } else if (block.type === "quote") {
-    const quoteStyle = block.quoteProps?.style || "default";
-
-    if (quoteStyle === "default") {
-      content += `
-        <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-700">
-          <p>${block.content || "Ingrese texto de la cita aquí"}</p>
-          ${
-            block.quoteProps?.author
-              ? `<footer class="mt-2 text-sm">— ${block.quoteProps.author}${
-                  block.quoteProps.source
-                    ? `, <cite>${block.quoteProps.source}</cite>`
-                    : ""
-                }</footer>`
-              : ""
-          }
-        </blockquote>
-      `;
-    } else if (quoteStyle === "blockquote") {
-      content += `
-        <blockquote class="bg-gray-50 p-4 rounded-md border-l-4 border-emerald-500">
-          <p class="text-lg">${
-            block.content || "Ingrese texto de la cita aquí"
-          }</p>
-          ${
-            block.quoteProps?.author
-              ? `<footer class="mt-2 text-sm font-medium">— ${
-                  block.quoteProps.author
-                }${
-                  block.quoteProps.source
-                    ? `, <cite>${block.quoteProps.source}</cite>`
-                    : ""
-                }</footer>`
-              : ""
-          }
-        </blockquote>
-      `;
-    } else if (quoteStyle === "pullquote") {
-      content += `
-        <div class="relative">
-          <div class="text-6xl text-emerald-200 absolute -top-4 left-0">"</div>
-          <blockquote class="text-xl font-medium text-center px-8 py-4">
-            <p>${block.content || "Ingrese texto de la cita aquí"}</p>
-            ${
-              block.quoteProps?.author
-                ? `<footer class="mt-4 text-sm font-normal text-gray-500">— ${
-                    block.quoteProps.author
-                  }${
-                    block.quoteProps.source
-                      ? `, <cite>${block.quoteProps.source}</cite>`
-                      : ""
-                  }</footer>`
-                : ""
-            }
-          </blockquote>
-          <div class="text-6xl text-emerald-200 absolute -bottom-10 right-0">"</div>
-        </div>
-      `;
-    }
-  } else if (block.type === "code") {
-    const language = block.codeProps?.language || "javascript";
-    content += `
-      <div class="bg-gray-50 rounded-md overflow-hidden">
-        <div class="bg-gray-200 px-4 py-1 text-xs font-mono flex justify-between items-center">
-          <span>${language}</span>
-        </div>
-        <pre class="p-4 overflow-x-auto font-mono text-sm whitespace-pre-wrap">${
-          block.content || "// Ingrese código aquí"
-        }</pre>
-      </div>
-    `;
-  } else if (block.type === "table") {
-    const rows = block.tableProps?.rows || 2;
-    const columns = block.tableProps?.columns || 2;
-    const headers =
-      block.tableProps?.headers || Array(columns).fill("Encabezado");
-    const data =
-      block.tableProps?.data || Array(rows).fill(Array(columns).fill("Celda"));
-
-    content += `
-      <div class="overflow-x-auto">
-        <table class="min-w-full border-collapse border border-gray-300">
-          <thead>
-            <tr class="bg-gray-100">
-              ${headers
-                .map(
-                  (header) =>
-                    `<th class="border border-gray-300 px-4 py-2 text-left">${header}</th>`
-                )
-                .join("")}
-            </tr>
-          </thead>
-          <tbody>
-            ${data
-              .map(
-                (row) =>
-                  `<tr>
-                ${row
-                  .map(
-                    (cell: any) =>
-                      `<td class="border border-gray-300 px-4 py-2">${cell}</td>`
-                  )
-                  .join("")}
-              </tr>`
-              )
-              .join("")}
-          </tbody>
-        </table>
-      </div>
-    `;
+  // Inicializar TipTap para bloques de texto
+  if (block.type === "text") {
+    initTipTapForBlock(block.id);
   }
-
-  content += "</div>";
-
-  // Crear el elemento en la vista previa
-  const newItem = document.createElement("div");
-  newItem.setAttribute("gs-id", block.id);
-  newItem.setAttribute("gs-x", block.x.toString());
-  newItem.setAttribute("gs-y", block.y.toString());
-  newItem.setAttribute("gs-w", block.width.toString());
-  newItem.setAttribute("gs-h", block.height.toString());
-  newItem.className = "grid-stack-item";
-  newItem.innerHTML = `<div class="grid-stack-item-content border rounded-md bg-white shadow-sm">${content}</div>`;
-
-  previewGridStack.value.addWidget(newItem);
 };
 
-// Configurar event listeners para los elementos dentro de un bloque
-const setupBlockEventListeners = (blockId: string) => {
+// Mapa para almacenar las instancias de TipTap por ID de bloque
+const blockEditors = ref<Map<string, any>>(new Map());
+
+// Función para inicializar TipTap en un bloque específico
+const initTipTapForBlock = (blockId: string) => {
   if (!gridStackContainer.value) return;
 
-  const gridItem = gridStackContainer.value.querySelector(
+  // Buscar el contenedor del editor
+  const blockElement = gridStackContainer.value.querySelector(
+    `.grid-stack-item[gs-id="${blockId}"] .tiptap-editor`
+  );
+
+  if (!blockElement) return;
+
+  // Si ya existe un editor para este bloque, destruirlo primero
+  if (blockEditors.value.has(blockId)) {
+    blockEditors.value.get(blockId).destroy();
+  }
+
+  // Crear una nueva instancia de TipTap
+  const blockEditor = new Editor({
+    element: blockElement as HTMLElement,
+    extensions: [
+      StarterKit,
+      Underline,
+      Link.configure({
+        openOnClick: false,
+      }),
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
+    ],
+    content: blocks.value.find((b) => b.id === blockId)?.content || "",
+    onUpdate: ({ editor }) => {
+      // Actualizar el contenido del bloque cuando cambia el editor
+      const blockIndex = blocks.value.findIndex((b) => b.id === blockId);
+      if (blockIndex !== -1) {
+        blocks.value[blockIndex].content = editor.getHTML();
+      }
+    },
+  });
+
+  // Guardar la instancia del editor en el mapa
+  blockEditors.value.set(blockId, blockEditor);
+
+  // Configurar los botones de la barra de herramientas
+  setupTipTapToolbar(blockId);
+};
+
+// Configurar los botones de la barra de herramientas de TipTap
+const setupTipTapToolbar = (blockId: string) => {
+  if (!gridStackContainer.value) return;
+
+  const editor = blockEditors.value.get(blockId);
+  if (!editor) return;
+
+  const blockElement = gridStackContainer.value.querySelector(
     `.grid-stack-item[gs-id="${blockId}"]`
   );
-  if (!gridItem) return;
+  if (!blockElement) return;
 
-  // Botón de duplicar
-  const duplicateBtn = gridItem.querySelector(".duplicate-btn");
-  if (duplicateBtn) {
-    duplicateBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      duplicateBlock(blockId);
+  // Botón de negrita
+  const boldButton = blockElement.querySelector(".tiptap-bold");
+  if (boldButton) {
+    boldButton.addEventListener("click", () => {
+      editor.chain().focus().toggleBold().run();
+      updateToolbarButtonStates(blockId);
     });
   }
 
-  // Botón de eliminar
-  const removeBtn = gridItem.querySelector(".remove-btn");
-  if (removeBtn) {
-    removeBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      removeBlock(blockId);
+  // Botón de cursiva
+  const italicButton = blockElement.querySelector(".tiptap-italic");
+  if (italicButton) {
+    italicButton.addEventListener("click", () => {
+      editor.chain().focus().toggleItalic().run();
+      updateToolbarButtonStates(blockId);
     });
   }
 
-  // Contenido editable
-  const contentEl = gridItem.querySelector(".block-content");
-  if (contentEl && !contentEl.hasAttribute("data-tiptap-block")) {
-    contentEl.addEventListener("blur", (e) => {
-      const content = (e.target as HTMLElement).textContent || "";
-      updateBlockContent2(blockId, content);
+  // Botón de subrayado
+  const underlineButton = blockElement.querySelector(".tiptap-underline");
+  if (underlineButton) {
+    underlineButton.addEventListener("click", () => {
+      editor.chain().focus().toggleUnderline().run();
+      updateToolbarButtonStates(blockId);
     });
   }
 
-  // Campos específicos para columnas
-  if (blocks.value.find((b) => b.id === blockId)?.type === "columns") {
-    const columnContents = gridItem.querySelectorAll(".column-content");
-    columnContents.forEach((el) => {
-      el.addEventListener("blur", (e) => {
-        const columnIndex = parseInt(
-          (e.target as HTMLElement).getAttribute("data-column-index") || "0"
-        );
-        updateColumnContent(
-          blockId,
-          columnIndex,
-          (e.target as HTMLElement).textContent || ""
-        );
-      });
+  // Botón de encabezado
+  const h3Button = blockElement.querySelector(".tiptap-h3");
+  if (h3Button) {
+    h3Button.addEventListener("click", () => {
+      editor.chain().focus().toggleHeading({ level: 3 }).run();
+      updateToolbarButtonStates(blockId);
     });
   }
-};
 
-// Renderizar todos los bloques
-const renderBlocks = () => {
-  if (!gridStack.value) return;
-
-  // Limpiar el grid
-  gridStack.value.removeAll();
-
-  // Renderizar cada bloque
-  blocks.value.forEach((block) => {
-    renderBlock(block);
-  });
-};
-
-// Actions
-const selectTemplate = (templateId: string) => {
-  selectedTemplate.value = templateId;
-};
-
-const selectBlock = (blockId: string) => {
-  selectedBlockId.value = blockId;
-  showColorPicker.value = false;
-
-  // Si el bloque seleccionado es de tipo texto, actualizar el editor TipTap
-  const selectedBlock = blocks.value.find((block) => block.id === blockId);
-  if (selectedBlock && selectedBlock.type === "text" && editor.value) {
-    editor.value.commands.setContent(selectedBlock.content || "");
+  // Botón de lista con viñetas
+  const bulletListButton = blockElement.querySelector(".tiptap-bullet-list");
+  if (bulletListButton) {
+    bulletListButton.addEventListener("click", () => {
+      editor.chain().focus().toggleBulletList().run();
+      updateToolbarButtonStates(blockId);
+    });
   }
 
-  // Re-renderizar los bloques para mostrar/ocultar controles
-  renderBlocks();
-};
+  // Botón de lista numerada
+  const orderedListButton = blockElement.querySelector(".tiptap-ordered-list");
+  if (orderedListButton) {
+    orderedListButton.addEventListener("click", () => {
+      editor.chain().focus().toggleOrderedList().run();
+      updateToolbarButtonStates(blockId);
+    });
+  }
 
-const addComponent = (componentType: ComponentType) => {
-  // Generate a unique ID for the block
-  const blockId = `block-${Date.now()}-${Math.random()
-    .toString(36)
-    .substr(2, 9)}`;
+  // Botones de alineación
+  const alignLeftButton = blockElement.querySelector(".tiptap-align-left");
+  if (alignLeftButton) {
+    alignLeftButton.addEventListener("click", () => {
+      editor.chain().focus().setTextAlign("left").run();
+      updateToolbarButtonStates(blockId);
+    });
+  }
 
-  // Default image properties
-  const imageProps =
-    componentType === "image"
-      ? {
-          alt: "Imagen descriptiva",
-          objectFit: "cover" as const,
-          height: 100,
-        }
-      : undefined;
+  const alignCenterButton = blockElement.querySelector(".tiptap-align-center");
+  if (alignCenterButton) {
+    alignCenterButton.addEventListener("click", () => {
+      editor.chain().focus().setTextAlign("center").run();
+      updateToolbarButtonStates(blockId);
+    });
+  }
 
-  // Default list properties
-  const listProps =
-    componentType === "list"
-      ? {
-          type: "bullet" as const,
-          items: ["Elemento 1", "Elemento 2", "Elemento 3"],
-        }
-      : undefined;
+  const alignRightButton = blockElement.querySelector(".tiptap-align-right");
+  if (alignRightButton) {
+    alignRightButton.addEventListener("click", () => {
+      editor.chain().focus().setTextAlign("right").run();
+      updateToolbarButtonStates(blockId);
+    });
+  }
 
-  // Default quote properties
-  const quoteProps =
-    componentType === "quote"
-      ? {
-          author: "",
-          source: "",
-          style: "default" as const,
-        }
-      : undefined;
-
-  // Default code properties
-  const codeProps =
-    componentType === "code"
-      ? {
-          language: "javascript",
-        }
-      : undefined;
-
-  // Default table properties
-  const tableProps =
-    componentType === "table"
-      ? {
-          rows: 2,
-          columns: 2,
-          headers: ["Encabezado 1", "Encabezado 2"],
-          data: [
-            ["Celda 1,1", "Celda 1,2"],
-            ["Celda 2,1", "Celda 2,2"],
-          ],
-        }
-      : undefined;
-
-  // Default text properties
-  const textProps = ["title", "subtitle", "text"].includes(componentType)
-    ? {
-        bold: false,
-        italic: false,
-        underline: false,
-        color: undefined,
-        alignment: "left" as const,
+  // Botón de enlace
+  const linkButton = blockElement.querySelector(".tiptap-link");
+  if (linkButton) {
+    linkButton.addEventListener("click", () => {
+      const url = prompt("URL del enlace:");
+      if (url) {
+        editor.chain().focus().setLink({ href: url }).run();
+      } else if (editor.isActive("link")) {
+        editor.chain().focus().unsetLink().run();
       }
-    : undefined;
-
-  // Default divider properties
-  const dividerProps =
-    componentType === "divider"
-      ? {
-          style: "solid" as const,
-          thickness: 1,
-          color: "#e5e5e5",
-          width: 100,
-          alignment: "center" as const,
-        }
-      : undefined;
-
-  // Determine default width and height based on component type
-  const defaultWidth = 12; // Full width by default
-  let defaultHeight = 2; // Default height
-
-  switch (componentType) {
-    case "title":
-    case "subtitle":
-      defaultHeight = 1;
-      break;
-    case "text":
-      defaultHeight = 3;
-      break;
-    case "divider":
-      defaultHeight = 1;
-      break;
-    case "image":
-      defaultHeight = 6;
-      break;
-    case "columns":
-      defaultHeight = 4;
-      break;
-    case "list":
-      defaultHeight = 3;
-      break;
-    case "quote":
-      defaultHeight = 3;
-      break;
-    case "code":
-      defaultHeight = 4;
-      break;
-    case "table":
-      defaultHeight = 5;
-      break;
-  }
-
-  // Find the highest y-coordinate to place the new item at the bottom
-  const maxY =
-    blocks.value.length > 0
-      ? Math.max(...blocks.value.map((item) => item.y + item.height))
-      : 0;
-
-  // Create the content block
-  const newBlock: ContentBlock = {
-    id: blockId,
-    type: componentType,
-    content: "",
-    columns: componentType === "columns" ? 2 : undefined,
-    columnContent: componentType === "columns" ? ["", ""] : undefined,
-    imageProps,
-    listProps,
-    quoteProps,
-    codeProps,
-    tableProps,
-    textProps,
-    dividerProps,
-    x: 0,
-    y: maxY,
-    width: defaultWidth,
-    height: defaultHeight,
-  };
-
-  // Add the block to our blocks array
-  blocks.value.push(newBlock);
-
-  // Render the new block
-  if (gridStack.value) {
-    renderBlock(newBlock);
-  } else {
-    // Initialize GridStack if it doesn't exist yet
-    nextTick(() => {
-      initGridStack();
-      renderBlocks();
+      updateToolbarButtonStates(blockId);
     });
   }
 
-  // Select the new block
-  selectedBlockId.value = blockId;
+  // Actualizar el estado inicial de los botones
+  updateToolbarButtonStates(blockId);
+};
 
-  // Si es un bloque de texto, inicializar el editor TipTap
-  if (componentType === "text" && editor.value) {
-    editor.value.commands.setContent("");
+// Actualizar el estado visual de los botones de la barra de herramientas
+const updateToolbarButtonStates = (blockId: string) => {
+  if (!gridStackContainer.value) return;
+
+  const editor = blockEditors.value.get(blockId);
+  if (!editor) return;
+
+  const blockElement = gridStackContainer.value.querySelector(
+    `.grid-stack-item[gs-id="${blockId}"]`
+  );
+  if (!blockElement) return;
+
+  // Actualizar estado de los botones según el estado del editor
+  const boldButton = blockElement.querySelector(".tiptap-bold");
+  if (boldButton) {
+    if (editor.isActive("bold")) {
+      boldButton.classList.add("bg-gray-200");
+    } else {
+      boldButton.classList.remove("bg-gray-200");
+    }
   }
-};
 
-// Métodos para actualizar propiedades del bloque seleccionado
-const updateBlockWidth = (width: number) => {
-  if (!selectedBlock.value || !selectedBlockId.value) return;
-
-  selectedBlock.value.width = width;
-  updateSelectedBlockSize();
-};
-
-const updateBlockHeight = (height: number) => {
-  if (!selectedBlock.value || !selectedBlockId.value) return;
-
-  selectedBlock.value.height = height;
-  updateSelectedBlockSize();
-};
-
-const updateBlockContent = (content: string) => {
-  if (!selectedBlock.value || !selectedBlockId.value) return;
-
-  selectedBlock.value.content = content;
-  updateSelectedBlockContent();
-};
-
-const updateBlockContent2 = (blockId: string, content: string) => {
-  const blockIndex = blocks.value.findIndex((b) => b.id === blockId);
-  if (blockIndex !== -1) {
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      content,
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
+  const italicButton = blockElement.querySelector(".tiptap-italic");
+  if (italicButton) {
+    if (editor.isActive("italic")) {
+      italicButton.classList.add("bg-gray-200");
+    } else {
+      italicButton.classList.remove("bg-gray-200");
+    }
   }
-};
 
-const updateSelectedBlockContent = () => {
-  if (selectedBlock.value && selectedBlockId.value) {
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(selectedBlock.value);
+  const underlineButton = blockElement.querySelector(".tiptap-underline");
+  if (underlineButton) {
+    if (editor.isActive("underline")) {
+      underlineButton.classList.add("bg-gray-200");
+    } else {
+      underlineButton.classList.remove("bg-gray-200");
+    }
   }
-};
 
-const updateSelectedBlockSize = () => {
-  if (selectedBlock.value && selectedBlockId.value) {
-    // Actualizar el tamaño en el grid
-    const gridItem = gridStack.value.el.querySelector(
-      `.grid-stack-item[gs-id="${selectedBlockId.value}"]`
-    );
+  const h3Button = blockElement.querySelector(".tiptap-h3");
+  if (h3Button) {
+    if (editor.isActive("heading", { level: 3 })) {
+      h3Button.classList.add("bg-gray-200");
+    } else {
+      h3Button.classList.remove("bg-gray-200");
+    }
+  }
 
-    if (gridItem) {
-      gridStack.value.update(gridItem, {
-        w: selectedBlock.value.width,
-        h: selectedBlock.value.height,
-      });
+  const bulletListButton = blockElement.querySelector(".tiptap-bullet-list");
+  if (bulletListButton) {
+    if (editor.isActive("bulletList")) {
+      bulletListButton.classList.add("bg-gray-200");
+    } else {
+      bulletListButton.classList.remove("bg-gray-200");
+    }
+  }
+
+  const orderedListButton = blockElement.querySelector(".tiptap-ordered-list");
+  if (orderedListButton) {
+    if (editor.isActive("orderedList")) {
+      orderedListButton.classList.add("bg-gray-200");
+    } else {
+      orderedListButton.classList.remove("bg-gray-200");
+    }
+  }
+
+  const alignLeftButton = blockElement.querySelector(".tiptap-align-left");
+  if (alignLeftButton) {
+    if (
+      editor.isActive({ textAlign: "left" }) ||
+      !editor.isActive("textAlign")
+    ) {
+      alignLeftButton.classList.add("bg-gray-200");
+    } else {
+      alignLeftButton.classList.remove("bg-gray-200");
+    }
+  }
+
+  const alignCenterButton = blockElement.querySelector(".tiptap-align-center");
+  if (alignCenterButton) {
+    if (editor.isActive({ textAlign: "center" })) {
+      alignCenterButton.classList.add("bg-gray-200");
+    } else {
+      alignCenterButton.classList.remove("bg-gray-200");
+    }
+  }
+
+  const alignRightButton = blockElement.querySelector(".tiptap-align-right");
+  if (alignRightButton) {
+    if (editor.isActive({ textAlign: "right" })) {
+      alignRightButton.classList.add("bg-gray-200");
+    } else {
+      alignRightButton.classList.remove("bg-gray-200");
+    }
+  }
+
+  const linkButton = blockElement.querySelector(".tiptap-link");
+  if (linkButton) {
+    if (editor.isActive("link")) {
+      linkButton.classList.add("bg-gray-200");
+    } else {
+      linkButton.classList.remove("bg-gray-200");
     }
   }
 };
 
-// Métodos para actualizar propiedades de texto
-const toggleTextFormat = (format: "bold" | "italic" | "underline") => {
-  if (!selectedBlock.value || !selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (blockIndex === -1) return;
-
-  const currentTextProps = blocks.value[blockIndex].textProps || {
-    bold: false,
-    italic: false,
-    underline: false,
-    alignment: "left" as TextAlignment,
-  };
-
-  blocks.value[blockIndex] = {
-    ...blocks.value[blockIndex],
-    textProps: {
-      ...currentTextProps,
-      [format]: !currentTextProps[format],
-    },
-  };
-
-  renderBlock(blocks.value[blockIndex]);
-};
-
-const updateTextColor = (color: string) => {
-  if (!selectedBlock.value || !selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (blockIndex === -1) return;
-
-  const currentTextProps = blocks.value[blockIndex].textProps || {
-    bold: false,
-    italic: false,
-    underline: false,
-    alignment: "left" as TextAlignment,
-  };
-
-  blocks.value[blockIndex] = {
-    ...blocks.value[blockIndex],
-    textProps: {
-      ...currentTextProps,
-      color: color,
-    },
-  };
-
-  showColorPicker.value = false;
-  renderBlock(blocks.value[blockIndex]);
-};
-
-const updateTextAlignment = (alignment: TextAlignment) => {
-  if (!selectedBlock.value || !selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (blockIndex === -1) return;
-
-  const currentTextProps = blocks.value[blockIndex].textProps || {
-    bold: false,
-    italic: false,
-    underline: false,
-  };
-
-  blocks.value[blockIndex] = {
-    ...blocks.value[blockIndex],
-    textProps: {
-      ...currentTextProps,
-      alignment: alignment,
-    },
-  };
-
-  renderBlock(blocks.value[blockIndex]);
-};
-
-// Métodos para actualizar propiedades de divisor
-const updateDividerProps = (props: Partial<DividerProperties>) => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (blockIndex !== -1 && blocks.value[blockIndex].type === "divider") {
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      dividerProps: {
-        ...(blocks.value[blockIndex].dividerProps || {
-          style: "solid",
-          thickness: 1,
-          color: "#e5e5e5",
-          width: 100,
-          alignment: "center",
-        }),
-        ...props,
-      },
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const updateColumnContent = (
-  blockId: string,
-  columnIndex: number,
-  content: string
-) => {
-  const blockIndex = blocks.value.findIndex((b) => b.id === blockId);
-  if (blockIndex !== -1 && blocks.value[blockIndex].columnContent) {
-    const columnContent = [...blocks.value[blockIndex].columnContent!];
-    columnContent[columnIndex] = content;
-
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      columnContent,
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const updateImageProps = (props: Partial<ImageProperties>) => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (blockIndex !== -1 && blocks.value[blockIndex].type === "image") {
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      imageProps: {
-        ...(blocks.value[blockIndex].imageProps || {
-          alt: "",
-          objectFit: "cover",
-          height: 100,
-        }),
-        ...props,
-      },
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const updateListProps = (props: Partial<ListProperties>) => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (blockIndex !== -1 && blocks.value[blockIndex].type === "list") {
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      listProps: {
-        ...(blocks.value[blockIndex].listProps || {
-          type: "bullet",
-          items: ["Elemento 1", "Elemento 2"],
-        }),
-        ...props,
-      },
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const updateListItem = (index: number, content: string) => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (
-    blockIndex !== -1 &&
-    blocks.value[blockIndex].type === "list" &&
-    blocks.value[blockIndex].listProps
-  ) {
-    const items = [...blocks.value[blockIndex].listProps!.items];
-    items[index] = content;
-
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      listProps: {
-        ...blocks.value[blockIndex].listProps!,
-        items,
-      },
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const addListItem = () => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (
-    blockIndex !== -1 &&
-    blocks.value[blockIndex].type === "list" &&
-    blocks.value[blockIndex].listProps
-  ) {
-    const items = [
-      ...blocks.value[blockIndex].listProps!.items,
-      "Nuevo elemento",
-    ];
-
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      listProps: {
-        ...blocks.value[blockIndex].listProps!,
-        items,
-      },
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const removeListItem = (index: number) => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (
-    blockIndex !== -1 &&
-    blocks.value[blockIndex].type === "list" &&
-    blocks.value[blockIndex].listProps
-  ) {
-    const items = [...blocks.value[blockIndex].listProps!.items];
-    if (items.length > 1) {
-      items.splice(index, 1);
-
-      blocks.value[blockIndex] = {
-        ...blocks.value[blockIndex],
-        listProps: {
-          ...blocks.value[blockIndex].listProps!,
-          items,
-        },
-      };
-
-      // Re-renderizar el bloque para actualizar la vista
-      renderBlock(blocks.value[blockIndex]);
-    }
-  }
-};
-
-const updateQuoteProps = (props: Partial<QuoteProperties>) => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (blockIndex !== -1 && blocks.value[blockIndex].type === "quote") {
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      quoteProps: {
-        ...(blocks.value[blockIndex].quoteProps || {
-          author: "",
-          source: "",
-          style: "default",
-        }),
-        ...props,
-      },
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const updateCodeProps = (props: Partial<CodeProperties>) => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (blockIndex !== -1 && blocks.value[blockIndex].type === "code") {
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      codeProps: {
-        ...(blocks.value[blockIndex].codeProps || {
-          language: "javascript",
-        }),
-        ...props,
-      },
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const updateTableProps = (props: Partial<TableProperties>) => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (blockIndex !== -1 && blocks.value[blockIndex].type === "table") {
-    const currentProps = blocks.value[blockIndex].tableProps || {
-      rows: 2,
-      columns: 2,
-      headers: ["Encabezado 1", "Encabezado 2"],
-      data: [
-        ["Celda 1,1", "Celda 1,2"],
-        ["Celda 2,1", "Celda 2,2"],
-      ],
-    };
-
-    // Handle rows change
-    if (props.rows !== undefined && props.rows !== currentProps.rows) {
-      const newData = [...currentProps.data];
-      if (props.rows > currentProps.rows) {
-        // Add rows
-        for (let i = currentProps.rows; i < props.rows; i++) {
-          newData.push(Array(currentProps.columns).fill(""));
-        }
-      } else if (props.rows < currentProps.rows) {
-        // Remove rows
-        newData.length = props.rows;
-      }
-      currentProps.data = newData;
-    }
-
-    // Handle columns change
-    if (props.columns !== undefined && props.columns !== currentProps.columns) {
-      // Update headers
-      const newHeaders = [...currentProps.headers];
-      if (props.columns > currentProps.columns) {
-        // Add headers
-        for (let i = currentProps.columns; i < props.columns; i++) {
-          newHeaders.push(`Encabezado ${i + 1}`);
-        }
-      } else if (props.columns < currentProps.columns) {
-        // Remove headers
-        newHeaders.length = props.columns;
-      }
-      currentProps.headers = newHeaders;
-
-      // Update data
-      const newData = currentProps.data.map((row) => {
-        const newRow = [...row];
-        if (props.columns! > row.length) {
-          // Add cells
-          for (let i = row.length; i < props.columns!; i++) {
-            newRow.push("");
-          }
-        } else if (props.columns! < row.length) {
-          // Remove cells
-          newRow.length = props.columns!;
-        }
-        return newRow;
-      });
-      currentProps.data = newData;
-    }
-
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      tableProps: {
-        ...currentProps,
-        ...props,
-      },
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const updateTableHeader = (index: number, content: string) => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (
-    blockIndex !== -1 &&
-    blocks.value[blockIndex].type === "table" &&
-    blocks.value[blockIndex].tableProps
-  ) {
-    const headers = [...blocks.value[blockIndex].tableProps!.headers];
-    headers[index] = content;
-
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      tableProps: {
-        ...blocks.value[blockIndex].tableProps!,
-        headers,
-      },
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const updateTableCell = (
-  rowIndex: number,
-  cellIndex: number,
-  content: string
-) => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (
-    blockIndex !== -1 &&
-    blocks.value[blockIndex].type === "table" &&
-    blocks.value[blockIndex].tableProps
-  ) {
-    const data = [...blocks.value[blockIndex].tableProps!.data];
-    data[rowIndex] = [...data[rowIndex]];
-    data[rowIndex][cellIndex] = content;
-
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      tableProps: {
-        ...blocks.value[blockIndex].tableProps!,
-        data,
-      },
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const addTableRow = () => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (
-    blockIndex !== -1 &&
-    blocks.value[blockIndex].type === "table" &&
-    blocks.value[blockIndex].tableProps
-  ) {
-    const tableProps = blocks.value[blockIndex].tableProps!;
-    const newRow = Array(tableProps.columns).fill("");
-    const newData = [...tableProps.data, newRow];
-
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      tableProps: {
-        ...tableProps,
-        rows: tableProps.rows + 1,
-        data: newData,
-      },
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const addTableColumn = () => {
-  if (!selectedBlockId.value) return;
-
-  const blockIndex = blocks.value.findIndex(
-    (b) => b.id === selectedBlockId.value
-  );
-  if (
-    blockIndex !== -1 &&
-    blocks.value[blockIndex].type === "table" &&
-    blocks.value[blockIndex].tableProps
-  ) {
-    const tableProps = blocks.value[blockIndex].tableProps!;
-    const newHeaders = [
-      ...tableProps.headers,
-      `Encabezado ${tableProps.columns + 1}`,
-    ];
-    const newData = tableProps.data.map((row) => [...row, ""]);
-
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      tableProps: {
-        ...tableProps,
-        columns: tableProps.columns + 1,
-        headers: newHeaders,
-        data: newData,
-      },
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
-const updateColumnsCount = (blockId: string, columnsCount: number) => {
-  const blockIndex = blocks.value.findIndex((b) => b.id === blockId);
-  if (blockIndex !== -1) {
-    // Preserve existing column content and add empty strings for new columns
-    const existingContent = blocks.value[blockIndex].columnContent || [];
-    const newColumnContent = [...existingContent];
-
-    // Add empty content for new columns
-    while (newColumnContent.length < columnsCount) {
-      newColumnContent.push("");
-    }
-
-    // Trim if reducing columns
-    if (newColumnContent.length > columnsCount) {
-      newColumnContent.length = columnsCount;
-    }
-
-    blocks.value[blockIndex] = {
-      ...blocks.value[blockIndex],
-      columns: columnsCount,
-      columnContent: newColumnContent,
-    };
-
-    // Re-renderizar el bloque para actualizar la vista
-    renderBlock(blocks.value[blockIndex]);
-  }
-};
-
+// Limpiar los editores cuando se elimina un bloque
 const removeBlock = (blockId: string) => {
+  // Destruir el editor TipTap si existe
+  if (blockEditors.value.has(blockId)) {
+    blockEditors.value.get(blockId).destroy();
+    blockEditors.value.delete(blockId);
+  }
+
   // Remove from blocks array
   blocks.value = blocks.value.filter((b) => b.id !== blockId);
 
@@ -3351,8 +2595,15 @@ const removeBlock = (blockId: string) => {
   }
 };
 
+// Limpiar todos los editores cuando se limpian todos los bloques
 const clearAllBlocks = () => {
   if (confirm("¿Está seguro de que desea eliminar todos los bloques?")) {
+    // Destruir todos los editores TipTap
+    blockEditors.value.forEach((editor) => {
+      editor.destroy();
+    });
+    blockEditors.value.clear();
+
     blocks.value = [];
     if (gridStack.value) {
       gridStack.value.removeAll();
@@ -3361,6 +2612,7 @@ const clearAllBlocks = () => {
   }
 };
 
+// Duplicar un bloque también debe duplicar su editor
 const duplicateBlock = (blockId: string) => {
   const blockIndex = blocks.value.findIndex((b) => b.id === blockId);
   if (blockIndex === -1) return;
@@ -3386,69 +2638,7 @@ const duplicateBlock = (blockId: string) => {
   selectedBlockId.value = newBlockId;
 };
 
-const exportContent = () => {
-  // Solo exportar el JSON para que GridStack lo renderice
-  const exportData = {
-    template: selectedTemplate.value,
-    fixedFields: fixedFields.value,
-    blocks: blocks.value,
-  };
-
-  // Create a JSON blob and download it
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-    type: "application/json",
-  });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "article-content.json";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-};
-
-// Observar cambios en los bloques para re-renderizar
-watch(
-  blocks,
-  () => {
-    if (gridStack.value) {
-      renderBlocks();
-    }
-  },
-  { deep: true }
-);
-
-// Observar cambios en showPreview para inicializar la vista previa
-watch(showPreview, (newValue) => {
-  if (newValue) {
-    nextTick(() => {
-      initPreviewGridStack();
-    });
-  }
-});
-
-// Observar cambios en el bloque seleccionado para actualizar el editor TipTap
-watch(selectedBlockId, (newValue) => {
-  if (newValue) {
-    const block = blocks.value.find((b) => b.id === newValue);
-    if (block && block.type === "text" && editor.value) {
-      editor.value.commands.setContent(block.content || "");
-    }
-  }
-});
-
-// Inicializar GridStack cuando el componente se monta
-onMounted(() => {
-  nextTick(() => {
-    if (blocks.value.length > 0) {
-      initGridStack();
-      renderBlocks();
-    }
-  });
-});
-
-// Limpiar GridStack cuando el componente se desmonta
+// Limpiar los editores cuando el componente se desmonta
 onUnmounted(() => {
   if (gridStack.value) {
     gridStack.value.destroy();
@@ -3456,124 +2646,961 @@ onUnmounted(() => {
   if (previewGridStack.value) {
     previewGridStack.value.destroy();
   }
+
+  // Destruir todos los editores TipTap
+  blockEditors.value.forEach((editor) => {
+    editor.destroy();
+  });
+  blockEditors.value.clear();
+
   if (editor.value) {
     editor.value.destroy();
+  }
+});
+
+// El resto del código permanece igual...
+
+const addComponent = (type: ComponentType) => {
+  const newBlockId = `block-${Date.now()}-${Math.random()
+    .toString(36)
+    .substr(2, 9)}`;
+
+  const newBlock: ContentBlock = {
+    id: newBlockId,
+    type: type,
+    x: 0,
+    y: sortedBlocks.value.length
+      ? sortedBlocks.value[sortedBlocks.value.length - 1].y +
+        sortedBlocks.value[sortedBlocks.value.length - 1].height
+      : 0,
+    width: type === "columns" ? 6 : 12,
+    height: 1,
+  };
+
+  if (type === "columns") {
+    newBlock.columns = 2;
+    newBlock.columnContent = ["", ""];
+  }
+
+  blocks.value.push(newBlock);
+  renderBlock(newBlock);
+};
+
+const updateBlockWidth = (width: number) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  blocks.value[blockIndex].width = width;
+
+  const gridItem = gridStack.value.el.querySelector(
+    `.grid-stack-item[gs-id="${selectedBlockId.value}"]`
+  );
+  if (gridItem) {
+    gridStack.value.update(gridItem, { w: width });
+  }
+};
+
+const updateBlockHeight = (height: number) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  blocks.value[blockIndex].height = height;
+
+  const gridItem = gridStack.value.el.querySelector(
+    `.grid-stack-item[gs-id="${selectedBlockId.value}"]`
+  );
+  if (gridItem) {
+    gridStack.value.update(gridItem, { h: height });
+  }
+};
+
+const updateBlockContent = (content: string) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  blocks.value[blockIndex].content = content;
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateColumnsCount = (blockId: string, columnCount: number) => {
+  const blockIndex = blocks.value.findIndex((b) => b.id === blockId);
+  if (blockIndex === -1) return;
+
+  blocks.value[blockIndex].columns = columnCount;
+  blocks.value[blockIndex].columnContent = Array(columnCount).fill("");
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+};
+
+const updateColumnContent = (
+  blockId: string,
+  columnIndex: number,
+  content: string
+) => {
+  const blockIndex = blocks.value.findIndex((b) => b.id === blockId);
+  if (blockIndex === -1) return;
+
+  if (!blocks.value[blockIndex].columnContent) {
+    blocks.value[blockIndex].columnContent = [];
+  }
+
+  blocks.value[blockIndex].columnContent![columnIndex] = content;
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateImageProps = (props: Partial<ImageProperties>) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  blocks.value[blockIndex].imageProps = {
+    ...blocks.value[blockIndex].imageProps,
+    ...props,
+  };
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateListProps = (props: Partial<ListProperties>) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  blocks.value[blockIndex].listProps = {
+    ...blocks.value[blockIndex].listProps,
+    ...props,
+  };
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const addListItem = () => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  if (!blocks.value[blockIndex].listProps) {
+    blocks.value[blockIndex].listProps = {
+      type: "bullet",
+      items: [],
+    };
+  }
+
+  if (!blocks.value[blockIndex].listProps!.items) {
+    blocks.value[blockIndex].listProps!.items = [];
+  }
+
+  blocks.value[blockIndex].listProps!.items.push("Nuevo elemento");
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateListItem = (index: number, value: string) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  if (
+    !blocks.value[blockIndex].listProps ||
+    !blocks.value[blockIndex].listProps!.items
+  )
+    return;
+
+  blocks.value[blockIndex].listProps!.items[index] = value;
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const removeListItem = (index: number) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  if (
+    !blocks.value[blockIndex].listProps ||
+    !blocks.value[blockIndex].listProps!.items
+  )
+    return;
+
+  blocks.value[blockIndex].listProps!.items.splice(index, 1);
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateQuoteProps = (props: Partial<QuoteProperties>) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  blocks.value[blockIndex].quoteProps = {
+    ...blocks.value[blockIndex].quoteProps,
+    ...props,
+  };
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateCodeProps = (props: Partial<CodeProperties>) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  blocks.value[blockIndex].codeProps = {
+    ...blocks.value[blockIndex].codeProps,
+    ...props,
+  };
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateTableProps = (props: Partial<TableProperties>) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  blocks.value[blockIndex].tableProps = {
+    ...blocks.value[blockIndex].tableProps,
+    ...props,
+  };
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const addTableRow = () => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  if (!blocks.value[blockIndex].tableProps) {
+    blocks.value[blockIndex].tableProps = {
+      rows: 2,
+      columns: 2,
+      headers: ["Encabezado 1", "Encabezado 2"],
+      data: [
+        ["Celda 1,1", "Celda 1,2"],
+        ["Celda 2,1", "Celda 2,2"],
+      ],
+    };
+  }
+
+  if (!blocks.value[blockIndex].tableProps!.data) {
+    blocks.value[blockIndex].tableProps!.data = [];
+  }
+
+  const newRow = Array(blocks.value[blockIndex].tableProps!.columns || 2).fill(
+    "Nueva celda"
+  );
+  blocks.value[blockIndex].tableProps!.data.push(newRow);
+
+  blocks.value[blockIndex].tableProps!.rows =
+    blocks.value[blockIndex].tableProps!.data.length;
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const addTableColumn = () => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  if (!blocks.value[blockIndex].tableProps) {
+    blocks.value[blockIndex].tableProps = {
+      rows: 2,
+      columns: 2,
+      headers: ["Encabezado 1", "Encabezado 2"],
+      data: [
+        ["Celda 1,1", "Celda 1,2"],
+        ["Celda 2,1", "Celda 2,2"],
+      ],
+    };
+  }
+
+  const currentColumns = blocks.value[blockIndex].tableProps!.columns || 2;
+  blocks.value[blockIndex].tableProps!.columns = currentColumns + 1;
+
+  // Add a new header
+  if (!blocks.value[blockIndex].tableProps!.headers) {
+    blocks.value[blockIndex].tableProps!.headers = [];
+  }
+  blocks.value[blockIndex].tableProps!.headers.push(
+    `Encabezado ${currentColumns + 1}`
+  );
+
+  // Add a new cell to each row
+  if (blocks.value[blockIndex].tableProps!.data) {
+    blocks.value[blockIndex].tableProps!.data.forEach((row) => {
+      row.push(`Celda ${row.length + 1}`);
+    });
+  }
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateTableHeader = (index: number, value: string) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  if (
+    !blocks.value[blockIndex].tableProps ||
+    !blocks.value[blockIndex].tableProps!.headers
+  )
+    return;
+
+  blocks.value[blockIndex].tableProps!.headers[index] = value;
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateTableCell = (
+  rowIndex: number,
+  cellIndex: number,
+  value: string
+) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  if (
+    !blocks.value[blockIndex].tableProps ||
+    !blocks.value[blockIndex].tableProps!.data ||
+    !blocks.value[blockIndex].tableProps!.data[rowIndex]
+  )
+    return;
+
+  blocks.value[blockIndex].tableProps!.data[rowIndex][cellIndex] = value;
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateTextFormat = (format: string) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  if (!blocks.value[blockIndex].textProps) {
+    blocks.value[blockIndex].textProps = {};
+  }
+
+  blocks.value[blockIndex].textProps![format] =
+    !blocks.value[blockIndex].textProps![format];
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateTextColor = (color: string) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  if (!blocks.value[blockIndex].textProps) {
+    blocks.value[blockIndex].textProps = {};
+  }
+
+  blocks.value[blockIndex].textProps!.color = color;
+  showColorPicker.value = false;
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateTextAlignment = (alignment: TextAlignment) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  if (!blocks.value[blockIndex].textProps) {
+    blocks.value[blockIndex].textProps = {};
+  }
+
+  blocks.value[blockIndex].textProps!.alignment = alignment;
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const updateDividerProps = (props: Partial<DividerProperties>) => {
+  if (!selectedBlockId.value) return;
+
+  const blockIndex = blocks.value.findIndex(
+    (b) => b.id === selectedBlockId.value
+  );
+  if (blockIndex === -1) return;
+
+  blocks.value[blockIndex].dividerProps = {
+    ...blocks.value[blockIndex].dividerProps,
+    ...props,
+  };
+
+  // Re-render the block
+  renderBlock(blocks.value[blockIndex]);
+
+  // Actualizar el contenido en la vista previa si está visible
+  if (showPreview.value) {
+    renderPreviewBlocks();
+  }
+};
+
+const selectBlock = (blockId: string) => {
+  selectedBlockId.value = blockId;
+
+  // Remove ring from all items
+  const gridItems = gridStack.value.el.querySelectorAll(".grid-stack-item");
+  gridItems.forEach((item: any) => {
+    item.classList.remove("ring-2", "ring-emerald-500");
+  });
+
+  // Add ring to selected item
+  const gridItem = gridStack.value.el.querySelector(
+    `.grid-stack-item[gs-id="${blockId}"]`
+  );
+  if (gridItem) {
+    gridItem.classList.add("ring-2", "ring-emerald-500");
+  }
+};
+
+const setupBlockEventListeners = (blockId: string) => {
+  if (!gridStackContainer.value) return;
+
+  const blockElement = gridStackContainer.value.querySelector(
+    `.grid-stack-item[gs-id="${blockId}"]`
+  );
+  if (!blockElement) return;
+
+  // Duplicate button
+  const duplicateButton = blockElement.querySelector(".duplicate-btn");
+  if (duplicateButton) {
+    duplicateButton.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent selecting the block
+      duplicateBlock(blockId);
+    });
+  }
+
+  // Remove button
+  const removeButton = blockElement.querySelector(".remove-btn");
+  if (removeButton) {
+    removeButton.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent selecting the block
+      removeBlock(blockId);
+    });
+  }
+
+  // Content editable (title, subtitle)
+  const blockContent = blockElement.querySelector(".block-content");
+  if (blockContent) {
+    blockContent.addEventListener("input", (e) => {
+      const content = (e.target as HTMLElement).innerText;
+      updateBlockContent(content);
+    });
+  }
+
+  // Column content editable
+  const columnContents = blockElement.querySelectorAll(".column-content");
+  columnContents.forEach((columnContent: any) => {
+    columnContent.addEventListener("input", (e: any) => {
+      const columnIndex = columnContent.dataset.columnIndex;
+      const content = e.target.innerText;
+      updateColumnContent(blockId, columnIndex, content);
+    });
+  });
+};
+
+const renderPreviewBlocks = () => {
+  if (!previewGridStack.value) return;
+
+  // Limpiar el grid de vista previa
+  previewGridStack.value.removeAll();
+
+  // Renderizar cada bloque en el grid de vista previa
+  blocks.value.forEach((block) => {
+    // Crear el contenido HTML del bloque
+    let content = "";
+
+    content += '<div class="p-3 h-full">';
+
+    // Aplicar propiedades de texto
+    const textStyles = block.textProps
+      ? `${block.textProps.bold ? "font-bold" : ""} 
+       ${block.textProps.italic ? "italic" : ""} 
+       ${block.textProps.underline ? "underline" : ""} 
+       ${block.textProps.color ? `color: ${block.textProps.color};` : ""} 
+       ${block.textProps.alignment ? `text-${block.textProps.alignment}` : ""}`
+      : "";
+
+    // Contenido según el tipo de bloque
+    if (block.type === "title") {
+      content += `<div class="block-content font-bold text-2xl md:text-3xl outline-none w-full min-h-[40px] ${textStyles}" style="${
+        block.textProps?.color ? `color: ${block.textProps.color};` : ""
+      }">${block.content || "Ingrese título aquí"}</div>`;
+    } else if (block.type === "subtitle") {
+      content += `<div class="block-content font-medium text-xl md:text-2xl outline-none w-full min-h-[36px] ${textStyles}" style="${
+        block.textProps?.color ? `color: ${block.textProps.color};` : ""
+      }">${block.content || "Ingrese subtítulo aquí"}</div>`;
+    } else if (block.type === "text") {
+      content += `<div class="block-content text-base w-full min-h-[100px]">${
+        block.content || "Ingrese texto aquí"
+      }</div>`;
+    } else if (block.type === "divider") {
+      const dividerProps = block.dividerProps || {
+        style: "solid" as DividerStyle,
+        thickness: 1,
+        color: "#e5e5e5",
+        width: 100,
+        alignment: "center" as TextAlignment,
+      };
+
+      const dividerAlignment =
+        dividerProps.alignment === "left"
+          ? "mr-auto"
+          : dividerProps.alignment === "right"
+          ? "ml-auto"
+          : "mx-auto";
+
+      content += `
+        <div class="flex ${
+          dividerAlignment === "mx-auto"
+            ? "justify-center"
+            : dividerAlignment === "ml-auto"
+            ? "justify-end"
+            : "justify-start"
+        }">
+          <hr class="${dividerAlignment}" style="
+            border: 0;
+            border-top-style: ${dividerProps.style};
+            border-top-width: ${dividerProps.thickness}px;
+            border-top-color: ${dividerProps.color};
+            width: ${dividerProps.width}%;
+          " />
+        </div>
+      `;
+    } else if (block.type === "image") {
+      content += `
+      <div class="w-full h-full relative">
+        <img
+          src="${block.content || "/placeholder.svg?height=300&width=600"}"
+          alt="${block.imageProps?.alt || "Imagen descriptiva"}"
+          class="w-full h-full rounded-md"
+          style="object-fit: ${block.imageProps?.objectFit || "cover"}"
+        />
+        ${
+          block.imageProps?.caption
+            ? `<p class="text-sm text-gray-500 mt-2 text-center">${block.imageProps.caption}</p>`
+            : ""
+        }
+      </div>
+    `;
+    } else if (block.type === "columns") {
+      content += `
+      <div class="w-full grid h-full" style="grid-template-columns: repeat(${
+        block.columns || 2
+      }, 1fr); gap: 1rem;">
+    `;
+
+      const columnCount = block.columns || 2;
+      for (let i = 0; i < columnCount; i++) {
+        content += `
+        <div class="border border-dashed border-gray-200 p-2 min-h-[100px]">
+          <div class="column-content outline-none h-full">
+            ${
+              block.columnContent && block.columnContent[i]
+                ? block.columnContent[i]
+                : `Contenido columna ${i + 1}`
+            }
+          </div>
+        </div>
+      `;
+      }
+
+      content += "</div>";
+    } else if (block.type === "list") {
+      const listType = block.listProps?.type || "bullet";
+
+      if (listType === "bullet") {
+        content += '<ul class="list-disc pl-5 space-y-1">';
+        (block.listProps?.items || ["Elemento 1", "Elemento 2"]).forEach(
+          (item) => {
+            content += `<li>${item}</li>`;
+          }
+        );
+        content += "</ul>";
+      } else if (listType === "numbered") {
+        content += '<ol class="list-decimal pl-5 space-y-1">';
+        (block.listProps?.items || ["Elemento 1", "Elemento 2"]).forEach(
+          (item) => {
+            content += `<li>${item}</li>`;
+          }
+        );
+        content += "</ol>";
+      } else if (listType === "check") {
+        content += '<ul class="space-y-1">';
+        (block.listProps?.items || ["Elemento 1", "Elemento 2"]).forEach(
+          (item) => {
+            content += `
+            <li class="flex items-start">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-500 mr-2 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+              <span>${item}</span>
+            </li>
+          `;
+          }
+        );
+        content += "</ul>";
+      }
+    } else if (block.type === "quote") {
+      const quoteStyle = block.quoteProps?.style || "default";
+
+      if (quoteStyle === "default") {
+        content += `
+          <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-700">
+            <p>${block.content || "Ingrese texto de la cita aquí"}</p>
+            ${
+              block.quoteProps?.author
+                ? `<footer class="mt-2 text-sm">— ${block.quoteProps.author}${
+                    block.quoteProps.source
+                      ? `, <cite>${block.quoteProps.source}</cite>`
+                      : ""
+                  }</footer>`
+                : ""
+            }
+          </blockquote>
+        `;
+      } else if (quoteStyle === "blockquote") {
+        content += `
+          <blockquote class="bg-gray-50 p-4 rounded-md border-l-4 border-emerald-500">
+            <p class="text-lg">${
+              block.content || "Ingrese texto de la cita aquí"
+            }</p>
+            ${
+              block.quoteProps?.author
+                ? `<footer class="mt-2 text-sm font-medium">— ${
+                    block.quoteProps.author
+                  }${
+                    block.quoteProps.source
+                      ? `, <cite>${block.quoteProps.source}</cite>`
+                      : ""
+                  }</footer>`
+                : ""
+            }
+          </blockquote>
+        `;
+      } else if (quoteStyle === "pullquote") {
+        content += `
+          <div class="relative">
+            <div class="text-6xl text-emerald-200 absolute -top-4 left-0">"</div>
+            <blockquote class="text-xl font-medium text-center px-8 py-4">
+              <p>${block.content || "Ingrese texto de la cita aquí"}</p>
+              ${
+                block.quoteProps?.author
+                  ? `<footer class="mt-4 text-sm font-normal text-gray-500">— ${
+                      block.quoteProps.author
+                    }${
+                      block.quoteProps.source
+                        ? `, <cite>${block.quoteProps.source}</cite>`
+                        : ""
+                    }</footer>`
+                  : ""
+              }
+            </blockquote>
+            <div class="text-6xl text-emerald-200 absolute -bottom-10 right-0">"</div>
+          </div>
+        `;
+      }
+    } else if (block.type === "code") {
+      const language = block.codeProps?.language || "javascript";
+      content += `
+        <div class="bg-gray-50 rounded-md overflow-hidden">
+          <div class="bg-gray-200 px-4 py-1 text-xs font-mono flex justify-between items-center">
+            <span>${language}</span>
+          </div>
+          <pre class="p-4 overflow-x-auto font-mono text-sm whitespace-pre-wrap">${
+            block.content || "// Ingrese código aquí"
+          }</pre>
+        </div>
+      `;
+    } else if (block.type === "table") {
+      const rows = block.tableProps?.rows || 2;
+      const columns = block.tableProps?.columns || 2;
+      const headers =
+        block.tableProps?.headers || Array(columns).fill("Encabezado");
+      const data =
+        block.tableProps?.data ||
+        Array(rows).fill(Array(columns).fill("Celda"));
+
+      content += `
+        <div class="overflow-x-auto">
+          <table class="min-w-full border-collapse border border-gray-300">
+            <thead>
+              <tr class="bg-gray-100">
+                ${headers
+                  .map(
+                    (header) =>
+                      `<th class="border border-gray-300 px-4 py-2 text-left">${header}</th>`
+                  )
+                  .join("")}
+              </tr>
+            </thead>
+            <tbody>
+              ${data
+                .map(
+                  (row) =>
+                    `<tr>
+                  ${row
+                    .map(
+                      (cell: any) =>
+                        `<td class="border border-gray-300 px-4 py-2">${cell}</td>`
+                    )
+                    .join("")}
+                </tr>`
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    content += "</div>";
+
+    // Crear un nuevo elemento
+    const newItem = document.createElement("div");
+    newItem.setAttribute("gs-id", block.id);
+    newItem.setAttribute("gs-x", block.x.toString());
+    newItem.setAttribute("gs-y", block.y.toString());
+    newItem.setAttribute("gs-w", block.width.toString());
+    newItem.setAttribute("gs-h", block.height.toString());
+    newItem.className = "grid-stack-item";
+    newItem.innerHTML = `<div class="grid-stack-item-content border rounded-md bg-white shadow-sm">${content}</div>`;
+
+    previewGridStack.value.addWidget(newItem);
+  });
+};
+
+onMounted(() => {
+  initGridStack();
+
+  // Cargar los bloques existentes
+  blocks.value.forEach((block) => {
+    renderBlock(block);
+  });
+});
+
+watch(showPreview, (newValue) => {
+  if (newValue) {
+    nextTick(() => {
+      initPreviewGridStack();
+    });
   }
 });
 </script>
 
 <style scoped>
-[contenteditable] {
-  outline: none;
-}
+/* Estilos existentes... */
 
-.grid-stack {
-  background: #f9fafb;
-  min-height: 300px;
-}
-
-.grid-stack-item-content {
-  overflow-y: auto;
-  padding: 0;
-}
-
-.grid-stack-placeholder > .placeholder-content {
-  background-color: #f0fdf4;
-  border: 1px dashed #10b981;
-}
-
-.grid-stack-item.ui-draggable-dragging,
-.grid-stack-item.ui-resizable-resizing {
-  opacity: 0.8;
-  z-index: 100;
-}
-
-.grid-stack-item.ring-2 {
-  z-index: 10;
-}
-
-/* Estilos específicos para elementos pequeños como divisores */
-.grid-stack-item[gs-id^="block"][gs-h="1"] {
-  min-height: 50px !important;
-}
-
-/* Estilos para la vista previa */
-.preview-grid .grid-stack-item {
-  cursor: default;
-}
-
-/* Estilos para distinguir entre editor y preview */
-.editor-area {
-  position: relative;
-}
-
-.editor-area::before {
-  content: "EDITOR";
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #f3f4f6;
-  color: #6b7280;
-  font-size: 0.75rem;
-  padding: 2px 6px;
-  border-radius: 0 0 0 4px;
-  z-index: 5;
-}
-
-.preview-grid::before {
-  content: "PREVIEW";
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #f0fdf4;
-  color: #16a34a;
-  font-size: 0.75rem;
-  padding: 2px 6px;
-  border-radius: 0 0 0 4px;
-  z-index: 5;
-}
-
-/* Fix for content shifting when resizing */
-.grid-stack > .grid-stack-item {
-  min-width: 0;
-}
-
-.grid-stack > .grid-stack-item > .grid-stack-item-content {
-  inset: 0;
-  overflow: hidden;
-}
-
-/* Estilos para TipTap */
-:deep(.ProseMirror) {
+/* Estilos adicionales para TipTap en los bloques */
+:deep(.tiptap-editor) {
   outline: none;
   min-height: 150px;
 }
 
-:deep(.ProseMirror p) {
+:deep(.tiptap-editor p) {
   margin-bottom: 0.75em;
 }
 
-:deep(.ProseMirror h3) {
+:deep(.tiptap-editor h3) {
   font-size: 1.25rem;
   font-weight: 600;
   margin-top: 1em;
   margin-bottom: 0.5em;
 }
 
-:deep(.ProseMirror ul) {
+:deep(.tiptap-editor ul) {
   list-style-type: disc;
   padding-left: 1.5em;
   margin-bottom: 0.75em;
 }
 
-:deep(.ProseMirror ol) {
+:deep(.tiptap-editor ol) {
   list-style-type: decimal;
   padding-left: 1.5em;
   margin-bottom: 0.75em;
 }
 
-:deep(.ProseMirror a) {
+:deep(.tiptap-editor a) {
   color: #10b981;
   text-decoration: underline;
+}
+
+:deep(.tiptap-editor p[style*="text-align: center"]) {
+  text-align: center;
+}
+
+:deep(.tiptap-editor p[style*="text-align: right"]) {
+  text-align: right;
+}
+
+:deep(.tiptap-editor p[style*="text-align: justify"]) {
+  text-align: justify;
+}
+
+/* Estilos para la barra de herramientas */
+.tiptap-toolbar button {
+  transition: background-color 0.2s;
+}
+
+.tiptap-toolbar button.bg-gray-200 {
+  background-color: #e5e7eb;
 }
 </style>

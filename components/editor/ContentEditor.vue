@@ -302,7 +302,9 @@ const renderBlock = (block: ContentBlock) => {
           content: `<p>This is editable rich text in widget #${block.id}. You can <strong>bold</strong>, <em>italicize</em>, or create lists.</p>`,
           editable: true,
         });
-
+        editor.on("update", ({ editor }) => {
+          console.log(editor.getHTML());
+        });
         toolbarElement.querySelectorAll("button").forEach((button) => {
           const action = button.getAttribute("data-action");
           button.addEventListener("click", () => {
@@ -352,6 +354,19 @@ const renderBlock = (block: ContentBlock) => {
   setupBlockEventListeners(block.id);
 };
 
+const updateBlockContent2 = (blockId: string, content: string) => {
+  const blockIndex = blocks.value.findIndex((b) => b.id === blockId);
+  if (blockIndex !== -1) {
+    blocks.value[blockIndex] = {
+      ...blocks.value[blockIndex],
+      content,
+    };
+
+    console.log(content);
+    // Re-renderizar el bloque para actualizar la vista
+    renderBlock(blocks.value[blockIndex]);
+  }
+};
 // Configurar event listeners para los elementos dentro de un bloque
 const setupBlockEventListeners = (blockId: string) => {
   if (!gridStackContainer.value) return;
@@ -376,6 +391,17 @@ const setupBlockEventListeners = (blockId: string) => {
     removeBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       removeBlock(blockId);
+    });
+  }
+
+  const contentEl = gridItem.querySelector(".block-content");
+  console.log("block");
+  if (contentEl) {
+    console.log("e", "se cabio de");
+    contentEl.addEventListener("change", (e) => {
+      console.log("e", e);
+      const content = (e.target as HTMLElement).textContent || "";
+      updateBlockContent2(blockId, content);
     });
   }
 };
