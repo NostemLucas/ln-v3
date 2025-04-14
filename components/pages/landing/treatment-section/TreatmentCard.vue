@@ -33,7 +33,7 @@
 
       <!-- Contenido superpuesto -->
       <div
-        class="absolute bottom-0 left-0 z-20 w-full p-6 text-white transition-all duration-500"
+        class="absolute bottom-0 left-0 z-20 w-full p-6 text-white transition-all duration-500 translate-y-10 group-hover:translate-y-0"
       >
         <!-- Título con efecto de subrayado en hover -->
         <h3

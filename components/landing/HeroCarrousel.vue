@@ -1,103 +1,98 @@
 <script setup lang="ts">
+import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import personnel from "~/mocks/doctors";
-const props = defineProps({
-  autoplay: {
-    type: Boolean,
-    default: true,
-  },
-  autoplaySpeed: {
-    type: Number,
-    default: 4000,
-  },
-  isInfinite: {
-    type: Boolean,
-    default: true,
-  },
-  pauseOnHover: {
-    type: Boolean,
-    default: true,
-  },
+interface CarouselProps {
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+  isInfinite?: boolean;
+  pauseOnHover?: boolean;
+}
+
+const props = withDefaults(defineProps<CarouselProps>(), {
+  autoplay: true,
+  autoplaySpeed: 4000,
+  isInfinite: true,
+  pauseOnHover: true,
 });
 
-const currentIndex = ref(0);
-const hoveredPerson = ref(null);
-const autoplayPaused = ref(false);
-const touchStartX = ref(0);
-const touchEndX = ref(0);
+const currentIndex = ref<number>(0);
+const hoveredPerson = ref<number | null>(null);
+const autoplayPaused = ref<boolean>(false);
+const touchStartX = ref<number>(0);
+const touchEndX = ref<number>(0);
 
-let autoplayInterval = null;
+let autoplayInterval: number | null = null;
 
-const windowWidth = ref(
+const windowWidth = ref<number>(
   typeof window !== "undefined" ? window.innerWidth : 1024
 );
 
-const visibleSlides = computed(() => {
+const visibleSlides = computed<number>(() => {
   if (windowWidth.value < 640) return 1;
   if (windowWidth.value < 768) return 2;
   return 3;
 });
 
-const nextSlide = () => {
-  if (currentIndex.value < personnel.value.length - visibleSlides.value) {
+const nextSlide = (): void => {
+  if (currentIndex.value < personnel.length - visibleSlides.value) {
     currentIndex.value++;
   } else if (props.isInfinite) {
     currentIndex.value = 0;
   }
 };
 
-const prevSlide = () => {
+const prevSlide = (): void => {
   if (currentIndex.value > 0) {
     currentIndex.value--;
   } else if (props.isInfinite) {
-    currentIndex.value = personnel.value.length - visibleSlides.value;
+    currentIndex.value = personnel.length - visibleSlides.value;
   }
 };
 
-const goToSlide = (index) => {
-  const maxIndex = personnel.value.length - visibleSlides.value;
+const goToSlide = (index: number): void => {
+  const maxIndex = personnel.length - visibleSlides.value;
   currentIndex.value = Math.min(Math.max(0, index), maxIndex);
 };
 
-const startAutoplay = () => {
+const startAutoplay = (): void => {
   if (props.autoplay && !autoplayInterval && !autoplayPaused.value) {
-    autoplayInterval = setInterval(() => {
+    autoplayInterval = window.setInterval(() => {
       nextSlide();
     }, props.autoplaySpeed);
   }
 };
 
-const stopAutoplay = () => {
+const stopAutoplay = (): void => {
   if (autoplayInterval) {
     clearInterval(autoplayInterval);
     autoplayInterval = null;
   }
 };
 
-const pauseAutoplay = () => {
+const pauseAutoplay = (): void => {
   if (props.pauseOnHover) {
     autoplayPaused.value = true;
     stopAutoplay();
   }
 };
 
-const resumeAutoplay = () => {
+const resumeAutoplay = (): void => {
   if (props.pauseOnHover) {
     autoplayPaused.value = false;
     startAutoplay();
   }
 };
 
-const handleTouchStart = (e) => {
+const handleTouchStart = (e: TouchEvent): void => {
   touchStartX.value = e.touches[0].clientX;
 };
 
-const handleTouchMove = (e) => {
+const handleTouchMove = (e: TouchEvent): void => {
   touchEndX.value = e.touches[0].clientX;
 };
 
-const handleTouchEnd = () => {
+const handleTouchEnd = (): void => {
   const touchDiff = touchStartX.value - touchEndX.value;
-
   const minSwipeDistance = 50;
 
   if (Math.abs(touchDiff) > minSwipeDistance) {
@@ -109,13 +104,13 @@ const handleTouchEnd = () => {
   }
 };
 
-const handleResize = () => {
+const handleResize = (): void => {
   windowWidth.value = window.innerWidth;
 };
 
-watch(visibleSlides, (newValue, oldValue) => {
+watch(visibleSlides, (newValue: number, oldValue: number) => {
   if (newValue < oldValue) {
-    const maxIndex = personnel.value.length - newValue;
+    const maxIndex = personnel.length - newValue;
     if (currentIndex.value > maxIndex) {
       currentIndex.value = maxIndex;
     }
@@ -163,9 +158,10 @@ onBeforeUnmount(() => {
         <button
           aria-label="Previous slide"
           class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-100 bg-white shadow-md transition-colors hover:bg-primary-50 focus:ring-2 focus:ring-primary-500 focus:outline-none"
-          :disabled="!isInfinite && currentIndex === 0"
+          :disabled="!props.isInfinite && currentIndex === 0"
           :class="{
-            'cursor-not-allowed opacity-50': !isInfinite && currentIndex === 0,
+            'cursor-not-allowed opacity-50':
+              !props.isInfinite && currentIndex === 0,
             'text-primary-600 hover:text-primary-700': true,
           }"
           @click="prevSlide"
@@ -176,11 +172,13 @@ onBeforeUnmount(() => {
           aria-label="Next slide"
           class="bg-primary-white flex h-12 w-12 items-center justify-center rounded-full shadow-md transition-colors hover:bg-primary-50 focus:ring-2 focus:ring-primary-500 focus:outline-none"
           :disabled="
-            !isInfinite && currentIndex >= personnel.length - visibleSlides
+            !props.isInfinite &&
+            currentIndex >= personnel.length - visibleSlides
           "
           :class="{
             'cursor-not-allowed opacity-50':
-              !isInfinite && currentIndex >= personnel.length - visibleSlides,
+              !props.isInfinite &&
+              currentIndex >= personnel.length - visibleSlides,
             'text-primary-600 hover:text-primary-700': true,
           }"
           @click="nextSlide"
@@ -230,28 +228,28 @@ onBeforeUnmount(() => {
 
             <div
               v-if="person.specialty"
-              class="absolute top-4 right-4 rounded-full bg-white px-3 py-2 text-xs font-semibold text-primary-500"
+              class="absolute top-4 right-4 rounded-full bg-white px-3 py-2 text-xs font-semibold text-primary-500 uppercase"
             >
               {{ person.specialty }}
             </div>
 
             <div
-              class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-primary-900/90 via-primary-800/20 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:p-6"
+              class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-primary-700/90 via-primary-800/20 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:p-6"
             >
               <div class="text-white">
-                <div class="mb-1 text-xs font-medium sm:text-sm">
-                  {{ person.department }}
+                <div class="mb-1 text-xs font-medium sm:text-sm uppercase">
+                  {{ person.specialty }}
                 </div>
                 <h3 class="mb-1 text-lg font-bold sm:text-xl">
-                  Dr. {{ person.name }}
+                  {{ person.name }}
                 </h3>
                 <p class="mb-3 line-clamp-3 text-xs sm:mb-4 sm:text-sm">
-                  {{ person.description }}
+                  {{ person.shortDescription }}
                 </p>
                 <UButton
                   variant="solid"
-                  :aria-label="`Ver más información sobre Dr. ${person.name}`"
-                  class="bg-white rounded-full px-4 py-2 text-primary-500"
+                  :aria-label="`Ver más información sobre ${person.name}`"
+                  class="bg-white rounded-full px-4 py-2 text-primary-500 hover:text-white transition-colors duration-400"
                   label="Ver más"
                   to="/profesionales"
                 />

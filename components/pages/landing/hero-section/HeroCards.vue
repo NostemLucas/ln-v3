@@ -73,7 +73,7 @@
       </div>
       <div class="relative overflow-hidden lg:w-2/5">
         <div
-          class="absolute inset-0 z-10 rounded-lg bg-gradient-to-r from-blue-500/40 via-blue-300/40 to-transparent"
+          class="absolute inset-0 z-10 rounded-lg bg-gradient-to-r from-blue-500/20 via-blue-300/30 to-transparent"
         />
         <NuxtImg
           src="/landing/close-up.jpg"

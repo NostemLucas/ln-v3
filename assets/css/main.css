@@ -33,6 +33,19 @@
     --color-primary-950: #02294f;
 
     --color-primary-foreground: #ffffff;
+
+    --color-secondary: #29a395;
+    --color-secondary-50: #f2fbf9;
+    --color-secondary-100: #d2f5ee;
+    --color-secondary-200: #a5eadd;
+    --color-secondary-300: #70d8c8;
+    --color-secondary-400: #43beaf;
+    --color-secondary-500: #29a395;
+    --color-secondary-600: #1f857c;
+    --color-secondary-700: #1c6963;
+    --color-secondary-800: #1b5450;
+    --color-secondary-900: #1b4643;
+    --color-secondary-950: #0a2929;
   }
 }
 body {

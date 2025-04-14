@@ -8,20 +8,22 @@ export interface Doctor {
   about: string[];
   languages: string[];
   specialities: string[];
-  location: {
+  locations: {
     name: string;
     city: string;
     address: string;
     phone: string;
-  };
+    image?: string;
+  }[];
   education: Record<string, string>;
+  shortDescription: string;
 }
 
 const personnel: Doctor[] = [
   {
     id: 1,
     name: "Dr. Ariel Amaru, MD, PhD",
-    specialty: "ONCOHEMATLOGÍA",
+    specialty: "ONCOHEMATOLOGÍA",
     specialities: [
       "Trasplante de Médula Ósea",
       "Hematología y Oncohematología",
@@ -33,20 +35,31 @@ const personnel: Doctor[] = [
       "Secuenciación Genética",
       "Investigación Oncológica",
     ],
-    location: {
-      name: "ONCOCLINIC CLÍNICA ONCOLÓGICA",
-      city: "LA PAZ",
-      address: "Obrajes, Avenida Costanerita, entre calles 5 y 6, No. 71.",
-      phone: "22785566",
-    },
+    locations: [
+      {
+        name: "ONCOCLINIC CLÍNICA ONCOLÓGICA",
+        city: "LA PAZ",
+        address: "Obrajes, Avenida Costanerita, entre calles 5 y 6, No. 71.",
+        phone: "22785566",
+        image: "/locations/sede-obrajes.jpg",
+      },
+      {
+        name: "ONCOCLINIC SUCURSAL SOPOCACHI",
+        city: "LA PAZ",
+        address: "Av. 6 de Agosto Nº2255",
+        phone: "22785566",
+        image: "/locations/sede-sopocachi.jpg",
+      },
+    ],
     education: {
-      "Medico Cirujano":
-        "Médico Cirujano de la Universidad Mayor de San Andrés, Bolivia",
-      Hematologo: "Oncohematólogo del Hospital Papa Giovanni XXIII, Italia",
+      Pregrado:
+        "Médico Cirujano por la Universidad Mayor de San Andrés, Bolivia.",
+      Especialidad:
+        "Oncohematólogo formado en el Hospital Papa Giovanni XXIII, Italia.",
       Doctorado:
-        "Doctorado en la Universidad de Milán-Bicocca (UNIMIB), Italia",
-      "Especilista de Transplantes":
-        "Especialidad en Trasplante de Médula Ósea en la Universidad de Chicago, EE. UU.",
+        "Doctorado en Ciencias Médicas por la Universidad de Milán-Bicocca (UNIMIB), Italia.",
+      Subespecialidad:
+        "Especialista en Trasplante de Médula Ósea por la Universidad de Chicago, EE. UU.",
     },
     languages: ["Ingles", "Español"],
     about: [
@@ -58,6 +71,8 @@ const personnel: Doctor[] = [
     image: "/doctors/amaru.png",
     videoThumbnail: "",
     videoUrl: "https://www.youtube.com/embed/l9GhmQZCz-Y?si=ZjmxIEbrSv5IZQqZ",
+    shortDescription:
+      "Director Médico de Oncoclinic y especialista en trasplante de médula ósea y oncohematología.",
   },
   {
     id: 2,
@@ -68,12 +83,15 @@ const personnel: Doctor[] = [
       "especialista de Internación",
       "Cirujano general",
     ],
-    location: {
-      name: "ONCOCLINIC CLÍNICA ONCOLÓGICA",
-      city: "LA PAZ",
-      address: "Obrajes, Avenida Costanerita, entre calles 5 y 6, No. 71.",
-      phone: "22785566",
-    },
+    locations: [
+      {
+        name: "ONCOCLINIC CLÍNICA ONCOLÓGICA",
+        city: "LA PAZ",
+        address: "Obrajes, Avenida Costanerita, entre calles 5 y 6, No. 71.",
+        phone: "22785566",
+        image: "/locations/sede-obrajes.jpg",
+      },
+    ],
     education: {
       "Medico Cirujano":
         "Médico Cirujano de la Universidad Mayor de San Andrés, Bolivia",
@@ -91,6 +109,8 @@ const personnel: Doctor[] = [
     image: "/doctors/bueno.png",
     videoThumbnail: "",
     videoUrl: "https://www.youtube.com/embed/ty6HUWBYIaI?si=SP4yt_kXtis49uMt",
+    shortDescription:
+      "Cirujana Oncológica con amplia experiencia en cirugía general y oncológica en OncoClinic.",
   },
   {
     id: 3,
@@ -103,18 +123,23 @@ const personnel: Doctor[] = [
       "Perteneciente al Colegio Médico del Perú",
       "Miembro Titular de la Sociedad de Cancerología de Bolivia",
     ],
-    location: {
-      name: "ONCOCLINIC CLÍNICA ONCOLÓGICA",
-      city: "LA PAZ",
-      address: "Obrajes, Avenida Costanerita, entre calles 5 y 6, No. 71.",
-      phone: "22785566",
-    },
+    locations: [
+      {
+        name: "ONCOCLINIC CLÍNICA ONCOLÓGICA",
+        city: "LA PAZ",
+        address: "Obrajes, Avenida Costanerita, entre calles 5 y 6, No. 71.",
+        phone: "22785566",
+        image: "/locations/sede-obrajes.jpg",
+      },
+    ],
+
     education: {
-      "Medico Cirujano":
-        "Médico Cirujano de la Universidad Mayor de San Andrés, Bolivia",
-      "Residencia Médica": "General en el Hospital Militar Central",
-      "Residencia Médica de Sub Especialidad":
-        "Especialidad Cirujano Oncólogo de cabeza y cuello en INEN, Lima – Perú",
+      Pregrado:
+        "Médico Cirujano por la Universidad Mayor de San Andrés, Bolivia.",
+      Especialidad:
+        "Residencia Médica en Cirugía General realizada en el Hospital Militar Central.",
+      Subespecialidad:
+        "Especialidad en Cirugía Oncológica de Cabeza y Cuello en el Instituto Nacional de Enfermedades Neoplásicas (INEN), Lima – Perú.",
     },
     languages: ["Ingles", "Español"],
     about: [
@@ -123,38 +148,85 @@ const personnel: Doctor[] = [
     image: "/doctors/patiño.png",
     videoThumbnail: "",
     videoUrl: "https://www.youtube.com/embed/ty6HUWBYIaI?si=SP4yt_kXtis49uMt",
+    shortDescription:
+      "Especialista en cirugía oncológica de cabeza y cuello, con formación en Lima – Perú.",
   },
   {
     id: 4,
     name: "Dr. Marcio Denis López Ramirez",
-    specialty: "ONCLOGO CLINICO",
+    specialty: "ONCOLOGO CLINICO",
     specialities: [
-      "Cirujano Oncólogo de cabeza y cuello subespecialidad",
-      "Médico especialista – Cirugía general",
-      "Cirujano general",
-      "Perteneciente al Colegio Médico del Perú",
-      "Miembro Titular de la Sociedad de Cancerología de Bolivia",
+      "Oncología Clinica",
+      "Especialidad de Tratamiento de Inmunoterapia",
+      "Especilidad de Terapia Biologica y Quimioterapia",
     ],
-    location: {
-      name: "ONCOCLINIC CLÍNICA ONCOLÓGICA",
-      city: "LA PAZ",
-      address: "Obrajes, Avenida Costanerita, entre calles 5 y 6, No. 71.",
-      phone: "22785566",
-    },
+    locations: [
+      {
+        name: "ONCOCLINIC CLÍNICA ONCOLÓGICA",
+        city: "LA PAZ",
+        address: "Obrajes, Avenida Costanerita, entre calles 5 y 6, No. 71.",
+        phone: "22785566",
+        image: "/locations/sede-obrajes.jpg",
+      },
+    ],
     education: {
-      "Medico Cirujano":
-        "Médico Cirujano de la Universidad Mayor de San Andrés, Bolivia",
-      "Residencia Médica": "General en el Hospital Militar Central",
-      "Residencia Médica de Sub Especialidad":
-        "Especialidad Cirujano Oncólogo de cabeza y cuello en INEN, Lima – Perú",
+      Pregrado:
+        "Biología Molecular aplicado a la Oncología Clínica en la Universidad de Liège, Bélgica.",
+      Doctorado: "Doctorado en Medicina en el Colegio Médico LatinoAmericano.",
+      Especialidad:
+        "Medicina General Integral de la Facultad de Ciencias Médicas Faustino Pérez Hernández.",
+      Subespecialidad:
+        "Médico Oncólogo, Quimioterapia, Inmunoterapia en la Facultad de Ciencias Médicas Faustino Pérez Hernández.",
+      "Formación Complementaria":
+        "Control de Cáncer, manejo del dolor y Cuidados Paliativos en el Hospital Universitario Camilo Cienfuegos.",
     },
     languages: ["Ingles", "Español"],
     about: [
-      "La Dra. Erika Patiño, médico Cirujano Oncóloga, con formación en la Facultad de Medicina en la Universidad Mayor de San Andrés, con Especialidad en Cirugía General en Hospital Militar Central COSSMIL y Sub-Especialidad en Cirugía Oncológica de Cabeza y Cuello en Lima-Perú, atiende en la división de Cirugía Oncológica con enfoque en cirugía de Cabeza y Cuello de Oncoclinic, como ser maxilectomías, laringectomías, tiroidectomías, mandibulectomías, además de tumores en piel, entre otros. Ofreciendo al paciente la resección tumoral total, toma de biopsias y manejo multidisciplinario en la parte estética y funcional, asociada o no a tratamiento de Quimioterapia y Radioterapia de acuerdo al enfoque terapéutico necesario para beneficio del paciente.",
+      "El Dr. Marcio López, médico del área de Oncología Clínica, con formación en Medicina General Integral de la Facultad de Medicina de Sancti Spiritus “Dr. Faustino Pérez Hernández” Cuba, Especialidad en Oncología Clínica, Quimioterapia e Inmunoterapia en Facultad de Medicina Sancti Spiritus, Especialista en Biología Molecular aplicada a Oncología Clínica en Bélgica; manejo del dolor y Cuidados Paliativos en paciente oncológico. Es el encargado del área de Oncología Clínica de OncoClinic, investigador de estudios clínicos de tumores sólidos, como el Melanoma Lentiginoso Acral, Adenocarcinoma de Próstata entre otros, autor y coautor de artículos en revistas científicas.",
+      "Tiene el objetivo diagnóstico certero, complementando para el estudio y estadiación de la enfermedad, estudios complementarios de imagen como ser la PET-CT, RMN, Tomografía Axial Computarizada, Biopsias (incisional o percutánea), estudios de Citología, Patología, Inmunohistoquímica, Biología Molecular  y estudios de última generación como la Secuenciación del ADN tumoral para ofrecer el mejor tratamiento al paciente oncológico, como ser Quimioterapia, Inmunoterapia, Terapia Biológica, Hormonoterapia, con finalidad curativa o paliativa, de acuerdo a las últimas actualizaciones terapeúticas y estándares internacionales, mediante el manejo multidisciplinario que abarca el área de Oncología, incluyendo la Cirugía Oncológica adyuvante o neoadyuvante y/o la Radioterapia.",
     ],
-    image: "/doctors/patiño.png",
+    image: "/doctors/lopez.png",
     videoThumbnail: "",
-    videoUrl: "https://www.youtube.com/embed/ty6HUWBYIaI?si=SP4yt_kXtis49uMt",
+    videoUrl: "https://www.youtube.com/embed/wBwNeeSS9h0?si=x8LI4BusxvKWN4S7",
+    shortDescription:
+      "Oncólogo clínico con experiencia en quimioterapia, inmunoterapia y biología molecular aplicada.",
+  },
+  {
+    id: 5,
+    name: "Dr. Daniel Eduardo Mercado Rodrigo",
+    specialty: "Ortopedia oncológica",
+    specialities: [
+      "Médico Cirujano",
+      "Especialidad en Ortopedia y Traumatología",
+      "Especialidad en Ortopedia Oncológica",
+    ],
+    locations: [
+      {
+        name: "ONCOCLINIC CLÍNICA ONCOLÓGICA",
+        city: "LA PAZ",
+        address: "Obrajes, Avenida Costanerita, entre calles 5 y 6, No. 71.",
+        phone: "22785566",
+        image: "/locations/sede-obrajes.jpg",
+      },
+    ],
+    education: {
+      Pregrado: "Médico Cirujano de la Universidad Nuestra Señora de La Paz.",
+      Especialidad: "Especialista en Ortopedia y Traumatología.",
+      Subespecialidad:
+        "Alta Especialidad en Ortopedia Oncológica en el INR - UNAM, México.",
+      "Formación Complementaria":
+        "Diplomado en Infecciones Óseas y Pseudoartrosis en el INR - UNAM, México.",
+    },
+    languages: ["Ingles", "Español"],
+    about: [
+      "El Dr. Daniel Mercado Rodrigo, médico del área de Oncología Quirúrgica, con enfoque en el área de Ortopedia y Traumatología Oncológica, formado en la Universidad de Medicina Nuestra Señora de La Paz, Especialidad en Traumatología y Ortopedia y Alta Especialidad en Ortopedia Oncológica en UNAM-México, además de Diplomado en Infecciones óseas y pseudoartrosis en UNAM-México.",
+      "Es el médico encargado del área de Ortopedia Oncológica en OncoClinic, es miembro de la Sociedad Latinoamericana de Tumores Muscoesqueléticos, se especializa en el tratamiento de tumores de extremidades, con la finalidad de recuperación de las mismas, mediante la excéresis total del tumor y estabilización de la extremidad afectada mediante el uso de prótesis modulares como ser de hombro, codo, muñeca, cadera, rodilla  entre otros.",
+    ],
+    image: "/doctors/mercado.png",
+    videoThumbnail: "",
+    videoUrl: "https://www.youtube.com/embed/lKXsaJ1xqFk?si=sX6pFWHd3DqH717g",
+    shortDescription:
+      "Especialista en ortopedia oncológica, experto en tratamiento de tumores óseos y extremidades.",
   },
 ];
 

@@ -8,7 +8,7 @@
           <h2
             class="text-primary-700 flex-shrink-0 bg-white px-4 text-xl font-bold tracking-wider uppercase"
           >
-            Nuestros Profesionales
+            Nuestros <span class="text-primary-300">Profesionales </span>
           </h2>
           <div class="flex-grow border-t border-gray-300"></div>
         </div>
@@ -28,7 +28,7 @@
             @click="selectDoctor(doctor.id)"
           >
             <div
-              class="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border-2"
+              class="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border-2 relative"
               :class="{
                 'border-primary-500': selectedDoctorId === doctor.id,
                 'border-gray-200': selectedDoctorId !== doctor.id,
@@ -67,7 +67,7 @@
               <h2
                 class="text-primary-700 text-xl font-bold tracking-wider uppercase"
               >
-                Nuestros Profesionales
+                Nuestros <span class="text-primary-300">Profesionales </span>
               </h2>
             </div>
             <div class="max-h-[600px] overflow-y-auto pr-2">
@@ -120,7 +120,10 @@
           <!-- Doctor video/image section -->
           <div class="relative mb-6">
             <div class="relative">
-              <div v-if="!isVideoPlaying" class="relative">
+              <div
+                v-if="!isVideoPlaying"
+                class="relative border-b-3 border-black"
+              >
                 <NuxtImg
                   :src="selectedDoctor.videoThumbnail || selectedDoctor.image"
                   :alt="selectedDoctor.name"
@@ -133,7 +136,7 @@
                 >
                   <!-- Video button styled like the reference image -->
                   <div
-                    class="border border-white bg-transparent px-4 py-2 text-2xl font-medium text-white transition-all hover:bg-white"
+                    class="border border-white bg-transparent px-4 py-2 text-2xl font-medium text-white transition-all hover:bg-secondary-500"
                   >
                     VER VIDEO
                   </div>
@@ -149,37 +152,45 @@
                   frameborder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowfullscreen
-                ></iframe>
+                />
               </div>
             </div>
 
-            <!-- Doctor name and specialty with horizontal line like reference -->
-            <div class="mt-4 border-b border-gray-300 pb-2">
+            <div class="mt-4 space-y-3">
               <h1 class="text-primary-800 text-2xl font-bold sm:text-3xl">
                 {{ selectedDoctor.name }}
               </h1>
-              <h2 class="text-primary-600 mt-1 text-lg sm:text-xl">
-                <a href="#" class="hover:underline">
+              <h2 class="text-primary-600 mt-1 text-lg sm:text-xl underline">
+                <UButton
+                  variant="link"
+                  href="#"
+                  class="hover:underline p-0"
+                  size="xl"
+                >
                   {{ selectedDoctor.specialty }}
-                </a>
+                </UButton>
               </h2>
             </div>
           </div>
 
-          <!-- Action buttons with improved responsive layout -->
-          <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
-            <a
+          <!-- Action buttons  -->
+          <div
+            class="mb-8 flex flex-col gap-3 sm:flex-row sm:gap-4 text-center"
+          >
+            <UButton
+              href="/citas"
+              variant="solid"
+              size="xl"
+              class="bg-secondary-500 py-3 px-8 hover:bg-secondary/80 flex justify-center items-center"
+              label="Solicite Cita"
+            />
+            <UButton
               href="#"
-              class="flex items-center justify-center border border-teal-700 bg-teal-600 px-6 py-2 font-medium text-white transition-all hover:bg-teal-700"
-            >
-              Solicite Cita
-            </a>
-            <a
-              href="#"
-              class="bg-primary-600 hover:bg-primary-700 border-primary-700 flex items-center justify-center border px-6 py-2 font-medium text-white transition-all"
-            >
-              Referir Paciente
-            </a>
+              size="xl"
+              class="bg-primary-600 hover:bg-primary-600/80 px-6 py-3 flex justify-center items-center"
+              :ui="{}"
+              label="Ver Tratamientos"
+            />
           </div>
 
           <!-- All content sections with improved section headers -->
@@ -190,7 +201,8 @@
               <h3
                 class="text-primary-700 w-full flex-shrink-0 text-3xl font-semibold tracking-wider uppercase"
               >
-                Conozca a Nuestro Profesional
+                Conozca a Nuestro
+                <span class="text-primary-300">Profesional </span>
               </h3>
             </div>
             <div class="space-y-4 px-1 text-gray-700">
@@ -217,7 +229,8 @@
               <h3
                 class="text-primary-700 w-full flex-shrink-0 bg-white text-start text-3xl font-bold tracking-wider"
               >
-                ESPECIALIDADES Y SERVICIOS
+                ESPECIALIDADES Y
+                <span class="text-primary-300">SERVICIOS </span>
               </h3>
             </div>
             <ul class="list-disc space-y-2 pl-8 text-gray-700">
@@ -245,51 +258,41 @@
                 </h3>
               </div>
             </div>
-            <div class="flex flex-col px-1 md:flex-row md:gap-6">
+            <div
+              class="flex flex-col px-1 md:flex-row md:gap-6"
+              v-for="(location, index) in selectedDoctor.locations"
+              :key="index"
+            >
               <div class="mb-4 md:mb-0 md:w-1/2">
                 <div class="text-gray-700">
                   <h4 class="text-lg font-semibold">
-                    {{ selectedDoctor.location.name }}
+                    {{ location.name }}
                   </h4>
-                  <p>{{ selectedDoctor.location.address }}</p>
-                  <p>{{ selectedDoctor.location.city }}</p>
-                  <p class="mt-4">{{ selectedDoctor.location.phone }}</p>
+                  <p>{{ location.address }}</p>
+                  <p>{{ location.city }}</p>
+                  <p class="mt-4">{{ location.phone }}</p>
                 </div>
               </div>
               <div class="md:w-1/2">
-                <div class="h-64 w-full overflow-hidden border border-gray-200">
+                <div
+                  class="h-64 w-full overflow-hidden border border-gray-200 rounded-md relative"
+                >
                   <!-- Placeholder for map -->
+                  <NuxtImg
+                    :src="location.image"
+                    class="w-full"
+                    :draggable="false"
+                  />
                   <div
-                    class="flex h-full items-center justify-center bg-gray-100"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-12 w-12 text-gray-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                  </div>
+                    class="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent"
+                  />
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Education section -->
-          <div>
+          <div class="mb-14">
             <USeparator class="pb-8" />
             <div class="relative mb-6 flex items-center">
               <h3
