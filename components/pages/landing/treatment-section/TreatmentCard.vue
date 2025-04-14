@@ -47,7 +47,7 @@
 
         <!-- Descripción con mejor legibilidad -->
         <p
-          class="line-clamp-3 max-w-prose text-sm font-light text-gray-100 group-hover:text-white"
+          class="line-clamp-3 max-w-prose text-sm font-light text-gray-100 group-hover:text-white leading-relaxed min-h-[4.5rem]"
         >
           {{ description }}
         </p>

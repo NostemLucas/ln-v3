@@ -1,32 +1,7 @@
 <template>
-<<<<<<< HEAD
-  <div class="">
-    <div>
-      
-      <!-- Breadcrumb -->
-      <div class="bg-primary-500 md:container mx-auto">
-        <Breadcumb />
-
-        <!-- Treatment Header -->
-        <div class="mb-12">
-          <span
-            class="inline-block rounded-full bg-teal-100 px-3 py-1 my-6 text-sm font-medium text-teal-800"
-          >
-            Tratamiento Especializado
-          </span>
-          <h1
-            class="mb-4 text-3xl font-bold text-slate-800 md:text-4xl lg:text-5xl"
-          >
-            Trasplante De Médula Ósea
-          </h1>
-        </div>
-      </div>
-
-=======
   <div class="bg-gradient-to-b from-slate-50 to-white">
     <HeaderNavigation title="Transplante de Medula Osea" />
     <div class="container mx-auto px-8 py-10 md:px-6 lg:py-16 text-justify">
->>>>>>> 36fceb2abdd421e66edcca6cd9a0373cedd238bd
       <!-- Main Content -->
       <div class="grid gap-12 lg:grid-cols-2">
         <!-- Left Column: Description and Accordions -->
