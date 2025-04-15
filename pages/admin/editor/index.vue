@@ -20,7 +20,7 @@
           v-model="selectedTab"
           class="w-full h-full"
           :ui="{
-            label: 'text-wild-sand-700 ',
+            label: 'text-wild-sand-700 cursor-pointer',
             indicator: 'bg-wild-sand-400 text-wild-sand-950',
             content: ' h-full',
           }"

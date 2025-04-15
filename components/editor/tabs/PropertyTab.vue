@@ -28,7 +28,9 @@
 
       <!-- Vista previa -->
       <div class="w-full md:w-[40%] p-4 rounded text-white h-full text-center">
-        <IphoneDevice />
+        <DesktopDevice>
+          <Plantilla />
+        </DesktopDevice>
 
         <!-- Texto 1: Descripción de la vista previa -->
         <p
@@ -64,6 +66,7 @@ import LaptopDevice from "~/components/editor/devices/LaptopDevice.vue";
 import PixelDevice from "~/components/editor/devices/PixelDevice.vue";
 import TabletDevice from "~/components/editor/devices/TabletDevice.vue";
 import Icon from "@nuxt/ui/runtime/components/Icon.vue";
+import Plantilla from "../plantilla.vue";
 interface Device {
   name: string;
   component: Component;
