@@ -6,6 +6,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import TopBar from "@/components/navigation/TopBar.vue";
-import Footer from "@/components/navigation/Footer.vue";
+import TopBar from "~/components/navigation/default/DefaultTopBar.vue";
+import Footer from "~/components/navigation/default/DefaultFooter.vue";
 </script>

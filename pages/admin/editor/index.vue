@@ -1,19 +1,43 @@
 <template>
-  <div class="w-full h-full">
-    <header>
-      <UButton label="Ubicaciones" icon="lucide:chevron-left" variant="ghost" />
-    </header>
+  <!-- todo: revisar la impelmtacion del deslizble -->
+  <div class="w-full h-full overflow-hidden">
+    <div class="flex flex-col gap-4 w-full h-full">
+      <div class="w-full h-full space-y-1">
+        <p class="text-3xl font-semibold">Oncoclinic Clinica Oncologica</p>
+        <div class="flex flex-row gap-3 w-full items-center">
+          <span
+            class="h-3 w-3 bg-wild-sand-600 rounded-full inline-block -translate-y-0.5"
+          ></span>
+          <p class="font-semibold m-0">En revisión:</p>
+          <p class="font-medium text-wild-sand-600 m-0">
+            Productor de Contenido
+          </p>
+        </div>
+
+        <UTabs
+          variant="link"
+          :items="items"
+          v-model="selectedTab"
+          class="w-full h-full"
+          :ui="{
+            label: 'text-wild-sand-700 ',
+            indicator: 'bg-wild-sand-400 text-wild-sand-950',
+            content: ' h-full',
+          }"
+        >
+          <template #informacion> <PropertyTab /></template>
+          <template #elementos> dsdsd</template>
+          <template #fotos> dsdsd</template>
+          <template #estadisticas> dsdsd</template>
+        </UTabs>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import DefaultDevice from "~/components/editor/devices/DefaultDevice.vue";
-import DesktopDevice from "~/components/editor/devices/DesktopDevice.vue";
-import IphoneDevice from "~/components/editor/devices/IphoneDevice.vue";
-import LaptopDevice from "~/components/editor/devices/LaptopDevice.vue";
-import PixelDevice from "~/components/editor/devices/PixelDevice.vue";
-import TabletDevice from "~/components/editor/devices/TabletDevice.vue";
-
+import type { TabsItem } from "@nuxt/ui";
+import PropertyTab from "~/components/editor/tabs/PropertyTab.vue";
 definePageMeta({
   layout: "admin",
   title: "Editor",
@@ -23,42 +47,16 @@ definePageMeta({
   },
 });
 
-interface Device {
-  name: string;
-  component: any;
-}
+const items = [
+  { label: "informacion", value: "informacion", slot: "informacion" },
+  {
+    label: "Elementos Destacados",
+    value: "elementos-destacados",
+    slot: "elementos",
+  },
+  { label: "Fotos", value: "fotos", slot: "fotos" },
+  { label: "Estadisticas", value: "estadisticas", slot: "estadisticas" },
+] satisfies TabsItem[];
 
-const devices = [
-  {
-    name: "default",
-    component: DefaultDevice,
-  },
-  {
-    name: "desktop",
-    component: DesktopDevice,
-  },
-  {
-    name: "pixel",
-    component: PixelDevice,
-  },
-  {
-    name: "tablet",
-    component: TabletDevice,
-  },
-  {
-    name: "laptop",
-    component: LaptopDevice,
-  },
-  {
-    name: "iphone",
-    component: IphoneDevice,
-  },
-];
-const selectedDevice = ref(devices[0]);
-
-const selectDevice = (device: Device) => {
-  selectedDevice.value = device;
-};
+const selectedTab = ref(items[0].value);
 </script>
-
-<style></style>

@@ -9,15 +9,80 @@
 }
 @font-face {
   font-family: "Roboto";
-  src: url("@/assets/fonts/Roboto.ttf") format("truetype");
-  font-weight: normal;
+  src: url("@/assets/fonts/Roboto-Thin.ttf") format("truetype");
+  font-weight: 100;
   font-style: normal;
 }
+
+/* Roboto ExtraLight - 200 */
+@font-face {
+  font-family: "Roboto";
+  src: url("@/assets/fonts/Roboto-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+
+/* Roboto Light - 300 */
+@font-face {
+  font-family: "Roboto";
+  src: url("@/assets/fonts/Roboto-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+/* Roboto Regular - 400 */
+@font-face {
+  font-family: "Roboto";
+  src: url("@/assets/fonts/Roboto-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Roboto Medium - 500 */
+@font-face {
+  font-family: "Roboto";
+  src: url("@/assets/fonts/Roboto-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* SemiBold - 600 */
+@font-face {
+  font-family: "Roboto";
+  src: url("@/assets/fonts/Roboto-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Bold - 700 */
+@font-face {
+  font-family: "Roboto";
+  src: url("@/assets/fonts/Roboto-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* ExtraBold - 800 */
+@font-face {
+  font-family: "Roboto";
+  src: url("@/assets/fonts/Roboto-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* Black - 900 */
+@font-face {
+  font-family: "Roboto";
+  src: url("@/assets/fonts/Roboto-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+
 @layer base {
   @theme static {
     --font-horsham: "Horsham", sans-serif;
     --font-roboto: "Roboto", sans-serif;
-
+    --font-halenoir: "Halenoir", sans-serif;
     --color-primary: #033f73;
     --color-primary-dark: #1d4ed8;
     --color-primary-50: #e1edf7;
@@ -46,8 +111,20 @@
     --color-secondary-800: #1b5450;
     --color-secondary-900: #1b4643;
     --color-secondary-950: #0a2929;
+
+    --color-wild-sand-50: #f5f5f7;
+    --color-wild-sand-100: #ebebee;
+    --color-wild-sand-200: #dbdbe2;
+    --color-wild-sand-300: #c2c3ce;
+    --color-wild-sand-400: #a4a4b6;
+    --color-wild-sand-500: #8f8ea3;
+    --color-wild-sand-600: #807d93;
+    --color-wild-sand-700: #737085;
+    --color-wild-sand-800: #615e6f;
+    --color-wild-sand-900: #504e5a;
+    --color-wild-sand-950: #333239;
   }
 }
 body {
-  font-family: Helvetica, sans-serif;
+  font-family: var(--font-roboto), sans-serif;
 }

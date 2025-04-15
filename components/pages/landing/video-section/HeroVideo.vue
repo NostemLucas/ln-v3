@@ -45,7 +45,7 @@
           <!-- Appointment Button - Fixed with better integration -->
           <NuxtLink
             to="#"
-            class="appointment-btn group inline-flex items-center text-lg font-medium text-white transition-all duration-300 md:text-xl overflow-hidden rounded-full"
+            class="appointment-btn group inline-flex items-center text-lg f text-white transition-all duration-300 md:text-xl overflow-hidden rounded-full font-normal"
           >
             <span>Pedir una cita</span>
             <Icon
@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    <EnhancedVideo v-model:is-open="isModalOpen" />/>
+    <EnhancedVideo v-model:is-open="isModalOpen" />
   </div>
 </template>
 

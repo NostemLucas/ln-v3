@@ -35,7 +35,7 @@
               <UButton
                 variant="link"
                 v-if="item.subItems"
-                class="flex items-center gap-1.5 font-medium transition-colors duration-200 hover:text-primary text-gray-800 tracking-wider lg:text-xs lg:px-1.5 lg:py-1 xl:text-sm xl:px-2 xl:py-1 2xl:text-base 2xl:px-3 2xl:py-2"
+                class="flex items-center gap-1.5 font-normal transition-colors duration-200 hover:text-primary text-gray-800 tracking-wider lg:text-xs lg:px-1.5 lg:py-1 xl:text-sm xl:px-2 xl:py-1 2xl:text-base 2xl:px-3 2xl:py-2"
               >
                 {{ item.label }}
                 <Icon
@@ -57,7 +57,7 @@
                 v-else-if="item.url"
                 variant="link"
                 :to="item.url || '#'"
-                class="relative font-medium transition-colors duration-200 hover:text-primary-300 text-gray-800 tracking-wide lg:text-xs lg:px-1.5 lg:py-1 xl:text-sm xl:px-2 xl:py-1 2xl:text-base 2xl:px-3 2xl:py-2"
+                class="relative font-normal transition-colors duration-200 hover:text-primary-300 text-gray-800 tracking-wide lg:text-xs lg:px-1.5 lg:py-1 xl:text-sm xl:px-2 xl:py-1 2xl:text-base 2xl:px-3 2xl:py-2"
                 :class="{
                   'text-primary-400 font-semibold': isActiveRoute(item.url),
                 }"
@@ -76,7 +76,7 @@
               <UButton
                 variant="link"
                 v-else-if="item.columns"
-                class="flex items-center gap-1.5 font-medium transition-colors duration-200 hover:text-primary text-gray-800 lg:text-xs lg:px-1.5 lg:py-1 xl:text-sm xl:px-2 xl:py-1 2xl:text-base 2xl:px-3 2xl:py-2"
+                class="flex items-center gap-1.5 font-normal transition-colors duration-200 hover:text-primary text-gray-800 lg:text-xs lg:px-1.5 lg:py-1 xl:text-sm xl:px-2 xl:py-1 2xl:text-base 2xl:px-3 2xl:py-2"
               >
                 {{ item.label }}
                 <Icon
@@ -139,7 +139,7 @@
                   >
                     <NuxtLink
                       :to="subItem.url"
-                      class="group relative flex items-center gap-2 py-2 text-sm font-medium text-gray-700 transition-colors duration-200 hover:text-primary rounded-md hover:bg-gray-50 px-2"
+                      class="group relative flex items-center gap-2 py-2 text-sm font-normal text-gray-700 transition-colors duration-200 hover:text-primary rounded-md hover:bg-gray-50 px-2"
                       :class="{
                         '': isActiveRoute(subItem.url),
                       }"
@@ -293,13 +293,13 @@
             <UButton
               to="/citas"
               variant="outline"
-              class="relative font-medium transition-colors duration-200 hover:text-primary rounded-full lg:text-xs lg:px-3 lg:py-1 xl:text-sm xl:px-4 xl:py-1.5 2xl:text-sm 2xl:px-5 2xl:py-2"
+              class="relative font-normal transition-colors duration-200 hover:text-primary rounded-full lg:text-xs lg:px-3 lg:py-1 xl:text-sm xl:px-4 xl:py-1.5 2xl:text-sm 2xl:px-5 2xl:py-2"
             >
               Solicita una cita
             </UButton>
             <NuxtLink
               to="/login"
-              class="rounded-full border border-gray-400 font-medium transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white lg:text-xs lg:px-3 lg:py-1 xl:text-sm xl:px-4 xl:py-1.5 2xl:text-sm 2xl:px-5 2xl:py-2"
+              class="rounded-full border border-gray-400 font-normal transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white lg:text-xs lg:px-3 lg:py-1 xl:text-sm xl:px-4 xl:py-1.5 2xl:text-sm 2xl:px-5 2xl:py-2"
             >
               Iniciar Sesión
             </NuxtLink>
@@ -381,7 +381,7 @@
                   item.url ? toggleMobileMenu() : toggleMobileSection(index)
                 "
               >
-                <span class="text-base font-medium">{{ item.label }}</span>
+                <span class="text-base font-normal">{{ item.label }}</span>
                 <div
                   class="flex items-center justify-center h-8 w-8 rounded-full hover:bg-gray-100 transition-colors"
                 >
@@ -448,7 +448,7 @@
                     class="mb-2 px-4 pt-3"
                   >
                     <h3
-                      class="mb-2 flex items-center gap-2 font-medium text-sm text-gray-900"
+                      class="mb-2 flex items-center gap-2 font-normal text-sm text-gray-900"
                     >
                       <div
                         class="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10"
@@ -491,14 +491,14 @@
           <div class="mt-8 grid grid-cols-1 gap-3">
             <NuxtLink
               to="/citas"
-              class="w-full rounded-lg bg-gray-100 px-4 py-3.5 text-center font-medium hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center"
+              class="w-full rounded-lg bg-gray-100 px-4 py-3.5 text-center font-normal hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center"
             >
               <Icon name="lucide:calendar" class="h-4 w-4 mr-2" />
               Solicita una cita
             </NuxtLink>
             <NuxtLink
               to="/login"
-              class="w-full rounded-lg bg-primary px-4 py-3.5 text-center font-medium text-white hover:bg-primary/90 transition-colors duration-200 flex items-center justify-center"
+              class="w-full rounded-lg bg-primary px-4 py-3.5 text-center font-normal text-white hover:bg-primary/90 transition-colors duration-200 flex items-center justify-center"
             >
               <Icon name="lucide:log-in" class="h-4 w-4 mr-2" />
               Iniciar Sesión
