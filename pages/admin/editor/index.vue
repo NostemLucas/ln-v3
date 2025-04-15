@@ -1,24 +1,8 @@
 <template>
-  <div class="grid grid-cols-10 w-full bg-cyan-200 h-full">
-    <div class="col-span-7 flex justify-center items-center bg-red-500">
-      <LaptopDevice />
-    </div>
-    <div class="col-span-3 flex justify-center items-center bg-blue-500">
-      <div class="flex flex-col gap-4">
-        <h1 class="text-2xl font-bold">Select Device</h1>
-        <div class="flex gap-4">
-          <div
-            v-for="device in devices"
-            :key="device.name"
-            @click="selectDevice(device)"
-            class="cursor-pointer p-2 border rounded-lg hover:bg-gray-200"
-          >
-            {{ device.name }}
-          </div>
-        </div>
-        <component :is="selectedDevice.component" />
-      </div>
-    </div>
+  <div class="w-full h-full">
+    <header>
+      <UButton label="Ubicaciones" icon="lucide:chevron-left" variant="ghost" />
+    </header>
   </div>
 </template>
 

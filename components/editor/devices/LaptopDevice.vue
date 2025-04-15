@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-full">
     <div
       class="relative mx-auto border-gray-800 dark:border-gray-800 bg-gray-800 border-[8px] rounded-t-xl h-[172px] max-w-[301px] md:h-[294px] md:max-w-[512px]"
     >
@@ -23,7 +23,7 @@
     >
       <div
         class="absolute left-1/2 top-0 -translate-x-1/2 rounded-b-xl w-[56px] h-[5px] md:w-[96px] md:h-[8px] bg-gray-800"
-      ></div>
+      />
     </div>
   </div>
 </template>
