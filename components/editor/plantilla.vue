@@ -1,16 +1,16 @@
 <template>
   <div
-    class="container mx-auto flex flex-col gap-4 w-full h-full font-horsham px-[30rem] py-20"
+    class="mx-auto flex flex-col gap-4 h-full font-horsham max-w-2xl px-6 md:px-0 py-6"
   >
     <!-- categoria -->
     <div class="font-bold uppercase">NEWS ANALYSIS</div>
     <!-- titulo principal -->
-    <h2 class="text-4xl font-black italic">
+    <h2 class="text-4xl font-black italic leading-11">
       Nayib Bukele dice que no devolverá a EE. UU. al hombre deportado por error
       a El Salvador
     </h2>
     <!-- descripcion corta -->
-    <div>
+    <div class="text-2xl leading-7 font-normal text-black/80">
       La reunión en el Despacho Oval entre Donald Trump y el presidente de El
       Salvador, Nayib Bukele, fue un ejemplo contundente del desafío de Trump a
       los tribunales federales.
@@ -67,7 +67,7 @@
     </div>
 
     <!-- texto principal -->
-    <p>
+    <p class="text-xl">
       El mensaje de la reunión fue claro: ni Trump ni Bukele tenían intención
       alguna de devolver a Abrego Garcia, aunque la Corte Suprema haya
       dictaminado que debe regresar a Estados Unidos. El caso ha llegado a
