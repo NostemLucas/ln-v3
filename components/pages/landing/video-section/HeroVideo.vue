@@ -33,7 +33,7 @@
       <div class="mx-auto max-w-4xl">
         <!-- Main Heading with animation -->
         <h1
-          class="animate-fade-in-up font-horsham text-4xl font-bold leading-tight tracking-wide text-white md:text-5xl lg:text-6xl"
+          class="animate-fade-in-up font-horsham text-4xl leading-tight tracking-wide text-white md:text-5xl lg:text-6xl font-light"
         >
           Transformando el cuidado de tu salud
         </h1>
