@@ -6,8 +6,8 @@ import InfoPanel from "./InfoPanel.vue";
 type DeviceType = "desktop" | "tablet" | "mobile";
 
 const activeDevice = ref<DeviceType>("desktop");
-const zoomLevel = ref<number>(47);
-const scrollContainer = ref(null);
+const zoomLevel = ref<number>(90);
+const scrollContainer = ref<HTMLElement | null>(null);
 
 // Simulado del tamaño base de los dispositivos
 const getBaseWidth = (device: DeviceType): number => {
@@ -26,18 +26,48 @@ const getBaseWidth = (device: DeviceType): number => {
 // Handle zoom in/out 10
 const handleZoomIn = () => {
   zoomLevel.value = Math.min(zoomLevel.value + 10, 150);
+  nextTick(() => centerContent());
 };
 
 const handleZoomOut = () => {
   zoomLevel.value = Math.max(zoomLevel.value - 10, 30);
+  nextTick(() => centerContent());
 };
+
+// Función para centrar el contenido cuando cambia el zoom
+const centerContent = () => {
+  if (!scrollContainer.value) return;
+
+  // Calculamos las dimensiones del contenedor y del contenido
+  const containerWidth = scrollContainer.value.clientWidth;
+  const containerHeight = scrollContainer.value.clientHeight;
+  const contentWidth =
+    getBaseWidth(activeDevice.value) * (zoomLevel.value / 100);
+  const contentHeight = contentWidth * 0.75; // Asumiendo una proporción aproximada
+
+  // Centramos el scroll
+  scrollContainer.value.scrollLeft =
+    (scrollContainer.value.scrollWidth - containerWidth) / 2;
+  scrollContainer.value.scrollTop =
+    (scrollContainer.value.scrollHeight - containerHeight) / 2;
+};
+
+// Observer para el cambio de zoom y centrar el contenido
+watch(zoomLevel, () => {
+  nextTick(() => centerContent());
+});
+
+// Centramos el contenido al cargar
+onMounted(() => {
+  nextTick(() => centerContent());
+});
 </script>
 
 <template>
   <div class="bg-white h-full flex flex-col relative">
     <div class="flex flex-col p-4 absolute w-full z-10">
       <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center space-x-2">
+        <!--      <div class="flex items-center space-x-2">
           <UButton
             variant="outline"
             icon="lucide:minus"
@@ -52,7 +82,7 @@ const handleZoomOut = () => {
             @click="handleZoomIn"
             icon="lucide:plus"
           />
-        </div>
+        </div> -->
       </div>
 
       <div class="flex items-center space-x-4">
@@ -64,8 +94,8 @@ const handleZoomOut = () => {
         <div class="flex-1 ml-4">
           <USlider
             v-model="zoomLevel"
-            :min="30"
-            :max="150"
+            :min="50"
+            :max="300"
             :step="1"
             :ui="{
               range:
@@ -86,36 +116,30 @@ const handleZoomOut = () => {
       ref="scrollContainer"
       class="scroll-container flex-1 overflow-auto p-4 cursor-grab"
       v-dragscroll
-      style="position: relative"
     >
-      <!-- Contenedor virtual que proporciona espacio adicional para el zoom -->
+      <!-- Contenedor con espacio para el zoom en ambas direcciones -->
       <div
         class="virtual-container"
         :style="{
-          width: `${Math.max(
-            1000,
-            getBaseWidth(activeDevice) * (zoomLevel / 50)
-          )}px`,
-          height: `${Math.max(
-            800,
-            getBaseWidth(activeDevice) * (zoomLevel / 120)
-          )}px`,
+          width: `${Math.max(2000, getBaseWidth(activeDevice) * 3)}px`,
+          height: `${Math.max(1500, getBaseWidth(activeDevice) * 2)}px`,
+          padding: '50vh 50vw',
+          boxSizing: 'border-box',
         }"
       >
-        <!-- Contenedor centrado para el contenido -->
-        <div
-          class="preview-wrapper flex items-center justify-center h-full bg-amber-400"
-        >
+        <!-- Contenedor que mantiene el contenido centrado -->
+        <div class="preview-wrapper flex items-center justify-center">
           <div
-            class="preview-container transform-gpu bg-blue"
+            class="preview-container transform-gpu"
             :style="{
               transform: `scale(${zoomLevel / 100})`,
               transformOrigin: 'center center',
               width: `${getBaseWidth(activeDevice)}px`,
+              transition: 'transform 0.2s ease-out',
             }"
           >
             <!-- Tu contenido -->
-            <!--   <NuxtImg src="/logo.png" draggable="false" /> -->
+            <!--    <NuxtImg src="/logo.png" draggable="false" /> -->
             <!-- o tu DevicePreview descomentar según necesites -->
 
             <DevicePreview
@@ -153,30 +177,23 @@ const handleZoomOut = () => {
 }
 
 .preview-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Si quieres ocultar las barras de desplazamiento, pero permitir el scroll */
-/* Descomentar si es necesario
+/* Estilo para barras de desplazamiento más evidentes */
 .scroll-container::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 .scroll-container::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
 }
 
 .scroll-container::-webkit-scrollbar-track {
   background-color: rgba(0, 0, 0, 0.1);
 }
-*/
 </style>

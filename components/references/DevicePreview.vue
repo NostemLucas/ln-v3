@@ -43,10 +43,10 @@ const windowHeight = heightByDevice[props.deviceType];
 
         <div class="bg-white">
           <div
-            class="mobile-content overflow-y-auto"
+            class="mobile-content overflow-y-auto px-6 py-2"
             :style="{ height: `${windowHeight}px`, width: `${width}px` }"
           >
-            <ContentDisplay :deviceType="deviceType" />
+            <ContentDisplay :device-type="deviceType" />
           </div>
         </div>
 
@@ -82,7 +82,7 @@ const windowHeight = heightByDevice[props.deviceType];
             class="tablet-content overflow-y-auto mx-auto"
             :style="{ height: `${windowHeight}px`, width: `${width}px` }"
           >
-            <ContentDisplay :deviceType="deviceType" />
+            <ContentDisplay :device-type="deviceType" />
           </div>
         </div>
 
@@ -116,7 +116,7 @@ const windowHeight = heightByDevice[props.deviceType];
             class="desktop-content overflow-y-auto"
             :style="{ height: `${windowHeight}px`, width: `${width}px` }"
           >
-            <ContentDisplay :deviceType="deviceType" />
+            <ContentDisplay :device-type="deviceType" />
           </div>
         </div>
 

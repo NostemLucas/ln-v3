@@ -26,8 +26,8 @@
           }"
         >
           <template #informacion> <PropertyTab /></template>
-          <template #elementos> dsdsd</template>
-          <template #fotos> dsdsd</template>
+          <template #elementos> lorem*100</template>
+          <template #fotos><ImageTab /></template>
           <template #estadisticas> dsdsd</template>
         </UTabs>
       </div>
@@ -37,6 +37,7 @@
 
 <script lang="ts" setup>
 import type { TabsItem } from "@nuxt/ui";
+import ImageTab from "~/components/editor/tabs/ImageTab.vue";
 import PropertyTab from "~/components/editor/tabs/PropertyTab.vue";
 definePageMeta({
   layout: "admin",

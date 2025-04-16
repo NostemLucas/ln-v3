@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full">
     <div class="flex flex-col md:flex-row gap-4 h-full">
-      <div class="flex flex-col w-full md:w-[60%]">
+      <div class="flex flex-col w-full md:w-[50%]">
         <div
           class="flex flex-row w-full bg-wild-sand-50 rounded p-4 gap-3 items-start"
         >
@@ -38,12 +38,47 @@
             class="px-4 py-2 bg-wild-sand-100 text-wild-sand-950 hover:bg-wild-sand-200 transition-colors duration-400 ease-in"
           />
         </div>
+        <div class="mt-4">
+          <USeparator />
+          <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
+            <div class="col-span-2 font-semibold">
+              Nombre visible al publico
+            </div>
+            <div class="col-span-4">
+              <UButton
+                label="Oncoclinic Clinica Oncologica"
+                variant="link"
+                class="flex flex-row justify-between items-center w-full text-wild-sand-950 hover:text-wild-sand-700"
+                trailing-icon="lucide:chevron-right"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="">
+          <USeparator />
+          <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
+            <div class="col-span-2 font-semibold">Información</div>
+            <div class="col-span-4 text-wild-sand-600">
+              Agregar una breve descripcion sobre esta ubicacion
+            </div>
+          </div>
+        </div>
+        <div class="">
+          <USeparator />
+          <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
+            <div class="col-span-2 font-semibold">Fotos</div>
+            <div class="col-span-4 text-wild-sand-600">
+              2 Imagenes pendientes de revisión
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Vista previa -->
-      <div class="w-full md:w-[40%] p-4 rounded text-white h-full text-center">
+      <div
+        class="w-full md:w-[50%] p-4 rounded text-white h-full text-center overflow-hidden"
+      >
         <DevicePreviewContainer />
-
         <!-- Texto 1: Descripción de la vista previa -->
         <p
           class="mt-8 text-sm font-semibold text-wild-sand-500 flex flex-col gap-1 justify-center items-center"
@@ -60,7 +95,7 @@
           variant="link"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center gap-1 text-sm text-blue-500 hover:text-white transition"
+          class="inline-flex items-center justify-center gap-1 text-sm text-blue-500"
         >
           Ver en una nueva pestaña
           <Icon name="lucide:external-link" class="w-4 h-4" />

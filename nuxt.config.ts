@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     "@nuxt/test-utils",
     "@nuxt/ui",
     "@pinia/nuxt",
+    "@vueuse/nuxt",
   ],
   icon: {
     collections: ["lucide", "svg-spinners", "mdi"],

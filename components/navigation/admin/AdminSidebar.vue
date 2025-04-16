@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="h-full bg-wild-sand-50 flex justify-between flex-col p-4 absolute overflow-hidden transition-all duration-300"
+    class="h-full bg-wild-sand-50 hidden lg:flex justify-between flex-col p-4 overflow-hidden transition-all duration-300"
     :class="store.isOpen ? 'w-20 ease-in' : 'w-64 ease-in'"
   >
     <div class="space-y-1">
