@@ -7,7 +7,7 @@
         <div class="flex flex-row gap-3 w-full items-center">
           <span
             class="h-3 w-3 bg-wild-sand-600 rounded-full inline-block -translate-y-0.5"
-          ></span>
+          />
           <p class="font-semibold m-0">En revisión:</p>
           <p class="font-medium text-wild-sand-600 m-0">
             Productor de Contenido

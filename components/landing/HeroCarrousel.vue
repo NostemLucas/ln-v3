@@ -21,7 +21,7 @@ const autoplayPaused = ref<boolean>(false);
 const touchStartX = ref<number>(0);
 const touchEndX = ref<number>(0);
 
-let autoplayInterval: number | null = null;
+const autoplayInterval = ref<number | null>(null);
 
 const windowWidth = ref<number>(
   typeof window !== "undefined" ? window.innerWidth : 1024
@@ -55,17 +55,17 @@ const goToSlide = (index: number): void => {
 };
 
 const startAutoplay = (): void => {
-  if (props.autoplay && !autoplayInterval && !autoplayPaused.value) {
-    autoplayInterval = window.setInterval(() => {
+  if (props.autoplay && !autoplayInterval.value && !autoplayPaused.value) {
+    autoplayInterval.value = window.setInterval(() => {
       nextSlide();
     }, props.autoplaySpeed);
   }
 };
 
 const stopAutoplay = (): void => {
-  if (autoplayInterval) {
-    clearInterval(autoplayInterval);
-    autoplayInterval = null;
+  if (autoplayInterval.value) {
+    clearInterval(autoplayInterval.value);
+    autoplayInterval.value = null;
   }
 };
 

@@ -24,13 +24,25 @@
             class="w-full h-48 object-cover rounded-2xl"
           />
         </div>
+
+        <div class="flex flex-row gap-2 mt-4">
+          <UButton
+            variant="solid"
+            label="Actualizar logotipo"
+            class="px-4 py-2 bg-wild-sand-100 text-wild-sand-950 hover:bg-wild-sand-200 transition-colors duration-400 ease-in"
+          />
+
+          <UButton
+            variant="solid"
+            label="Actualizar Foto de Portada"
+            class="px-4 py-2 bg-wild-sand-100 text-wild-sand-950 hover:bg-wild-sand-200 transition-colors duration-400 ease-in"
+          />
+        </div>
       </div>
 
       <!-- Vista previa -->
       <div class="w-full md:w-[40%] p-4 rounded text-white h-full text-center">
-        <DesktopDevice>
-          <Plantilla />
-        </DesktopDevice>
+        <DevicePreviewContainer />
 
         <!-- Texto 1: Descripción de la vista previa -->
         <p
@@ -67,6 +79,7 @@ import PixelDevice from "~/components/editor/devices/PixelDevice.vue";
 import TabletDevice from "~/components/editor/devices/TabletDevice.vue";
 import Icon from "@nuxt/ui/runtime/components/Icon.vue";
 import Plantilla from "../plantilla.vue";
+import DevicePreviewContainer from "~/components/references/DevicePreviewContainer.vue";
 interface Device {
   name: string;
   component: Component;
