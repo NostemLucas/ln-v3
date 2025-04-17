@@ -2,93 +2,103 @@
   <div class="w-full h-full">
     <div class="flex flex-col md:flex-row gap-4 h-full">
       <div class="flex flex-col w-full md:w-[50%]">
-        <div
-          class="flex flex-row w-full bg-wild-sand-50 rounded p-4 gap-3 items-start"
-        >
-          <Icon name="lucide:clock" class="text-3xl mt-1 text-wild-sand-700" />
-          <div class="flex flex-col">
-            <h1 class="font-bold text-base">
-              Se envió para revisión el 9 de abril
-            </h1>
-            <p class="text-sm text-wild-sand-700">
-              Tu publicación está siendo revisada. El proceso de verificación
-              puede tardar hasta cinco días. No se mostrará públicamente hasta
-              que haya sido aprobada.
-            </p>
+        <!-- contenido de edicion -->
+        <div v-if="selectedTab === 'informacion'">
+          <div
+            class="flex flex-row w-full bg-wild-sand-50 rounded p-4 gap-3 items-start"
+          >
+            <Icon
+              name="lucide:clock"
+              class="text-3xl mt-1 text-wild-sand-700"
+            />
+            <div class="flex flex-col">
+              <h1 class="font-bold text-base">
+                Se envió para revisión el 9 de abril
+              </h1>
+              <p class="text-sm text-wild-sand-700">
+                Tu publicación está siendo revisada. El proceso de verificación
+                puede tardar hasta cinco días. No se mostrará públicamente hasta
+                que haya sido aprobada.
+              </p>
+            </div>
           </div>
-        </div>
 
-        <div class="space-y-2 pt-3">
-          <NuxtImg
-            src="https://placehold.co/1400x400"
-            class="w-full h-48 object-cover rounded-2xl"
-          />
-        </div>
+          <div class="space-y-2 pt-3">
+            <NuxtImg
+              src="https://placehold.co/1400x400"
+              class="w-full h-48 object-cover rounded-2xl"
+            />
+          </div>
 
-        <div class="flex flex-row gap-2 mt-4">
-          <UButton
-            variant="solid"
-            label="Actualizar logotipo"
-            class="px-4 py-2 bg-wild-sand-100 text-wild-sand-950 hover:bg-wild-sand-200 transition-colors duration-400 ease-in"
-          />
+          <div class="flex flex-row gap-2 mt-4">
+            <UButton
+              variant="solid"
+              label="Actualizar logotipo"
+              class="px-4 py-2 bg-wild-sand-100 text-wild-sand-950 hover:bg-wild-sand-200 transition-colors duration-400 ease-in"
+            />
 
-          <UButton
-            variant="solid"
-            label="Actualizar Foto de Portada"
-            class="px-4 py-2 bg-wild-sand-100 text-wild-sand-950 hover:bg-wild-sand-200 transition-colors duration-400 ease-in"
-          />
-        </div>
-        <div class="mt-4">
-          <USeparator />
-          <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
-            <div class="col-span-2 font-semibold">
-              Nombre visible al publico
+            <UButton
+              variant="solid"
+              label="Actualizar Foto de Portada"
+              class="px-4 py-2 bg-wild-sand-100 text-wild-sand-950 hover:bg-wild-sand-200 transition-colors duration-400 ease-in"
+            />
+          </div>
+          <div class="mt-4">
+            <USeparator />
+            <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
+              <div class="col-span-2 font-semibold">
+                Nombre visible al publico
+              </div>
+              <div class="col-span-4">
+                <UButton
+                  label="Nombre la noticia"
+                  variant="link"
+                  class="flex flex-row justify-between items-center w-full text-wild-sand-950 hover:text-wild-sand-700"
+                  trailing-icon="lucide:chevron-right"
+                  @click="selectedTab = 'title'"
+                />
+              </div>
             </div>
-            <div class="col-span-4">
-              <UButton
-                label="Nombre la noticia"
-                variant="link"
-                class="flex flex-row justify-between items-center w-full text-wild-sand-950 hover:text-wild-sand-700"
-                trailing-icon="lucide:chevron-right"
-              />
+          </div>
+          <div class="">
+            <USeparator />
+            <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
+              <div class="col-span-2 font-semibold">Descripcion</div>
+              <div class="col-span-4 text-wild-sand-600">
+                Agregar una breve descripcion sobre esta publicación
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <USeparator />
+            <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
+              <div class="col-span-2 font-semibold">Contenido</div>
+              <div class="col-span-4 text-wild-sand-600">
+                Contenido de la publicación
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <USeparator />
+            <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
+              <div class="col-span-2 font-semibold">Fotos</div>
+              <div class="col-span-4 text-wild-sand-600">
+                2 Imagenes pendientes de revisión
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <USeparator />
+            <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
+              <div class="col-span-2 font-semibold">Categorias</div>
+              <div class="col-span-4 text-wild-sand-600">
+                2 Categorias Pendientes de Revisión
+              </div>
             </div>
           </div>
         </div>
-        <div class="">
-          <USeparator />
-          <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
-            <div class="col-span-2 font-semibold">Descripcion</div>
-            <div class="col-span-4 text-wild-sand-600">
-              Agregar una breve descripcion sobre esta publicación
-            </div>
-          </div>
-        </div>
-        <div class="">
-          <USeparator />
-          <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
-            <div class="col-span-2 font-semibold">Contenido</div>
-            <div class="col-span-4 text-wild-sand-600">
-              Contenido de la publicación
-            </div>
-          </div>
-        </div>
-        <div class="">
-          <USeparator />
-          <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
-            <div class="col-span-2 font-semibold">Fotos</div>
-            <div class="col-span-4 text-wild-sand-600">
-              2 Imagenes pendientes de revisión
-            </div>
-          </div>
-        </div>
-        <div class="">
-          <USeparator />
-          <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
-            <div class="col-span-2 font-semibold">Categorias</div>
-            <div class="col-span-4 text-wild-sand-600">
-              2 Categorias Pendientes de Revisión
-            </div>
-          </div>
+        <div v-if="selectedTab === 'title'">
+          <TitleProperty @close="selectedTab = 'informacion'" />
         </div>
       </div>
 
@@ -124,46 +134,8 @@
 </template>
 
 <script lang="ts" setup>
-import DefaultDevice from "~/components/editor/devices/DefaultDevice.vue";
-import DesktopDevice from "~/components/editor/devices/DesktopDevice.vue";
-import IphoneDevice from "~/components/editor/devices/IphoneDevice.vue";
-import LaptopDevice from "~/components/editor/devices/LaptopDevice.vue";
-import PixelDevice from "~/components/editor/devices/PixelDevice.vue";
-import TabletDevice from "~/components/editor/devices/TabletDevice.vue";
 import Icon from "@nuxt/ui/runtime/components/Icon.vue";
-import Plantilla from "../templates/nyt/plantilla.vue";
 import DevicePreviewContainer from "../preview/DevicePreviewContainer.vue";
-
-interface Device {
-  name: string;
-  component: Component;
-}
-
-const devices: Device[] = [
-  {
-    name: "default",
-    component: DefaultDevice,
-  },
-  {
-    name: "desktop",
-    component: DesktopDevice,
-  },
-  {
-    name: "pixel",
-    component: PixelDevice,
-  },
-  {
-    name: "tablet",
-    component: TabletDevice,
-  },
-  {
-    name: "laptop",
-    component: LaptopDevice,
-  },
-  {
-    name: "iphone",
-    component: IphoneDevice,
-  },
-];
-const selectedDevice = ref(devices[0]);
+import TitleProperty from "./properties/TitleProperty.vue";
+const selectedTab = ref("informacion");
 </script>

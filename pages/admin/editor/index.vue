@@ -26,9 +26,9 @@
           }"
         >
           <template #informacion> <PropertyTab /></template>
-          <template #elementos> lorem*100</template>
+          <template #elementos>PROXIMAMENTE</template>
           <template #fotos><ImageTab /></template>
-          <template #estadisticas> dsdsd</template>
+          <template #estadisticas> PROXIMAMENTE</template>
         </UTabs>
       </div>
     </div>
@@ -39,6 +39,7 @@
 import type { TabsItem } from "@nuxt/ui";
 import ImageTab from "~/components/editor/tabs/ImageTab.vue";
 import PropertyTab from "~/components/editor/tabs/PropertyTab.vue";
+import TitleProperty from "~/components/editor/tabs/properties/TitleProperty.vue";
 definePageMeta({
   layout: "admin",
   title: "Editor",

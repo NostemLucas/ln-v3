@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mx-auto flex flex-col gap-4 h-full font-horsham max-w-xl px-6 md:px-0 pt-6 pb-24 text-start"
+    class="mx-auto flex flex-col gap-4 h-full font-horsham max-w-2xl px-6 md:px-0 pt-6 pb-24 text-start"
   >
     <!-- categoria -->
     <div class="font-bold uppercase tracking-wider text-black">

@@ -1,9 +1,5 @@
-<script setup lang="ts">
-import DevicePreviewContainer from "~/components/references/DevicePreviewContainer.vue";
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <DevicePreviewContainer />
-  </div>
+  <div class="min-h-screen bg-gray-50">asfdaf</div>
 </template>

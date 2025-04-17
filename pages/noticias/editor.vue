@@ -1,11 +1,7 @@
 <template>
-  <div>
-    <DevicePreview />
-  </div>
+  <div>asafd</div>
 </template>
 
-<script lang="ts" setup>
-import DevicePreview from "~/components/preview/DevicePreview.vue";
-</script>
+<script lang="ts" setup></script>
 
 <style></style>

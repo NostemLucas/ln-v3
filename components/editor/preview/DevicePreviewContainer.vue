@@ -6,10 +6,10 @@ import InfoPanel from "./InfoPanel.vue";
 type DeviceType = "desktop" | "tablet" | "mobile";
 
 const activeDevice = ref<DeviceType>("mobile");
-const zoomLevel = ref<number>(100); // Cambié el zoom inicial a 100%
+const zoomLevel = ref<number>(100);
 const scrollContainer = ref(null);
 
-// Simulado del tamaño base de los dispositivos
+// Tamaños base para dispositivos
 const getBaseWidth = (device: DeviceType): number => {
   switch (device) {
     case "desktop":
@@ -20,6 +20,20 @@ const getBaseWidth = (device: DeviceType): number => {
       return 390;
     default:
       return 1280;
+  }
+};
+
+// Tamaños base para dispositivos
+const getBaseHeight = (device: DeviceType): number => {
+  switch (device) {
+    case "desktop":
+      return 800;
+    case "tablet":
+      return 1024;
+    case "mobile":
+      return 844;
+    default:
+      return 800;
   }
 };
 
@@ -34,9 +48,10 @@ const handleZoomOut = () => {
 
 const computeContainerSize = (device: DeviceType) => {
   const baseWidth = getBaseWidth(device);
+  const baseHeight = getBaseHeight(device);
   return {
     width: `${baseWidth * (zoomLevel.value / 100)}px`,
-    height: `${baseWidth * (zoomLevel.value / 100) * (9 / 16)}px`, // Ajusta la altura manteniendo una relación de aspecto razonable
+    height: `${baseHeight * (zoomLevel.value / 100)}px`,
   };
 };
 </script>
@@ -60,6 +75,23 @@ const computeContainerSize = (device: DeviceType) => {
             @click="handleZoomIn"
             icon="lucide:plus"
           />
+          <!--     <div class="flex-1 ml-4">
+            <USlider
+              v-model="zoomLevel"
+              :min="30"
+              :max="150"
+              :step="1"
+              :ui="{
+                range:
+                  'h-2 bg-wild-sand-600 rounded-lg appearance-none cursor-pointer',
+                track:
+                  'h-2 bg-wild-sand-200 rounded-lg appearance-none cursor-pointer',
+                thumb:
+                  'h-4 w-4  rounded-full border-2 ring-wild-sand-600 cursor-pointer',
+              }"
+              class="cursor-pointer z-50"
+            />
+          </div> -->
         </div>
       </div>
 
@@ -74,6 +106,7 @@ const computeContainerSize = (device: DeviceType) => {
     <div
       ref="scrollContainer"
       class="scroll-container flex-1 overflow-auto p-4 cursor-grab"
+      v-dragscroll
     >
       <div
         class="virtual-container"
@@ -84,14 +117,16 @@ const computeContainerSize = (device: DeviceType) => {
             class="preview-container transform-gpu bg-blue"
             :style="{
               transform: `scale(${zoomLevel / 100})`,
-              transformOrigin: 'top center',
+              transformOrigin: 'center center',
               width: `${getBaseWidth(activeDevice)}px`,
+              height: `${getBaseHeight(activeDevice)}px`,
             }"
           >
             <DevicePreview
               :device-type="activeDevice"
               :is-active="true"
               :width="getBaseWidth(activeDevice)"
+              :height="getBaseHeight(activeDevice)"
             />
           </div>
         </div>
@@ -110,6 +145,7 @@ const computeContainerSize = (device: DeviceType) => {
 .virtual-container {
   position: relative;
   min-width: 100%;
+  min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,5 +156,7 @@ const computeContainerSize = (device: DeviceType) => {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 </style>

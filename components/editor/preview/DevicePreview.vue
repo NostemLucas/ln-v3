@@ -5,25 +5,29 @@ interface DevicePreviewProps {
   deviceType: "desktop" | "tablet" | "mobile";
   isActive: boolean;
   width: number;
+  height: number;
 }
 
 const props = defineProps<DevicePreviewProps>();
 
-// Común a todos los dispositivos
-const heightByDevice = {
-  desktop: 600,
-  tablet: 700,
-  mobile: 650,
+// Calculate content height based on device type
+// This ensures we don't make the device frame too tall
+const getContentHeight = () => {
+  if (props.deviceType === "mobile") {
+    // For mobile, use a smaller height for better proportions
+    return Math.min(props.height - 40, 600);
+  }
+  return props.height;
 };
 
-const windowHeight = heightByDevice[props.deviceType];
+const windowHeight = getContentHeight();
 </script>
 
 <template>
   <div
     v-if="isActive"
     :id="`${deviceType}-preview`"
-    class="device-preview origin-top transform-gpu"
+    class="device-preview origin-center transform-gpu"
   >
     <!-- Mobile design -->
     <template v-if="deviceType === 'mobile'">
@@ -55,7 +59,7 @@ const windowHeight = heightByDevice[props.deviceType];
         </div>
       </div>
       <div class="text-center mt-2 text-xs text-gray-500">
-        Móvil ({{ width }}px)
+        Móvil ({{ width }}px × {{ windowHeight }}px)
       </div>
     </template>
 
@@ -89,7 +93,7 @@ const windowHeight = heightByDevice[props.deviceType];
         <div class="bg-gray-800 h-2"></div>
       </div>
       <div class="text-center mt-2 text-xs text-gray-500">
-        Tablet ({{ width }}px)
+        Tablet ({{ width }}px × {{ windowHeight }}px)
       </div>
     </template>
 
@@ -116,6 +120,7 @@ const windowHeight = heightByDevice[props.deviceType];
             class="desktop-content overflow-y-auto"
             :style="{ height: `${windowHeight}px`, width: `${width}px` }"
           >
+            <!-- aqui se renderea el contenido -->
             <ContentDisplay :device-type="deviceType" />
           </div>
         </div>
@@ -123,7 +128,7 @@ const windowHeight = heightByDevice[props.deviceType];
         <div class="bg-gray-800 h-2"></div>
       </div>
       <div class="text-center mt-2 text-xs text-gray-500">
-        Desktop ({{ width }}px)
+        Desktop ({{ width }}px × {{ windowHeight }}px)
       </div>
     </template>
   </div>

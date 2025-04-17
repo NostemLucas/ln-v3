@@ -1,32 +1,20 @@
 <script setup lang="ts">
 import Icon from "@nuxt/ui/runtime/components/Icon.vue";
 import { useDropZone } from "@vueuse/core";
-import { shallowRef, useTemplateRef } from "vue";
-
-const imageFilesData = shallowRef<
-  {
-    name: string;
-    size: number;
-    type: string;
-    lastModified: number;
-    url: string;
-  }[]
->([]);
-
-function onImageDrop(files: File[] | null) {
-  imageFilesData.value = [];
-  if (files) {
-    imageFilesData.value = files.map((file) => ({
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      lastModified: file.lastModified,
-      url: URL.createObjectURL(file),
-    }));
-  }
-}
+import { useTemplateRef, onMounted } from "vue";
 
 const imageDropZoneRef = useTemplateRef<HTMLElement>("imageDropZoneRef");
+const store = useImageStore();
+
+onMounted(() => {
+  store.loadFromLocalStorage();
+});
+
+function onImageDrop(files: File[] | null) {
+  if (files) {
+    store.addImages(files);
+  }
+}
 
 const { isOverDropZone: isOverImageDropZone } = useDropZone(imageDropZoneRef, {
   dataTypes: ["image/png"],
@@ -67,10 +55,7 @@ const { isOverDropZone: isOverImageDropZone } = useDropZone(imageDropZoneRef, {
         >
           <Icon name="lucide:upload" class="text-gray-500" />
           <div class="font-bold mb-2">Arrastra y suelta tus imágenes aquí</div>
-          <div
-            v-if="imageFilesData.length === 0"
-            class="text-gray-500 text-center p-4"
-          >
+          <div class="text-gray-500 text-center p-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-12 w-12 mx-auto mb-2"
@@ -90,11 +75,11 @@ const { isOverDropZone: isOverImageDropZone } = useDropZone(imageDropZoneRef, {
         </div>
 
         <div
-          v-if="imageFilesData.length > 0"
+          v-if="store.images.length > 0"
           class="grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
           <div
-            v-for="(file, index) in imageFilesData"
+            v-for="(file, index) in store.images"
             :key="index"
             class="bg-white rounded-lg shadow-md overflow-hidden"
           >
@@ -102,7 +87,7 @@ const { isOverDropZone: isOverImageDropZone } = useDropZone(imageDropZoneRef, {
               class="relative aspect-video w-full overflow-hidden bg-gray-100"
             >
               <NuxtImg
-                :src="file.url"
+                :src="file.base64"
                 :alt="file.name"
                 class="w-full h-full object-contain"
               />
