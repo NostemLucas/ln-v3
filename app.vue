@@ -2,7 +2,7 @@
   <UApp>
     <NuxtLayout>
       <NuxtRouteAnnouncer />
-      <RouterView />
+      <NuxtPage />
       <ResponsiveChip />
     </NuxtLayout>
   </UApp>

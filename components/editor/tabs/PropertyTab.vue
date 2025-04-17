@@ -131,8 +131,9 @@ import LaptopDevice from "~/components/editor/devices/LaptopDevice.vue";
 import PixelDevice from "~/components/editor/devices/PixelDevice.vue";
 import TabletDevice from "~/components/editor/devices/TabletDevice.vue";
 import Icon from "@nuxt/ui/runtime/components/Icon.vue";
-import Plantilla from "../plantilla.vue";
-import DevicePreviewContainer from "~/components/references/DevicePreviewContainer.vue";
+import Plantilla from "../templates/nyt/plantilla.vue";
+import DevicePreviewContainer from "../preview/DevicePreviewContainer.vue";
+
 interface Device {
   name: string;
   component: Component;

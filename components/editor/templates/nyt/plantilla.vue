@@ -4,12 +4,11 @@
   >
     <!-- categoria -->
     <div class="font-bold uppercase tracking-wider text-black">
-      NEWS ANALYSIS
+      {{ categoria }}
     </div>
     <!-- titulo principal -->
     <h2 class="text-4xl font-semibold italic leading-11 text-black">
-      Nayib Bukele dice que no devolverá a EE. UU. al hombre deportado por error
-      a El Salvador
+      {{ title }}
     </h2>
     <!-- descripcion corta -->
     <div
@@ -152,6 +151,10 @@ defineProps({
   contenido2: {
     type: String,
     default: "Contenido",
+  },
+  editor: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>

@@ -3,5 +3,5 @@
 </template>
 
 <script lang="ts" setup>
-import tqm1 from "~/components/editor/plantilla.vue";
+import tqm1 from "~/components/editor/templates/nyt/plantilla.vue";
 </script>

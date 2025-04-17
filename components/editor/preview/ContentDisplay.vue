@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Icon from "@nuxt/ui/runtime/components/Icon.vue";
-import Plantilla from "../editor/plantilla.vue";
+import Plantilla from "../templates/nyt/plantilla.vue";
 interface ContentDisplayProps {
   deviceType: "desktop" | "tablet" | "mobile";
 }
