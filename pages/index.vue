@@ -11,12 +11,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-import EnhancedVideo from "~/components/pages/landing/video-section/EnhancedVideo.vue";
-import HeroCards from "~/components/pages/landing/hero-section/HeroCards.vue";
-import TreatmentCards from "~/components/pages/landing/treatment-section/TreatmentSection.vue";
-import HeroAbout from "~/components/pages/landing/about-section/HeroAbout.vue";
+import EnhancedVideo from "~/components/views/landing/video-section/EnhancedVideo.vue";
+import HeroCards from "~/components/views/landing/hero-section/HeroCards.vue";
+import TreatmentCards from "~/components/views/landing/treatment-section/TreatmentSection.vue";
+import HeroAbout from "~/components/views/landing/about-section/HeroAbout.vue";
 import HeroCarrousel from "@/components/landing/HeroCarrousel.vue";
 import HeroParalax from "@/components/landing/HeroParalax.vue";
 import DiagnosticCards from "@/components/landing/DiagnosticCards.vue";
-import HeroVideo from "~/components/pages/landing/video-section/HeroVideo.vue";
+import HeroVideo from "~/components/views/landing/video-section/HeroVideo.vue";
 </script>
