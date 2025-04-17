@@ -46,7 +46,7 @@
             </div>
             <div class="col-span-4">
               <UButton
-                label="Oncoclinic Clinica Oncologica"
+                label="Nombre la noticia"
                 variant="link"
                 class="flex flex-row justify-between items-center w-full text-wild-sand-950 hover:text-wild-sand-700"
                 trailing-icon="lucide:chevron-right"
@@ -57,9 +57,18 @@
         <div class="">
           <USeparator />
           <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
-            <div class="col-span-2 font-semibold">Información</div>
+            <div class="col-span-2 font-semibold">Descripcion</div>
             <div class="col-span-4 text-wild-sand-600">
-              Agregar una breve descripcion sobre esta ubicacion
+              Agregar una breve descripcion sobre esta publicación
+            </div>
+          </div>
+        </div>
+        <div class="">
+          <USeparator />
+          <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
+            <div class="col-span-2 font-semibold">Contenido</div>
+            <div class="col-span-4 text-wild-sand-600">
+              Contenido de la publicación
             </div>
           </div>
         </div>
@@ -69,6 +78,15 @@
             <div class="col-span-2 font-semibold">Fotos</div>
             <div class="col-span-4 text-wild-sand-600">
               2 Imagenes pendientes de revisión
+            </div>
+          </div>
+        </div>
+        <div class="">
+          <USeparator />
+          <div class="grid grid-cols-6 gap-2.5 text-sm py-3">
+            <div class="col-span-2 font-semibold">Categorias</div>
+            <div class="col-span-4 text-wild-sand-600">
+              2 Categorias Pendientes de Revisión
             </div>
           </div>
         </div>
@@ -148,5 +166,3 @@ const devices: Device[] = [
 ];
 const selectedDevice = ref(devices[0]);
 </script>
-
-<style></style>

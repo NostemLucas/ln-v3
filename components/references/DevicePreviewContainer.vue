@@ -5,7 +5,7 @@ import InfoPanel from "./InfoPanel.vue";
 
 type DeviceType = "desktop" | "tablet" | "mobile";
 
-const activeDevice = ref<DeviceType>("desktop");
+const activeDevice = ref<DeviceType>("mobile");
 const zoomLevel = ref<number>(47);
 const scrollContainer = ref(null);
 
@@ -44,7 +44,7 @@ const handleZoomOut = () => {
             class="inline-flex items-center px-2 py-2 text-sm font-medium border rounded-md"
             @click="handleZoomOut"
           ></UButton>
-          <span class="text-sm font-medium w-12 text-center"
+          <span class="text-sm font-medium w-12 text-center text-black"
             >{{ zoomLevel }}%</span
           >
           <UButton
@@ -60,7 +60,8 @@ const handleZoomOut = () => {
           :active-device="activeDevice"
           @update:active-device="activeDevice = $event"
         />
-
+      </div>
+      <!--  
         <div class="flex-1 ml-4">
           <USlider
             v-model="zoomLevel"
@@ -78,7 +79,7 @@ const handleZoomOut = () => {
             class="cursor-pointer z-50"
           />
         </div>
-      </div>
+      </div> -->
     </div>
 
     <!-- Contenedor principal de desplazamiento -->
@@ -103,9 +104,7 @@ const handleZoomOut = () => {
         }"
       >
         <!-- Contenedor centrado para el contenido -->
-        <div
-          class="preview-wrapper flex items-center justify-center h-full bg-amber-400"
-        >
+        <div class="preview-wrapper flex items-center justify-center h-full">
           <div
             class="preview-container transform-gpu bg-blue"
             :style="{

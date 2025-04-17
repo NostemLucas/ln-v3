@@ -510,7 +510,7 @@ const login = async () => {
 
   // Show success message or redirect
   if (email.value === "admin@gmail.com" && password.value === "admin") {
-    await navigateTo("/admin");
+    await navigateTo("/admin/editor");
   }
 };
 

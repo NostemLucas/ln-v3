@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Icon } from "#components";
+import Icon from "@nuxt/ui/runtime/components/Icon.vue";
 import { useDropZone } from "@vueuse/core";
 import { shallowRef, useTemplateRef } from "vue";
 
@@ -121,8 +121,4 @@ const { isOverDropZone: isOverImageDropZone } = useDropZone(imageDropZoneRef, {
     </div>
   </div>
 </template>
-<style scoped>
-* {
-  border: 1px solid red;
-}
-</style>
+<style scoped></style>
